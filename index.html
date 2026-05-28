@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SportApp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+:root {
+  --bg: #F5F4F0;
+  --surface: #FFFFFF;
+  --surface2: #EEECEA;
+  --border: rgba(0,0,0,0.10);
+  --border2: rgba(0,0,0,0.18);
+  --text: #1A1A18;
+  --text2: #6B6A66;
+  --text3: #A0A09C;
+  --accent: #2D5BE3;
+  --accent-bg: #EAF0FF;
+  --accent-text: #1A3FA0;
+  --green: #1E7D4F;
+  --green-bg: #E6F5ED;
+  --green-text: #14563A;
+  --amber: #B45309;
+  --amber-bg: #FEF3E2;
+  --amber-text: #7C3D0A;
+  --red: #C0392B;
+  --red-bg: #FEE8E6;
+  --red-text: #8B1F15;
+  --purple: #6B3FA0;
+  --purple-bg: #F0E8FF;
+  --purple-text: #4A2575;
+  --teal: #0F766E;
+  --teal-bg: #E6FAF8;
+  --teal-text: #0A5751;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --sidebar-w: 220px;
+  --topbar-h: 56px;
+  --font: 'DM Sans', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; font-family: var(--font); background: var(--bg); color: var(--text); font-size: 14px; }
+
+/* ── LAYOUT ── */
+.app-shell { display: flex; height: 100vh; overflow: hidden; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar-w); flex-shrink: 0;
+  background: var(--surface); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.sidebar-logo {
+  padding: 0 16px; height: var(--topbar-h);
+  display: flex; align-items: center; gap: 10px;
+  border-bottom: 1px solid var(--border);
+  font-size: 16px; font-weight: 600; color: var(--text);
+  letter-spacing: -0.3px;
+}
+.sidebar-logo i { color: var(--accent); font-size: 22px; }
+.sidebar-nav { flex: 1; overflow-y: auto; padding: 10px 8px; }
+.nav-section { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; color: var(--text3); text-transform: uppercase; padding: 12px 10px 4px; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px; border-radius: var(--radius);
+  cursor: pointer; font-size: 13.5px; color: var(--text2);
+  transition: background 0.12s, color 0.12s; margin: 1px 0;
+  position: relative;
+}
+.nav-item:hover { background: var(--surface2); color: var(--text); }
+.nav-item.active { background: var(--accent-bg); color: var(--accent-text); font-weight: 500; }
+.nav-item i { font-size: 17px; flex-shrink: 0; }
+.nav-badge {
+  margin-left: auto; background: var(--red); color: #fff;
+  font-size: 10px; font-weight: 600; padding: 1px 6px;
+  border-radius: 20px; min-width: 18px; text-align: center;
+}
+.sidebar-footer { padding: 12px 8px; border-top: 1px solid var(--border); }
+.role-switcher { background: var(--surface2); border-radius: var(--radius); padding: 8px; }
+.role-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; font-weight: 600; padding: 0 4px; }
+.role-btn {
+  display: flex; align-items: center; gap: 7px;
+  width: 100%; padding: 6px 8px; border-radius: 7px;
+  background: none; border: none; cursor: pointer;
+  font-size: 12.5px; color: var(--text2); font-family: var(--font);
+  transition: background 0.1s; margin: 1px 0;
+}
+.role-btn:hover { background: rgba(0,0,0,0.05); }
+.role-btn.active { background: var(--surface); color: var(--text); font-weight: 500; box-shadow: var(--shadow); }
+.role-btn .role-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── MAIN ── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.topbar {
+  height: var(--topbar-h); flex-shrink: 0;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 24px; gap: 12px;
+}
+.topbar-title { font-size: 15px; font-weight: 600; color: var(--text); flex: 1; letter-spacing: -0.2px; }
+.topbar-actions { display: flex; align-items: center; gap: 8px; }
+.icon-btn-top {
+  width: 34px; height: 34px; border-radius: var(--radius);
+  background: var(--surface2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--text2); transition: background 0.12s;
+  position: relative;
+}
+.icon-btn-top:hover { background: var(--border); color: var(--text); }
+.notif-dot { position: absolute; top: 5px; right: 5px; width: 7px; height: 7px; border-radius: 50%; background: var(--red); border: 1.5px solid var(--surface); }
+.avatar-top {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+}
+.content { flex: 1; overflow-y: auto; padding: 24px; }
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── COMPONENTS ── */
+.pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px; border-radius: 20px; font-size: 11.5px; font-weight: 500;
+}
+.pill-blue { background: var(--accent-bg); color: var(--accent-text); }
+.pill-green { background: var(--green-bg); color: var(--green-text); }
+.pill-amber { background: var(--amber-bg); color: var(--amber-text); }
+.pill-red { background: var(--red-bg); color: var(--red-text); }
+.pill-purple { background: var(--purple-bg); color: var(--purple-text); }
+.pill-teal { background: var(--teal-bg); color: var(--teal-text); }
+.pill-gray { background: var(--surface2); color: var(--text2); }
+
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 18px 20px;
+}
+.card-sm { padding: 14px 16px; }
+.card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.card-title { font-size: 13.5px; font-weight: 600; color: var(--text); }
+.card-action { font-size: 12px; color: var(--accent); cursor: pointer; font-weight: 500; }
+.card-action:hover { text-decoration: underline; }
+
+.metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 10px; margin-bottom: 20px; }
+.metric {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 14px 16px;
+}
+.metric-label { font-size: 11.5px; color: var(--text2); margin-bottom: 6px; font-weight: 500; }
+.metric-value { font-size: 26px; font-weight: 600; color: var(--text); letter-spacing: -0.5px; line-height: 1; }
+.metric-sub { font-size: 11px; color: var(--text3); margin-top: 4px; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+
+.avatar {
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-weight: 600; flex-shrink: 0;
+}
+.av-sm { width: 30px; height: 30px; font-size: 11px; }
+.av-md { width: 36px; height: 36px; font-size: 13px; }
+.av-lg { width: 44px; height: 44px; font-size: 16px; }
+
+.divider { height: 1px; background: var(--border); margin: 10px 0; }
+
+.row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.row:last-child { border-bottom: none; }
+
+.progress-track { flex: 1; height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+
+/* ── BUTTONS ── */
+button {
+  font-family: var(--font); cursor: pointer;
+  border-radius: var(--radius); border: 1px solid var(--border2);
+  padding: 7px 14px; font-size: 13px; color: var(--text2);
+  background: var(--surface); transition: background 0.1s, color 0.1s;
+}
+button:hover { background: var(--surface2); color: var(--text); }
+.btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 500; }
+.btn-primary:hover { background: #2451cc; color: #fff; }
+.btn-danger { background: var(--red-bg); color: var(--red-text); border-color: transparent; }
+.btn-danger:hover { background: #f9d0cc; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.btn-icon { width: 30px; height: 30px; padding: 0; display: flex; align-items: center; justify-content: center; }
+
+/* ── FORMS ── */
+input[type=text], input[type=email], input[type=number], input[type=search], textarea, select {
+  font-family: var(--font); font-size: 13px;
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: var(--radius); padding: 8px 12px; color: var(--text);
+  width: 100%; outline: none; transition: border 0.15s;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,91,227,0.12); }
+textarea { resize: vertical; min-height: 80px; }
+label { font-size: 12px; font-weight: 500; color: var(--text2); display: block; margin-bottom: 5px; margin-top: 12px; }
+label:first-child { margin-top: 0; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.40); z-index: 1000;
+  align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--surface); border-radius: var(--radius-xl);
+  padding: 24px; width: 420px; max-width: 95vw;
+  border: 1px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  animation: modal-in 0.18s ease;
+}
+@keyframes modal-in { from { transform: scale(0.95) translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+.modal-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; color: var(--text); }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: #1A1A18; color: #F5F4F0; font-size: 13px; font-weight: 500;
+  padding: 10px 20px; border-radius: 30px;
+  opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s;
+  z-index: 9999; white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+
+/* ── CHAT ── */
+.chat-layout { display: grid; grid-template-columns: 260px 1fr; height: calc(100vh - var(--topbar-h) - 48px); gap: 0; }
+.chat-sidebar { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column; }
+.chat-list { flex: 1; overflow-y: auto; }
+.chat-item { display: flex; align-items: center; gap: 10px; padding: 12px 14px; cursor: pointer; border-bottom: 1px solid var(--border); transition: background 0.1s; }
+.chat-item:hover { background: var(--surface2); }
+.chat-item.active { background: var(--accent-bg); }
+.chat-item-name { font-size: 13px; font-weight: 500; color: var(--text); }
+.chat-item-preview { font-size: 11.5px; color: var(--text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
+.chat-item-time { font-size: 10.5px; color: var(--text3); flex-shrink: 0; }
+.unread-badge { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+.chat-main { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column; margin-left: 12px; }
+.chat-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+.chat-messages { flex: 1; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.msg { max-width: 72%; }
+.msg-in { align-self: flex-start; }
+.msg-out { align-self: flex-end; }
+.msg-bubble { padding: 10px 14px; border-radius: 14px; font-size: 13.5px; line-height: 1.5; }
+.msg-in .msg-bubble { background: var(--surface2); color: var(--text); border-radius: 4px 14px 14px 14px; }
+.msg-out .msg-bubble { background: var(--accent); color: #fff; border-radius: 14px 4px 14px 14px; }
+.msg-meta { font-size: 10.5px; color: var(--text3); margin-top: 4px; }
+.msg-out .msg-meta { text-align: right; }
+.chat-input-bar { padding: 14px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-end; }
+.chat-input-bar textarea { min-height: 40px; max-height: 120px; flex: 1; }
+
+/* ── SCHEDULE ── */
+.week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-bottom: 16px; }
+.day-col { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.day-head { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: center; }
+.day-name { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; }
+.day-num { font-size: 16px; font-weight: 600; color: var(--text); }
+.day-col.today .day-head { background: var(--accent-bg); }
+.day-col.today .day-num { color: var(--accent); }
+.day-events { padding: 6px; display: flex; flex-direction: column; gap: 4px; min-height: 60px; }
+.event-chip { padding: 5px 8px; border-radius: 7px; font-size: 11.5px; font-weight: 500; cursor: pointer; }
+
+/* ── VOORTGANG ── */
+.progress-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.progress-row:last-child { border-bottom: none; }
+.progress-name { font-size: 13px; color: var(--text); width: 130px; flex-shrink: 0; }
+.progress-pos { font-size: 11px; color: var(--text3); }
+.progress-pct { font-size: 12px; font-weight: 600; color: var(--text2); min-width: 36px; text-align: right; }
+
+/* ── COORDINATOR ── */
+.trainer-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 10px; overflow: hidden; }
+.trainer-head { display: flex; align-items: center; gap: 10px; padding: 12px 14px; cursor: pointer; }
+.trainer-head:hover { background: var(--surface2); }
+.speler-item { display: flex; align-items: center; gap: 8px; padding: 7px 14px; border-top: 1px solid var(--border); }
+.speler-item:hover { background: var(--surface2); }
+.speler-actions { margin-left: auto; display: flex; gap: 4px; opacity: 0; transition: opacity 0.1s; }
+.speler-item:hover .speler-actions { opacity: 1; }
+
+/* ── SPECIALISTS ── */
+.specialist-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px 18px; display: flex; gap: 14px; align-items: flex-start; }
+
+/* ── PLAYER DETAIL ── */
+.detail-grid { display: grid; grid-template-columns: 280px 1fr; gap: 16px; }
+.detail-sidebar-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; text-align: center; }
+
+/* ── EMPTY ── */
+.empty-state { text-align: center; padding: 48px 0; color: var(--text3); }
+.empty-state i { font-size: 32px; margin-bottom: 10px; display: block; }
+.empty-state p { font-size: 13px; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+/* ── LOG ENTRY ── */
+.log-entry { padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; gap: 12px; }
+.log-entry:last-child { border-bottom: none; }
+.log-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+.log-content { flex: 1; }
+.log-title { font-size: 13px; font-weight: 500; color: var(--text); }
+.log-meta { font-size: 11.5px; color: var(--text3); margin-top: 2px; }
+.log-note { font-size: 12.5px; color: var(--text2); margin-top: 4px; font-style: italic; }
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <i class="ti ti-ball-football"></i>
+      SportApp
+    </div>
+    <nav class="sidebar-nav" id="sidebar-nav">
+      <!-- dynamically rendered -->
+    </nav>
+    <div class="sidebar-footer">
+      <div class="role-switcher">
+        <div class="role-label">Aangemeld als</div>
+        <button class="role-btn" onclick="setRole('coordinator')" id="rb-coordinator">
+          <span class="role-dot" style="background:#6B3FA0;"></span> Coördinator
+        </button>
+        <button class="role-btn" onclick="setRole('trainer')" id="rb-trainer">
+          <span class="role-dot" style="background:#2D5BE3;"></span> Trainer
+        </button>
+        <button class="role-btn" onclick="setRole('begeleider')" id="rb-begeleider">
+          <span class="role-dot" style="background:#0F766E;"></span> Begeleider
+        </button>
+        <button class="role-btn" onclick="setRole('speler')" id="rb-speler">
+          <span class="role-dot" style="background:#1E7D4F;"></span> Speler
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">Dashboard</div>
+      <div class="topbar-actions">
+        <div class="icon-btn-top" onclick="openNotifPanel()" title="Meldingen">
+          <i class="ti ti-bell" style="font-size:17px;"></i>
+          <div class="notif-dot" id="notif-dot"></div>
+        </div>
+        <div class="avatar-top av-md" id="user-avatar" style="background:#EAF0FF;color:#1A3FA0;"></div>
+      </div>
+    </div>
+
+    <div class="content" id="content">
+      <!-- Pages rendered dynamically -->
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-title" id="modal-title"></div>
+    <div id="modal-body"></div>
+    <div class="modal-actions">
+      <button onclick="closeModal()">Annuleren</button>
+      <button class="btn-primary" onclick="submitModal()" id="modal-submit">Opslaan</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════════════
+const DATA = {
+  trainers: [
+    {id:1, name:'Marc Vos', spec:'Hoofdtrainer', avColor:'#EAF0FF', avText:'#1A3FA0'},
+    {id:2, name:'Inge de Boer', spec:'Krachtrainer', avColor:'#E6FAF8', avText:'#0A5751'},
+    {id:3, name:'Remi Smits', spec:'Assistent-trainer', avColor:'#F0E8FF', avText:'#4A2575'},
+  ],
+  specialisten: [
+    {id:10, name:'Dr. P. Silva', role:'Fysiotherapeut', avColor:'#FEE8E6', avText:'#8B1F15', email:'silva@sportapp.nl', tel:'06-12345678'},
+    {id:11, name:'Anne Mulder', role:'Voedingsdeskundige', avColor:'#E6F5ED', avText:'#14563A', email:'mulder@sportapp.nl', tel:'06-87654321'},
+    {id:12, name:'Kai Hendriks', role:'Sportpsycholoog', avColor:'#FEF3E2', avText:'#7C3D0A', email:'hendriks@sportapp.nl', tel:'06-11223344'},
+  ],
+  coordinator: {id:99, name:'Sandra Berg', avColor:'#F0E8FF', avText:'#4A2575'},
+  spelers: [
+    {id:101, name:'Tom Jansen', pos:'Aanvaller', trainerId:1, status:'actief', doelen:88, aanwezig:92, blessure:null, geboortejaar:2001},
+    {id:102, name:'Lisa Brouwer', pos:'Middenvelder', trainerId:1, status:'actief', doelen:72, aanwezig:85, blessure:null, geboortejaar:2000},
+    {id:103, name:'Daan Kok', pos:'Verdediger', trainerId:1, status:'aandacht', doelen:45, aanwezig:68, blessure:null, geboortejaar:2002},
+    {id:104, name:'Sara Roos', pos:'Keeper', trainerId:2, status:'geblesseerd', doelen:10, aanwezig:30, blessure:'Knieblessure — week 3 van 4', geboortejaar:2001},
+    {id:105, name:'Mees Hoekstra', pos:'Aanvaller', trainerId:2, status:'actief', doelen:91, aanwezig:97, blessure:null, geboortejaar:2003},
+    {id:106, name:'Fenna Laan', pos:'Middenvelder', trainerId:3, status:'actief', doelen:79, aanwezig:88, blessure:null, geboortejaar:2000},
+    {id:107, name:'Bas Vermeer', pos:'Verdediger', trainerId:null, status:'actief', doelen:60, aanwezig:75, blessure:null, geboortejaar:2002},
+    {id:108, name:'Noor Hendriks', pos:'Aanvaller', trainerId:null, status:'actief', doelen:55, aanwezig:80, blessure:null, geboortejaar:2003},
+  ],
+  trainingen: [
+    {id:201, datum:'2026-05-27', naam:'Conditietraining A1', type:'conditie', trainer:1, spelers:[101,102,103,105], tijd:'19:00', duur:90, notities:'Focus op interval runs'},
+    {id:202, datum:'2026-05-29', naam:'Krachtprogramma benen', type:'kracht', trainer:2, spelers:[104,105,106], tijd:'18:30', duur:75, notities:'Squat & deadlift progressie'},
+    {id:203, datum:'2026-05-31', naam:'Tactische sessie', type:'tactiek', trainer:1, spelers:[101,102,103,105,106], tijd:'10:00', duur:120, notities:'Pressing-schema bespreken'},
+    {id:204, datum:'2026-06-03', naam:'Hersteltraining', type:'herstel', trainer:3, spelers:[101,102,106], tijd:'17:00', duur:60, notities:'Lichte loopvormen'},
+    {id:205, datum:'2026-06-05', naam:'Conditietraining A2', type:'conditie', trainer:1, spelers:[101,103,105], tijd:'19:00', duur:90, notities:''},
+  ],
+  logs: [
+    {id:301, speler:101, datum:'2026-05-27', type:'training', titel:'Conditietraining voltooid', nota:'Goede prestatie, snelheid verbeterd.', auteur:'Marc Vos'},
+    {id:302, speler:103, datum:'2026-05-26', type:'aandacht', titel:'Achterstand weekschema', nota:'Daan heeft 3 trainingen gemist. Gesprek gepland.', auteur:'Marc Vos'},
+    {id:303, speler:104, datum:'2026-05-24', type:'blessure', titel:'Knieblessure geconstateerd', nota:'MRI gehad, 4 weken rust. Fysiotherapeut ingeschakeld.', auteur:'Dr. P. Silva'},
+    {id:304, speler:105, datum:'2026-05-25', type:'training', titel:'PR squat — 120kg', nota:'Persoonlijk record. Uitstekende progressie.', auteur:'Inge de Boer'},
+    {id:305, speler:102, datum:'2026-05-23', type:'voeding', titel:'Voedingsplan aangepast', nota:'Koolhydraten verhoogd rondom trainingen.', auteur:'Anne Mulder'},
+    {id:306, speler:101, datum:'2026-05-20', type:'training', titel:'Snelheidstest 30m', nota:'Tijd: 3.82s — verbetering van 0.12s.', auteur:'Marc Vos'},
+  ],
+  berichten: [
+    {id:401, van:103, vanNaam:'Daan Kok', vanRol:'speler', aan:1, aanNaam:'Marc Vos', tekst:'Mijn knie doet pijn na de training van gisteren. Moet ik rust nemen?', tijd:'09:14', datum:'vandaag', gelezen:false},
+    {id:402, van:1, vanNaam:'Marc Vos', vanRol:'trainer', aan:103, aanNaam:'Daan Kok', tekst:'Ik zal je doorsturen naar fysiotherapeut Silva. Neem vandaag rust en ijs erop.', tijd:'09:22', datum:'vandaag', gelezen:true},
+    {id:403, van:103, vanNaam:'Daan Kok', vanRol:'speler', aan:1, aanNaam:'Marc Vos', tekst:'Oké bedankt! Wanneer kan ik weer meedoen?', tijd:'09:25', datum:'vandaag', gelezen:false},
+    {id:404, van:102, vanNaam:'Lisa Brouwer', vanRol:'speler', aan:1, aanNaam:'Marc Vos', tekst:'Kan ik het schema voor woensdag aanpassen? Ik heb een examen.', tijd:'gisteren', datum:'gisteren', gelezen:false},
+    {id:405, van:10, vanNaam:'Dr. P. Silva', vanRol:'specialist', aan:1, aanNaam:'Marc Vos', tekst:'Sara Roos mag volgende week voorzichtig hervatten met loopvormen.', tijd:'ma', datum:'maandag', gelezen:true},
+    {id:406, van:105, vanNaam:'Mees Hoekstra', vanRol:'speler', aan:1, aanNaam:'Marc Vos', tekst:'Super training gisteren, bedankt voor de extra uitleg!', tijd:'ma', datum:'maandag', gelezen:true},
+  ],
+  expandedTrainers: new Set([1,2,3]),
+  activeChat: null,
+};
+
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+let currentRole = 'trainer';
+let currentPage = 'dashboard';
+let modalMode = '';
+let modalMeta = {};
+let chatMessages = {
+  103: [
+    {van:'Daan Kok', richting:'in', tekst:'Mijn knie doet pijn na de training van gisteren. Moet ik rust nemen?', tijd:'09:14'},
+    {van:'Marc Vos', richting:'uit', tekst:'Ik zal je doorsturen naar fysiotherapeut Silva. Neem vandaag rust en ijs erop.', tijd:'09:22'},
+    {van:'Daan Kok', richting:'in', tekst:'Oké bedankt! Wanneer kan ik weer meedoen?', tijd:'09:25'},
+  ],
+  102: [
+    {van:'Lisa Brouwer', richting:'in', tekst:'Kan ik het schema voor woensdag aanpassen? Ik heb een examen.', tijd:'gisteren'},
+  ],
+  10: [
+    {van:'Dr. P. Silva', richting:'in', tekst:'Sara Roos mag volgende week voorzichtig hervatten met loopvormen.', tijd:'ma'},
+  ],
+  105: [
+    {van:'Mees Hoekstra', richting:'in', tekst:'Super training gisteren, bedankt voor de extra uitleg!', tijd:'ma'},
+  ],
+};
+let activeChatId = 103;
+
+// ═══════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════
+const avColors = [
+  {bg:'#EAF0FF',tx:'#1A3FA0'},{bg:'#E6FAF8',tx:'#0A5751'},{bg:'#F0E8FF',tx:'#4A2575'},
+  {bg:'#FEE8E6',tx:'#8B1F15'},{bg:'#E6F5ED',tx:'#14563A'},{bg:'#FEF3E2',tx:'#7C3D0A'},
+  {bg:'#F5F4F0',tx:'#5F5E5A'},
+];
+function avColor(name){ return avColors[name.charCodeAt(0)%avColors.length]; }
+function initials(name){ return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function avatar(name, size='av-sm', customBg, customTx){
+  const c = customBg ? {bg:customBg,tx:customTx} : avColor(name);
+  return `<div class="avatar ${size}" style="background:${c.bg};color:${c.tx};">${initials(name)}</div>`;
+}
+function pill(label, type){ return `<span class="pill pill-${type}">${label}</span>`; }
+function statusPill(s){
+  const map={actief:['Actief','green'],aandacht:['Aandacht','amber'],geblesseerd:['Geblesseerd','red']};
+  const [l,t]=map[s]||['Onbekend','gray']; return pill(l,t);
+}
+function logDot(type){
+  const map={training:'#1E7D4F',aandacht:'#B45309',blessure:'#C0392B',voeding:'#0F766E'};
+  return map[type]||'#6B6A66';
+}
+function formatDate(d){ const dd=new Date(d); return dd.toLocaleDateString('nl-NL',{weekday:'short',day:'numeric',month:'short'}); }
+function spelerById(id){ return DATA.spelers.find(s=>s.id===id); }
+function trainerById(id){ return DATA.trainers.find(t=>t.id===id); }
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2400);
+}
+function nextId(arr){ return Math.max(0,...arr.map(x=>x.id))+1; }
+
+// ═══════════════════════════════════════════════════════
+//  NAV CONFIG
+// ═══════════════════════════════════════════════════════
+const NAV = {
+  coordinator: [
+    {id:'dashboard', label:'Dashboard', icon:'ti-layout-dashboard'},
+    {id:'coordinator', label:'Spelersbeheer', icon:'ti-shield-half'},
+    {id:'trainingen', label:'Trainingen', icon:'ti-calendar'},
+    {id:'berichten', label:'Berichten', icon:'ti-message-2', badge:true},
+    {id:'specialisten', label:'Specialisten', icon:'ti-stethoscope'},
+  ],
+  trainer: [
+    {id:'dashboard', label:'Dashboard', icon:'ti-layout-dashboard'},
+    {id:'spelers', label:'Mijn spelers', icon:'ti-users'},
+    {id:'trainingen', label:'Trainingen', icon:'ti-calendar'},
+    {id:'voortgang', label:'Voortgang', icon:'ti-chart-line'},
+    {id:'berichten', label:'Berichten', icon:'ti-message-2', badge:true},
+    {id:'logboek', label:'Logboek', icon:'ti-notebook'},
+    {id:'specialisten', label:'Specialisten', icon:'ti-stethoscope'},
+  ],
+  begeleider: [
+    {id:'dashboard', label:'Dashboard', icon:'ti-layout-dashboard'},
+    {id:'spelers', label:'Spelers', icon:'ti-users'},
+    {id:'voortgang', label:'Voortgang', icon:'ti-chart-line'},
+    {id:'berichten', label:'Berichten', icon:'ti-message-2', badge:true},
+    {id:'logboek', label:'Logboek', icon:'ti-notebook'},
+  ],
+  speler: [
+    {id:'mijnschema', label:'Mijn schema', icon:'ti-calendar'},
+    {id:'mijnvoortgang', label:'Mijn voortgang', icon:'ti-chart-line'},
+    {id:'berichten', label:'Berichten', icon:'ti-message-2'},
+    {id:'specialisten', label:'Specialisten', icon:'ti-stethoscope'},
+  ],
+};
+
+const ROLE_USERS = {
+  coordinator: {name:'Sandra Berg', avBg:'#F0E8FF', avTx:'#4A2575'},
+  trainer: {name:'Marc Vos', avBg:'#EAF0FF', avTx:'#1A3FA0'},
+  begeleider: {name:'Dr. P. Silva', avBg:'#FEE8E6', avTx:'#8B1F15'},
+  speler: {name:'Tom Jansen', avBg:'#E6F5ED', avTx:'#14563A'},
+};
+
+// ═══════════════════════════════════════════════════════
+//  RENDER SIDEBAR
+// ═══════════════════════════════════════════════════════
+function renderSidebar(){
+  const nav = document.getElementById('sidebar-nav');
+  const items = NAV[currentRole] || [];
+  const unread = DATA.berichten.filter(b=>!b.gelezen).length;
+  nav.innerHTML = items.map(item=>{
+    const badgeHtml = (item.badge && unread>0) ? `<span class="nav-badge">${unread}</span>` : '';
+    return `<div class="nav-item ${currentPage===item.id?'active':''}" onclick="goTo('${item.id}')">
+      <i class="ti ${item.icon}"></i> ${item.label}${badgeHtml}
+    </div>`;
+  }).join('');
+
+  document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('active'));
+  const rb=document.getElementById('rb-'+currentRole);
+  if(rb) rb.classList.add('active');
+
+  const user = ROLE_USERS[currentRole];
+  const av = document.getElementById('user-avatar');
+  av.style.background = user.avBg; av.style.color = user.avTx;
+  av.textContent = initials(user.name);
+}
+
+function goTo(page){
+  currentPage = page;
+  document.getElementById('topbar-title').textContent = getPageTitle(page);
+  renderSidebar();
+  renderPage();
+}
+
+function getPageTitle(page){
+  const titles={dashboard:'Dashboard',coordinator:'Spelersbeheer',spelers:'Spelers',trainingen:'Trainingen & planning',voortgang:'Voortgang & statistieken',berichten:'Berichten',logboek:'Logboek',specialisten:'Specialisten',mijnschema:'Mijn schema',mijnvoortgang:'Mijn voortgang'};
+  return titles[page]||page;
+}
+
+function setRole(role){
+  currentRole = role;
+  const first = NAV[role]?.[0]?.id || 'dashboard';
+  currentPage = first;
+  document.getElementById('topbar-title').textContent = getPageTitle(first);
+  renderSidebar();
+  renderPage();
+  showToast('Aangemeld als '+ROLE_USERS[role].name);
+}
+
+// ═══════════════════════════════════════════════════════
+//  PAGE ROUTER
+// ═══════════════════════════════════════════════════════
+function renderPage(){
+  const content = document.getElementById('content');
+  const renderers = {
+    dashboard: renderDashboard,
+    coordinator: renderCoordinator,
+    spelers: renderSpelers,
+    trainingen: renderTrainingen,
+    voortgang: renderVoortgang,
+    berichten: renderBerichten,
+    logboek: renderLogboek,
+    specialisten: renderSpecialisten,
+    mijnschema: renderMijnSchema,
+    mijnvoortgang: renderMijnVoortgang,
+  };
+  const fn = renderers[currentPage];
+  content.innerHTML = fn ? fn() : '<div class="empty-state"><i class="ti ti-construction"></i><p>Pagina in ontwikkeling</p></div>';
+}
+
+// ═══════════════════════════════════════════════════════
+//  DASHBOARD
+// ═══════════════════════════════════════════════════════
+function renderDashboard(){
+  const mySpelers = currentRole==='trainer' ? DATA.spelers.filter(s=>s.trainerId===1) : DATA.spelers;
+  const actief = mySpelers.filter(s=>s.status==='actief').length;
+  const geblesseerd = mySpelers.filter(s=>s.status==='geblesseerd').length;
+  const aandacht = mySpelers.filter(s=>s.status==='aandacht').length;
+  const gemDoelen = Math.round(mySpelers.reduce((a,s)=>a+s.doelen,0)/mySpelers.length)||0;
+  const unread = DATA.berichten.filter(b=>!b.gelezen).length;
+  const komend = DATA.trainingen.filter(t=>t.datum>='2026-05-27').slice(0,3);
+
+  return `
+  <div class="metric-grid">
+    <div class="metric"><div class="metric-label">Actieve spelers</div><div class="metric-value">${actief}</div><div class="metric-sub">${geblesseerd} geblesseerd</div></div>
+    <div class="metric"><div class="metric-label">Aandacht nodig</div><div class="metric-value">${aandacht}</div><div class="metric-sub">Achterstand schema</div></div>
+    <div class="metric"><div class="metric-label">Ongelezen berichten</div><div class="metric-value">${unread}</div><div class="metric-sub">Van spelers & staf</div></div>
+    <div class="metric"><div class="metric-label">Gem. voortgang</div><div class="metric-value">${gemDoelen}%</div><div class="metric-sub">Weekdoel</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Spelersstatus</span><span class="card-action" onclick="goTo('spelers')">Alle spelers →</span></div>
+      ${mySpelers.slice(0,6).map(s=>`
+        <div class="row">
+          ${avatar(s.name,'av-sm')}
+          <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:500;">${s.name}</div><div style="font-size:11px;color:var(--text3);">${s.pos}</div></div>
+          <div class="progress-track" style="max-width:80px;"><div class="progress-fill" style="width:${s.doelen}%;background:${s.doelen>70?'var(--green)':s.doelen>40?'var(--amber)':'var(--red)'};"></div></div>
+          <span style="font-size:12px;font-weight:600;color:var(--text2);min-width:32px;text-align:right;">${s.doelen}%</span>
+          ${statusPill(s.status)}
+        </div>`).join('')}
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card card-sm">
+        <div class="card-header"><span class="card-title">Komende trainingen</span><span class="card-action" onclick="goTo('trainingen')">Planning →</span></div>
+        ${komend.map(t=>{
+          const typeColors={conditie:'blue',kracht:'purple',tactiek:'teal',herstel:'green'};
+          return `<div class="row">
+            <span class="pill pill-${typeColors[t.type]||'gray'}" style="font-size:11px;">${t.type}</span>
+            <div style="flex:1;"><div style="font-size:13px;font-weight:500;">${t.naam}</div><div style="font-size:11.5px;color:var(--text3);">${formatDate(t.datum)} · ${t.tijd}</div></div>
+            <span style="font-size:12px;color:var(--text3);">${t.spelers.length} sp.</span>
+          </div>`;}).join('')}
+      </div>
+
+      <div class="card card-sm">
+        <div class="card-header"><span class="card-title">Recente berichten</span><span class="card-action" onclick="goTo('berichten')">Alles →</span></div>
+        ${DATA.berichten.slice(0,4).map(b=>`
+          <div class="row" style="cursor:pointer;" onclick="goTo('berichten')">
+            ${!b.gelezen?`<span style="width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;display:inline-block;"></span>`:'<span style="width:7px;flex-shrink:0;"></span>'}
+            ${avatar(b.vanNaam,'av-sm')}
+            <div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:500;">${b.vanNaam}</div><div style="font-size:11.5px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;">${b.tekst}</div></div>
+            <span style="font-size:11px;color:var(--text3);flex-shrink:0;">${b.tijd}</span>
+          </div>`).join('')}
+      </div>
+    </div>
+  </div>
+
+  ${currentRole!=='speler'?`
+  <div class="card">
+    <div class="card-header"><span class="card-title">Aandachtspunten</span></div>
+    ${DATA.spelers.filter(s=>s.status!=='actief').map(s=>`
+      <div class="row">
+        ${avatar(s.name,'av-sm')}
+        <div style="flex:1;"><span style="font-size:13px;font-weight:500;">${s.name}</span> <span style="font-size:12px;color:var(--text3);">· ${s.pos}</span></div>
+        ${statusPill(s.status)}
+        ${s.blessure?`<span style="font-size:12px;color:var(--text3);">${s.blessure}</span>`:''}
+        <button class="btn-sm" onclick="goTo('berichten')">Contact</button>
+      </div>`).join('')}
+  </div>`:''}`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  COORDINATOR
+// ═══════════════════════════════════════════════════════
+function renderCoordinator(){
+  const ontkoppeld = DATA.spelers.filter(s=>s.trainerId===null);
+  const gekoppeld = DATA.spelers.filter(s=>s.trainerId!==null).length;
+  return `
+  <div class="metric-grid" style="margin-bottom:20px;">
+    <div class="metric"><div class="metric-label">Trainers</div><div class="metric-value">${DATA.trainers.length}</div></div>
+    <div class="metric"><div class="metric-label">Spelers totaal</div><div class="metric-value">${DATA.spelers.length}</div></div>
+    <div class="metric"><div class="metric-label">Gekoppeld</div><div class="metric-value">${gekoppeld}</div><div class="metric-sub" style="color:var(--green);">✓ Heeft trainer</div></div>
+    <div class="metric"><div class="metric-label">Niet gekoppeld</div><div class="metric-value">${ontkoppeld.length}</div>${ontkoppeld.length>0?`<div class="metric-sub" style="color:var(--amber);">Actie vereist</div>`:'<div class="metric-sub" style="color:var(--green);">Alles ok</div>'}</div>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-bottom:16px;">
+    <button class="btn-primary" onclick="openModal('speler-add')"><i class="ti ti-user-plus" style="margin-right:5px;"></i>Speler toevoegen</button>
+    <button onclick="openModal('trainer-add')"><i class="ti ti-plus" style="margin-right:5px;"></i>Trainer toevoegen</button>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <div style="font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">Trainers & spelers</div>
+      ${DATA.trainers.map(t=>{
+        const ts = DATA.spelers.filter(s=>s.trainerId===t.id);
+        const open = DATA.expandedTrainers.has(t.id);
+        return `<div class="trainer-block">
+          <div class="trainer-head" onclick="toggleTrainer(${t.id})">
+            ${avatar(t.name,'av-sm',t.avColor,t.avText)}
+            <div style="flex:1;"><div style="font-size:13.5px;font-weight:600;">${t.name}</div><div style="font-size:11.5px;color:var(--text3);">${t.spec}</div></div>
+            ${pill(ts.length+' spelers','blue')}
+            <i class="ti ti-chevron-down" style="font-size:14px;color:var(--text3);transition:transform 0.15s;transform:${open?'rotate(180deg)':'none'};margin-left:4px;"></i>
+          </div>
+          ${open?ts.map(s=>`
+            <div class="speler-item">
+              ${avatar(s.name,'av-sm')}
+              <div style="flex:1;"><span style="font-size:13px;font-weight:500;">${s.name}</span> <span style="font-size:11.5px;color:var(--text3);">· ${s.pos}</span></div>
+              ${statusPill(s.status)}
+              <div class="speler-actions">
+                <button class="btn-icon btn-sm" title="Verplaats" onclick="openModal('verplaats',{spelerId:${s.id}})"><i class="ti ti-arrows-exchange" style="font-size:14px;"></i></button>
+                <button class="btn-icon btn-sm" title="Ontkoppel" onclick="ontkoppelSpeler(${s.id})"><i class="ti ti-user-minus" style="font-size:14px;"></i></button>
+                <button class="btn-icon btn-sm btn-danger" title="Verwijder" onclick="verwijderSpeler(${s.id})"><i class="ti ti-trash" style="font-size:14px;"></i></button>
+              </div>
+            </div>`).join('')+`
+            <div style="padding:8px 14px;border-top:1px solid var(--border);">
+              <button class="btn-sm" style="width:100%;justify-content:center;display:flex;align-items:center;gap:5px;border-style:dashed;" onclick="openModal('koppel',{trainerId:${t.id}})"><i class="ti ti-plus" style="font-size:13px;"></i> Speler koppelen</button>
+            </div>`:''}
+        </div>`;}).join('')}
+    </div>
+
+    <div>
+      <div style="font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">Niet gekoppeld (${ontkoppeld.length})</div>
+      ${ontkoppeld.length===0?`<div class="empty-state"><i class="ti ti-check-circle" style="color:var(--green);"></i><p>Alle spelers zijn gekoppeld aan een trainer</p></div>`
+      :ontkoppeld.map(s=>`
+        <div class="card card-sm" style="margin-bottom:8px;display:flex;align-items:center;gap:10px;padding:12px 14px;">
+          ${avatar(s.name,'av-sm')}
+          <div style="flex:1;"><div style="font-size:13px;font-weight:500;">${s.name}</div><div style="font-size:11.5px;color:var(--text3);">${s.pos}</div></div>
+          <button class="btn-sm btn-primary" onclick="openModal('koppel',{spelerId:${s.id}})">Koppelen</button>
+          <button class="btn-icon btn-sm btn-danger" onclick="verwijderSpeler(${s.id})"><i class="ti ti-trash" style="font-size:14px;"></i></button>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function toggleTrainer(id){
+  if(DATA.expandedTrainers.has(id)) DATA.expandedTrainers.delete(id);
+  else DATA.expandedTrainers.add(id);
+  renderPage();
+}
+function ontkoppelSpeler(id){
+  const s=DATA.spelers.find(p=>p.id===id);
+  if(s){s.trainerId=null; showToast(s.name+' ontkoppeld'); renderPage();}
+}
+function verwijderSpeler(id){
+  const s=DATA.spelers.find(p=>p.id===id);
+  if(!confirm('Weet je zeker dat je '+s.name+' wilt verwijderen?')) return;
+  DATA.spelers=DATA.spelers.filter(p=>p.id!==id);
+  showToast(s.name+' verwijderd'); renderPage();
+}
+
+// ═══════════════════════════════════════════════════════
+//  SPELERS
+// ═══════════════════════════════════════════════════════
+function renderSpelers(){
+  const mySpelers = currentRole==='trainer' ? DATA.spelers.filter(s=>s.trainerId===1) : DATA.spelers;
+  return `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+    <input type="search" placeholder="Zoek speler..." style="width:240px;" oninput="filterSpelersList(this.value)">
+    ${currentRole==='coordinator'?`<button class="btn-primary" onclick="openModal('speler-add')"><i class="ti ti-user-plus" style="margin-right:5px;"></i>Toevoegen</button>`:''}
+  </div>
+  <div class="card" id="spelers-table">
+    ${renderSpelerRows(mySpelers)}
+  </div>`;
+}
+
+function renderSpelerRows(spelers){
+  return spelers.map(s=>{
+    const trainer = s.trainerId ? trainerById(s.trainerId) : null;
+    return `<div class="row" style="cursor:pointer;" onclick="openSpelerDetail(${s.id})">
+      ${avatar(s.name,'av-md')}
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13.5px;font-weight:600;">${s.name}</div>
+        <div style="font-size:12px;color:var(--text3);">${s.pos} ${trainer?'· '+trainer.name:''}</div>
+      </div>
+      ${statusPill(s.status)}
+      <div style="text-align:right;min-width:80px;">
+        <div class="progress-track" style="height:5px;"><div class="progress-fill" style="width:${s.doelen}%;background:${s.doelen>70?'var(--green)':s.doelen>40?'var(--amber)':'var(--red)'};"></div></div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px;">${s.doelen}% doelen</div>
+      </div>
+      <div style="text-align:right;min-width:80px;">
+        <div style="font-size:13px;font-weight:600;">${s.aanwezig}%</div>
+        <div style="font-size:11px;color:var(--text3);">aanwezig</div>
+      </div>
+      <button class="btn-sm" onclick="event.stopPropagation();goTo('berichten')"><i class="ti ti-message-2" style="font-size:13px;"></i></button>
+    </div>`;}).join('');
+}
+
+function filterSpelersList(q){
+  const mySpelers = currentRole==='trainer' ? DATA.spelers.filter(s=>s.trainerId===1) : DATA.spelers;
+  const filtered = mySpelers.filter(s=>s.name.toLowerCase().includes(q.toLowerCase())||s.pos.toLowerCase().includes(q.toLowerCase()));
+  document.getElementById('spelers-table').innerHTML = renderSpelerRows(filtered);
+}
+
+function openSpelerDetail(id){
+  const s = DATA.spelers.find(p=>p.id===id);
+  const trainer = s.trainerId ? trainerById(s.trainerId) : null;
+  const logs = DATA.logs.filter(l=>l.speler===id);
+  openModal('speler-detail', {speler:s, trainer, logs});
+}
+
+// ═══════════════════════════════════════════════════════
+//  TRAININGEN
+// ═══════════════════════════════════════════════════════
+function renderTrainingen(){
+  const typeColors={conditie:'blue',kracht:'purple',tactiek:'teal',herstel:'green'};
+  const days=['Ma','Di','Wo','Do','Vr','Za','Zo'];
+  const nums=[26,27,28,29,30,31,1];
+  const todayIdx=1;
+
+  return `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+    <div style="display:flex;gap:6px;align-items:center;">
+      <button class="btn-sm"><i class="ti ti-chevron-left"></i></button>
+      <span style="font-size:14px;font-weight:600;">Week 22 · mei / juni 2026</span>
+      <button class="btn-sm"><i class="ti ti-chevron-right"></i></button>
+    </div>
+    ${currentRole!=='speler'?`<button class="btn-primary" onclick="openModal('training-add')"><i class="ti ti-plus" style="margin-right:5px;"></i>Training plannen</button>`:''}
+  </div>
+
+  <div class="week-grid" style="margin-bottom:20px;">
+    ${days.map((d,i)=>{
+      const dateStr = `2026-05-${String(nums[i]).padStart(2,'0')}`;
+      const events = DATA.trainingen.filter(t=>t.datum===dateStr||t.datum===`2026-06-0${nums[i]}`);
+      return `<div class="day-col ${i===todayIdx?'today':''}">
+        <div class="day-head"><div class="day-name">${d}</div><div class="day-num">${nums[i]}</div></div>
+        <div class="day-events">
+          ${events.map(e=>`
+            <div class="event-chip pill-${typeColors[e.type]||'gray'}" onclick="openModal('training-detail',{training:${JSON.stringify(e).replace(/"/g,"'")}})">
+              <div style="font-size:11px;font-weight:600;">${e.tijd}</div>
+              <div style="font-size:11px;margin-top:1px;">${e.naam}</div>
+            </div>`).join('')}
+        </div>
+      </div>`;}).join('')}
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-title">Alle trainingen</span></div>
+    ${DATA.trainingen.sort((a,b)=>a.datum.localeCompare(b.datum)).map(t=>{
+      const trainer = trainerById(t.trainer);
+      return `<div class="row">
+        <span class="pill pill-${typeColors[t.type]||'gray'}">${t.type}</span>
+        <div style="flex:1;"><div style="font-size:13.5px;font-weight:600;">${t.naam}</div><div style="font-size:12px;color:var(--text3);">${formatDate(t.datum)} · ${t.tijd} · ${t.duur} min</div></div>
+        ${trainer?`<span style="font-size:12px;color:var(--text2);">${trainer.name}</span>`:''}
+        <span style="font-size:12px;color:var(--text3);">${t.spelers.length} spelers</span>
+        ${currentRole!=='speler'?`<button class="btn-sm" onclick="openModal('training-log',{trainingId:${t.id}})"><i class="ti ti-notebook" style="font-size:13px;margin-right:3px;"></i>Loggen</button>`:''}
+      </div>`;}).join('')}
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  VOORTGANG
+// ═══════════════════════════════════════════════════════
+function renderVoortgang(){
+  const mySpelers = currentRole==='trainer' ? DATA.spelers.filter(s=>s.trainerId===1) : DATA.spelers;
+  const gemDoelen = Math.round(mySpelers.reduce((a,s)=>a+s.doelen,0)/mySpelers.length)||0;
+  const gemAanwezig = Math.round(mySpelers.reduce((a,s)=>a+s.aanwezig,0)/mySpelers.length)||0;
+
+  return `
+  <div class="metric-grid" style="margin-bottom:20px;">
+    <div class="metric"><div class="metric-label">Gem. doelen behaald</div><div class="metric-value">${gemDoelen}%</div></div>
+    <div class="metric"><div class="metric-label">Gem. aanwezigheid</div><div class="metric-value">${gemAanwezig}%</div></div>
+    <div class="metric"><div class="metric-label">Trainingen seizoen</div><div class="metric-value">34</div></div>
+    <div class="metric"><div class="metric-label">Actieve doelen</div><div class="metric-value">15</div><div class="metric-sub">12 behaald</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Voortgang per speler</span></div>
+      ${[...mySpelers].sort((a,b)=>b.doelen-a.doelen).map(s=>`
+        <div class="progress-row">
+          ${avatar(s.name,'av-sm')}
+          <div style="min-width:110px;"><div style="font-size:13px;font-weight:500;">${s.name}</div><div style="font-size:11px;color:var(--text3);">${s.pos}</div></div>
+          <div class="progress-track"><div class="progress-fill" style="width:${s.doelen}%;background:${s.doelen>70?'var(--green)':s.doelen>40?'var(--amber)':'var(--red)'};"></div></div>
+          <span class="progress-pct">${s.doelen}%</span>
+          ${statusPill(s.status)}
+        </div>`).join('')}
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">Aanwezigheid per speler</span></div>
+      ${[...mySpelers].sort((a,b)=>b.aanwezig-a.aanwezig).map(s=>`
+        <div class="progress-row">
+          ${avatar(s.name,'av-sm')}
+          <div style="min-width:110px;"><div style="font-size:13px;font-weight:500;">${s.name}</div><div style="font-size:11px;color:var(--text3);">${s.pos}</div></div>
+          <div class="progress-track"><div class="progress-fill" style="width:${s.aanwezig}%;background:${s.aanwezig>80?'var(--green)':s.aanwezig>60?'var(--amber)':'var(--red)'};"></div></div>
+          <span class="progress-pct">${s.aanwezig}%</span>
+        </div>`).join('')}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-title">Recente logboekentries</span><span class="card-action" onclick="goTo('logboek')">Volledig logboek →</span></div>
+    ${DATA.logs.slice(0,4).map(l=>{
+      const s=spelerById(l.speler);
+      return `<div class="log-entry">
+        <div class="log-dot" style="background:${logDot(l.type)};"></div>
+        <div class="log-content">
+          <div class="log-title">${l.titel} ${s?`— <span style="color:var(--text2)">${s.name}</span>`:''}</div>
+          <div class="log-meta">${l.datum} · ${l.auteur}</div>
+          ${l.nota?`<div class="log-note">"${l.nota}"</div>`:''}
+        </div>
+      </div>`;}).join('')}
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  BERICHTEN
+// ═══════════════════════════════════════════════════════
+function renderBerichten(){
+  const gesprekken = [
+    {id:103, naam:'Daan Kok', rol:'Speler', preview:'Oké bedankt! Wanneer kan ik weer...', tijd:'09:25', unread:2},
+    {id:102, naam:'Lisa Brouwer', rol:'Speler', preview:'Kan ik het schema voor woensdag...', tijd:'gisteren', unread:1},
+    {id:10, naam:'Dr. P. Silva', rol:'Fysiotherapeut', preview:'Sara Roos mag volgende week voorzich...', tijd:'ma', unread:0},
+    {id:105, naam:'Mees Hoekstra', rol:'Speler', preview:'Super training gisteren, bedankt!', tijd:'ma', unread:0},
+  ];
+
+  const msgs = chatMessages[activeChatId]||[];
+  const activeContact = gesprekken.find(g=>g.id===activeChatId)||gesprekken[0];
+
+  return `<div class="chat-layout">
+    <div class="chat-sidebar">
+      <div style="padding:12px;border-bottom:1px solid var(--border);">
+        <input type="search" placeholder="Zoek gesprek..." style="width:100%;">
+      </div>
+      <div class="chat-list">
+        ${gesprekken.map(g=>`
+          <div class="chat-item ${g.id===activeChatId?'active':''}" onclick="setActiveChat(${g.id})">
+            ${avatar(g.naam,'av-sm')}
+            <div style="flex:1;min-width:0;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span class="chat-item-name">${g.naam}</span>
+                <span class="chat-item-time">${g.tijd}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span class="chat-item-preview">${g.preview}</span>
+                ${g.unread>0?`<span style="min-width:16px;height:16px;border-radius:10px;background:var(--accent);color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${g.unread}</span>`:''}
+              </div>
+            </div>
+          </div>`).join('')}
+      </div>
+      <div style="padding:12px;border-top:1px solid var(--border);">
+        <button style="width:100%;display:flex;align-items:center;justify-content:center;gap:6px;" onclick="openModal('nieuw-bericht')">
+          <i class="ti ti-edit" style="font-size:15px;"></i> Nieuw bericht
+        </button>
+      </div>
+    </div>
+
+    <div class="chat-main">
+      <div class="chat-header">
+        ${avatar(activeContact.naam,'av-md')}
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:600;">${activeContact.naam}</div>
+          <div style="font-size:12px;color:var(--text3);">${activeContact.rol}</div>
+        </div>
+        <button class="btn-sm"><i class="ti ti-dots-vertical" style="font-size:15px;"></i></button>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        ${msgs.map(m=>`
+          <div class="msg msg-${m.richting}">
+            <div class="msg-bubble">${m.tekst}</div>
+            <div class="msg-meta">${m.richting==='in'?m.van+' · ':''}${m.tijd}</div>
+          </div>`).join('')}
+      </div>
+      <div class="chat-input-bar">
+        <textarea id="chat-input" placeholder="Typ een bericht..." rows="1" onkeydown="chatKeydown(event)"></textarea>
+        <button class="btn-primary btn-icon" onclick="sendChatMsg()" style="width:38px;height:38px;"><i class="ti ti-send" style="font-size:16px;"></i></button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function setActiveChat(id){
+  activeChatId = id;
+  DATA.berichten.forEach(b=>{if(b.van===id)b.gelezen=true;});
+  renderPage(); renderSidebar();
+  setTimeout(()=>{const el=document.getElementById('chat-messages');if(el)el.scrollTop=el.scrollHeight;},50);
+}
+
+function chatKeydown(e){
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChatMsg();}
+}
+
+function sendChatMsg(){
+  const inp=document.getElementById('chat-input');
+  const txt=inp.value.trim(); if(!txt) return;
+  if(!chatMessages[activeChatId]) chatMessages[activeChatId]=[];
+  const user=ROLE_USERS[currentRole];
+  chatMessages[activeChatId].push({van:user.name,richting:'uit',tekst:txt,tijd:'nu'});
+  inp.value='';
+  renderPage();
+  setTimeout(()=>{const el=document.getElementById('chat-messages');if(el)el.scrollTop=el.scrollHeight;},50);
+}
+
+// ═══════════════════════════════════════════════════════
+//  LOGBOEK
+// ═══════════════════════════════════════════════════════
+function renderLogboek(){
+  const typeLabels={training:'Training',aandacht:'Aandacht',blessure:'Blessure',voeding:'Voeding'};
+  const typePills={training:'green',aandacht:'amber',blessure:'red',voeding:'teal'};
+  return `
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+    <div style="display:flex;gap:6px;">
+      <select style="width:auto;"><option>Alle types</option><option>Training</option><option>Blessure</option><option>Aandacht</option><option>Voeding</option></select>
+      <select style="width:auto;"><option>Alle spelers</option>${DATA.spelers.map(s=>`<option>${s.name}</option>`).join('')}</select>
+    </div>
+    <button class="btn-primary" onclick="openModal('log-add')"><i class="ti ti-plus" style="margin-right:5px;"></i>Entry toevoegen</button>
+  </div>
+  <div class="card">
+    ${DATA.logs.sort((a,b)=>b.datum.localeCompare(a.datum)).map(l=>{
+      const s=spelerById(l.speler);
+      return `<div class="log-entry">
+        <div class="log-dot" style="background:${logDot(l.type)};margin-top:5px;"></div>
+        <div class="log-content" style="flex:1;">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span style="font-size:13.5px;font-weight:600;">${l.titel}</span>
+            ${pill(typeLabels[l.type]||l.type, typePills[l.type]||'gray')}
+            ${s?`<div style="display:flex;align-items:center;gap:5px;">${avatar(s.name,'av-sm')}<span style="font-size:12px;">${s.name}</span></div>`:''}
+          </div>
+          <div class="log-meta">${l.datum} · ${l.auteur}</div>
+          ${l.nota?`<div class="log-note">"${l.nota}"</div>`:''}
+        </div>
+      </div>`;}).join('')}
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  SPECIALISTEN
+// ═══════════════════════════════════════════════════════
+function renderSpecialisten(){
+  return `
+  <div class="grid-3">
+    ${DATA.specialisten.map(sp=>`
+      <div class="specialist-card">
+        ${avatar(sp.name,'av-lg',sp.avColor,sp.avText)}
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:600;margin-bottom:2px;">${sp.name}</div>
+          <div style="font-size:12px;color:var(--text3);margin-bottom:8px;">${sp.role}</div>
+          <div style="font-size:12.5px;color:var(--text2);margin-bottom:4px;"><i class="ti ti-mail" style="font-size:13px;vertical-align:-1px;margin-right:4px;"></i>${sp.email}</div>
+          <div style="font-size:12.5px;color:var(--text2);margin-bottom:10px;"><i class="ti ti-phone" style="font-size:13px;vertical-align:-1px;margin-right:4px;"></i>${sp.tel}</div>
+          <button class="btn-sm btn-primary" onclick="openModal('nieuw-bericht',{aan:sp.name})"><i class="ti ti-message-2" style="font-size:13px;margin-right:4px;"></i>Stuur bericht</button>
+        </div>
+      </div>`).join('')}
+  </div>
+  <div class="card" style="margin-top:4px;">
+    <div class="card-header"><span class="card-title">Recente specialist-berichten</span></div>
+    ${DATA.berichten.filter(b=>b.vanRol==='specialist'||b.aan===10||b.aan===11||b.aan===12).map(b=>`
+      <div class="row">
+        ${avatar(b.vanNaam,'av-sm')}
+        <div style="flex:1;"><span style="font-size:13px;font-weight:500;">${b.vanNaam}</span> <span style="font-size:12px;color:var(--text3);">→ ${b.aanNaam}</span>
+        <div style="font-size:12.5px;color:var(--text2);">${b.tekst}</div></div>
+        <span style="font-size:11px;color:var(--text3);flex-shrink:0;">${b.tijd}</span>
+      </div>`).join('')||'<div class="empty-state"><i class="ti ti-message-off"></i><p>Geen specialist-berichten</p></div>'}
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  MIJN SCHEMA (speler)
+// ═══════════════════════════════════════════════════════
+function renderMijnSchema(){
+  const mijn = DATA.trainingen.filter(t=>t.spelers.includes(101)).sort((a,b)=>a.datum.localeCompare(b.datum));
+  const typeColors={conditie:'blue',kracht:'purple',tactiek:'teal',herstel:'green'};
+  return `
+  <div class="metric-grid" style="margin-bottom:20px;">
+    <div class="metric"><div class="metric-label">Trainingen deze week</div><div class="metric-value">${mijn.filter(t=>t.datum>='2026-05-25').length}</div></div>
+    <div class="metric"><div class="metric-label">Mijn aanwezigheid</div><div class="metric-value">92%</div></div>
+    <div class="metric"><div class="metric-label">Doelen behaald</div><div class="metric-value">88%</div></div>
+    <div class="metric"><div class="metric-label">Trainer</div><div class="metric-value" style="font-size:14px;margin-top:2px;">Marc Vos</div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-header"><span class="card-title">Jouw komende trainingen</span></div>
+    ${mijn.map(t=>{
+      const trainer=trainerById(t.trainer);
+      return `<div class="row">
+        <span class="pill pill-${typeColors[t.type]||'gray'}">${t.type}</span>
+        <div style="flex:1;">
+          <div style="font-size:13.5px;font-weight:600;">${t.naam}</div>
+          <div style="font-size:12px;color:var(--text3);">${formatDate(t.datum)} · ${t.tijd} · ${t.duur} min${trainer?' · '+trainer.name:''}</div>
+          ${t.notities?`<div style="font-size:12px;color:var(--text2);margin-top:2px;font-style:italic;">${t.notities}</div>`:''}
+        </div>
+        <span class="pill pill-green">Gepland</span>
+      </div>`;}).join('')}
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-title">Vraag stellen</span></div>
+    <label>Aan</label>
+    <select><option>Marc Vos (trainer)</option><option>Inge de Boer (krachtrainer)</option><option>Dr. P. Silva (fysiotherapeut)</option><option>Anne Mulder (voedingsdeskundige)</option></select>
+    <label>Onderwerp</label>
+    <input type="text" placeholder="Bijv. schema, blessure, voeding...">
+    <label>Bericht</label>
+    <textarea placeholder="Typ hier je vraag..."></textarea>
+    <div style="margin-top:10px;">
+      <button class="btn-primary" onclick="showToast('Bericht verstuurd!')"><i class="ti ti-send" style="margin-right:5px;font-size:13px;"></i>Versturen</button>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  MIJN VOORTGANG (speler)
+// ═══════════════════════════════════════════════════════
+function renderMijnVoortgang(){
+  const s = DATA.spelers.find(p=>p.id===101);
+  const logs = DATA.logs.filter(l=>l.speler===101);
+  return `
+  <div class="metric-grid" style="margin-bottom:20px;">
+    <div class="metric"><div class="metric-label">Weekdoel</div><div class="metric-value">${s.doelen}%</div><div class="metric-sub">Behaald</div></div>
+    <div class="metric"><div class="metric-label">Aanwezigheid seizoen</div><div class="metric-value">${s.aanwezig}%</div></div>
+    <div class="metric"><div class="metric-label">Trainingen dit seizoen</div><div class="metric-value">34</div></div>
+    <div class="metric"><div class="metric-label">Status</div><div class="metric-value" style="font-size:16px;margin-top:4px;">${statusPill(s.status)}</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header"><span class="card-title">Mijn voortgang</span></div>
+      <div style="margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:4px;"><span>Weekdoelen</span><span>${s.doelen}%</span></div>
+        <div class="progress-track" style="height:10px;"><div class="progress-fill" style="width:${s.doelen}%;background:var(--green);"></div></div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:4px;"><span>Aanwezigheid</span><span>${s.aanwezig}%</span></div>
+        <div class="progress-track" style="height:10px;"><div class="progress-fill" style="width:${s.aanwezig}%;background:var(--accent);"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:4px;"><span>Conditie score</span><span>78%</span></div>
+        <div class="progress-track" style="height:10px;"><div class="progress-fill" style="width:78%;background:var(--purple);"></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">Mijn logboek</span></div>
+      ${logs.map(l=>`
+        <div class="log-entry">
+          <div class="log-dot" style="background:${logDot(l.type)};"></div>
+          <div class="log-content">
+            <div class="log-title">${l.titel}</div>
+            <div class="log-meta">${l.datum} · door ${l.auteur}</div>
+            ${l.nota?`<div class="log-note">"${l.nota}"</div>`:''}
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  MODAL SYSTEM
+// ═══════════════════════════════════════════════════════
+function openModal(mode, meta={}){
+  modalMode=mode; modalMeta=meta;
+  const overlay=document.getElementById('modal-overlay');
+  const title=document.getElementById('modal-title');
+  const body=document.getElementById('modal-body');
+  const submit=document.getElementById('modal-submit');
+
+  if(mode==='speler-add'){
+    title.textContent='Speler toevoegen'; submit.textContent='Toevoegen';
+    body.innerHTML=`
+      <label>Naam</label><input type="text" id="m-name" placeholder="Voornaam Achternaam">
+      <label>Positie</label>
+      <select id="m-pos"><option>Aanvaller</option><option>Middenvelder</option><option>Verdediger</option><option>Keeper</option></select>
+      <label>Trainer (optioneel)</label>
+      <select id="m-trainer"><option value="">— Niet koppelen —</option>${DATA.trainers.map(t=>`<option value="${t.id}">${t.name}</option>`).join('')}</select>`;
+  } else if(mode==='trainer-add'){
+    title.textContent='Trainer toevoegen'; submit.textContent='Toevoegen';
+    body.innerHTML=`
+      <label>Naam</label><input type="text" id="m-name" placeholder="Voornaam Achternaam">
+      <label>Specialisatie</label>
+      <select id="m-spec"><option>Hoofdtrainer</option><option>Assistent-trainer</option><option>Krachtrainer</option><option>Fysiotherapeut</option><option>Voedingsdeskundige</option></select>`;
+  } else if(mode==='verplaats'){
+    const s=DATA.spelers.find(p=>p.id===meta.spelerId);
+    title.textContent='Verplaats '+s.name; submit.textContent='Verplaatsen';
+    body.innerHTML=`<label>Nieuwe trainer</label>
+      <select id="m-trainer">${DATA.trainers.filter(t=>t.id!==s.trainerId).map(t=>`<option value="${t.id}">${t.name}</option>`).join('')}</select>`;
+  } else if(mode==='koppel'){
+    title.textContent='Speler koppelen'; submit.textContent='Koppelen';
+    const ontkoppeld=DATA.spelers.filter(s=>s.trainerId===null);
+    if(meta.spelerId){
+      body.innerHTML=`<label>Trainer</label><select id="m-trainer">${DATA.trainers.map(t=>`<option value="${t.id}">${t.name}</option>`).join('')}</select>`;
+    } else {
+      body.innerHTML=`
+        <label>Speler</label>
+        <select id="m-speler">${ontkoppeld.length?ontkoppeld.map(s=>`<option value="${s.id}">${s.name}</option>`).join(''):'<option>Geen ontkoppelde spelers</option>'}</select>
+        <label>Trainer</label>
+        <select id="m-trainer">${DATA.trainers.map(t=>`<option value="${t.id}" ${t.id===meta.trainerId?'selected':''}>${t.name}</option>`).join('')}</select>`;
+    }
+  } else if(mode==='training-add'){
+    title.textContent='Training plannen'; submit.textContent='Plannen';
+    body.innerHTML=`
+      <label>Naam</label><input type="text" id="m-naam" placeholder="Naam van de training">
+      <label>Type</label><select id="m-type"><option>conditie</option><option>kracht</option><option>tactiek</option><option>herstel</option></select>
+      <label>Datum</label><input type="text" id="m-datum" placeholder="2026-06-01">
+      <label>Tijd</label><input type="text" id="m-tijd" placeholder="19:00">
+      <label>Duur (min)</label><input type="number" id="m-duur" value="90">
+      <label>Notities</label><textarea id="m-notities" placeholder="Aandachtspunten..."></textarea>`;
+  } else if(mode==='training-log'){
+    title.textContent='Training loggen'; submit.textContent='Opslaan';
+    body.innerHTML=`
+      <label>Speler</label><select id="m-speler">${DATA.spelers.map(s=>`<option value="${s.id}">${s.name}</option>`).join('')}</select>
+      <label>Titel</label><input type="text" id="m-titel" placeholder="Bijv. Snelheidstest 30m">
+      <label>Type</label><select id="m-type"><option value="training">Training</option><option value="blessure">Blessure</option><option value="aandacht">Aandacht</option><option value="voeding">Voeding</option></select>
+      <label>Notitie</label><textarea id="m-nota" placeholder="Observaties, resultaten..."></textarea>`;
+  } else if(mode==='log-add'){
+    title.textContent='Log entry toevoegen'; submit.textContent='Toevoegen';
+    body.innerHTML=`
+      <label>Speler</label><select id="m-speler">${DATA.spelers.map(s=>`<option value="${s.id}">${s.name}</option>`).join('')}</select>
+      <label>Titel</label><input type="text" id="m-titel" placeholder="Korte omschrijving">
+      <label>Type</label><select id="m-type"><option value="training">Training</option><option value="blessure">Blessure</option><option value="aandacht">Aandacht</option><option value="voeding">Voeding</option></select>
+      <label>Notitie</label><textarea id="m-nota" placeholder="Details..."></textarea>`;
+  } else if(mode==='nieuw-bericht'){
+    title.textContent='Nieuw bericht'; submit.textContent='Versturen';
+    const aanOpts=[...DATA.trainers,...DATA.specialisten,...DATA.spelers].map(p=>`<option ${meta.aan&&meta.aan===p.name?'selected':''}>${p.name}</option>`).join('');
+    body.innerHTML=`
+      <label>Aan</label><select id="m-aan">${aanOpts}</select>
+      <label>Bericht</label><textarea id="m-tekst" placeholder="Typ je bericht..."></textarea>`;
+  } else if(mode==='speler-detail'){
+    const s=meta.speler; const trainer=meta.trainer; const logs=meta.logs||[];
+    title.textContent=s.name; submit.textContent='Sluiten';
+    document.getElementById('modal-submit').onclick=closeModal;
+    document.querySelector('.modal-actions button:first-child').style.display='none';
+    body.innerHTML=`
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+        ${avatar(s.name,'av-lg')}
+        <div>
+          <div style="font-size:16px;font-weight:600;">${s.name}</div>
+          <div style="font-size:13px;color:var(--text3);">${s.pos} ${trainer?'· '+trainer.name:''}</div>
+          <div style="margin-top:6px;">${statusPill(s.status)}</div>
+        </div>
+      </div>
+      ${s.blessure?`<div style="background:var(--red-bg);color:var(--red-text);border-radius:var(--radius);padding:10px 14px;font-size:13px;margin-bottom:12px;"><i class="ti ti-alert-triangle" style="margin-right:5px;"></i>${s.blessure}</div>`:''}
+      <div class="grid-2" style="margin-bottom:12px;">
+        <div class="metric" style="padding:10px 14px;"><div class="metric-label">Doelen</div><div class="metric-value" style="font-size:20px;">${s.doelen}%</div></div>
+        <div class="metric" style="padding:10px 14px;"><div class="metric-label">Aanwezigheid</div><div class="metric-value" style="font-size:20px;">${s.aanwezig}%</div></div>
+      </div>
+      <div style="font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">Logboek</div>
+      ${logs.length?logs.map(l=>`<div class="log-entry"><div class="log-dot" style="background:${logDot(l.type)};"></div><div class="log-content"><div class="log-title">${l.titel}</div><div class="log-meta">${l.datum} · ${l.auteur}</div>${l.nota?`<div class="log-note">"${l.nota}"</div>`:''}</div></div>`).join(''):'<div style="font-size:13px;color:var(--text3);text-align:center;padding:16px 0;">Nog geen logboekentries</div>'}
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button class="btn-sm" onclick="closeModal();goTo('berichten');"><i class="ti ti-message-2" style="margin-right:4px;font-size:13px;"></i>Stuur bericht</button>
+        <button class="btn-sm" onclick="closeModal();goTo('logboek');"><i class="ti ti-notebook" style="margin-right:4px;font-size:13px;"></i>Log toevoegen</button>
+      </div>`;
+    overlay.classList.add('open'); return;
+  } else if(mode==='training-detail'){
+    const t=meta.training||{};
+    title.textContent=t.naam||'Training'; submit.textContent='Sluiten';
+    document.getElementById('modal-submit').onclick=closeModal;
+    document.querySelector('.modal-actions button:first-child').style.display='none';
+    const trainer=trainerById(t.trainer);
+    body.innerHTML=`
+      <div style="margin-bottom:12px;font-size:13px;color:var(--text2);">${formatDate(t.datum)} · ${t.tijd} · ${t.duur} min</div>
+      ${trainer?`<div style="margin-bottom:8px;font-size:13px;">Trainer: <strong>${trainer.name}</strong></div>`:''}
+      ${t.notities?`<div style="background:var(--surface2);border-radius:var(--radius);padding:10px 14px;font-size:13px;color:var(--text2);font-style:italic;margin-bottom:12px;">"${t.notities}"</div>`:''}
+      <div style="font-size:12px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">Deelnemers (${(t.spelers||[]).length})</div>
+      ${(t.spelers||[]).map(sid=>{const s=spelerById(sid);return s?`<div class="row">${avatar(s.name,'av-sm')}<span style="font-size:13px;font-weight:500;">${s.name}</span><span style="font-size:12px;color:var(--text3);">${s.pos}</span></div>`:''}).join('')}`;
+    overlay.classList.add('open'); return;
+  }
+
+  overlay.classList.add('open');
+}
+
+function closeModal(e){
+  if(e&&e.target!==document.getElementById('modal-overlay')&&e.type==='click'&&e.currentTarget===document.getElementById('modal-overlay')) return;
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.getElementById('modal-submit').onclick=submitModal;
+  const cancelBtn=document.querySelector('.modal-actions button:first-child');
+  if(cancelBtn) cancelBtn.style.display='';
+}
+
+function submitModal(){
+  const mode=modalMode; const meta=modalMeta;
+  if(mode==='speler-add'){
+    const name=document.getElementById('m-name').value.trim();
+    if(!name){showToast('Vul een naam in');return;}
+    const pos=document.getElementById('m-pos').value;
+    const tid=document.getElementById('m-trainer')?.value;
+    DATA.spelers.push({id:nextId(DATA.spelers),name,pos,trainerId:tid?parseInt(tid):null,status:'actief',doelen:0,aanwezig:100,blessure:null,geboortejaar:2003});
+    showToast(name+' toegevoegd');
+  } else if(mode==='trainer-add'){
+    const name=document.getElementById('m-name').value.trim();
+    if(!name){showToast('Vul een naam in');return;}
+    const spec=document.getElementById('m-spec').value;
+    const av=avColor(name);
+    DATA.trainers.push({id:nextId(DATA.trainers),name,spec,avColor:av.bg,avText:av.tx});
+    showToast(name+' toegevoegd als trainer');
+  } else if(mode==='verplaats'){
+    const tid=parseInt(document.getElementById('m-trainer').value);
+    const s=DATA.spelers.find(p=>p.id===meta.spelerId);
+    if(s){s.trainerId=tid; showToast(s.name+' verplaatst naar '+DATA.trainers.find(t=>t.id===tid).name);}
+  } else if(mode==='koppel'){
+    const tid=parseInt(document.getElementById('m-trainer').value);
+    const sid=meta.spelerId||parseInt(document.getElementById('m-speler')?.value);
+    const s=DATA.spelers.find(p=>p.id===sid);
+    if(s){s.trainerId=tid; showToast(s.name+' gekoppeld aan '+DATA.trainers.find(t=>t.id===tid)?.name);}
+  } else if(mode==='training-add'){
+    const naam=document.getElementById('m-naam').value.trim();
+    if(!naam){showToast('Vul een naam in');return;}
+    DATA.trainingen.push({id:nextId(DATA.trainingen),naam,type:document.getElementById('m-type').value,datum:document.getElementById('m-datum').value||'2026-06-01',tijd:document.getElementById('m-tijd').value||'19:00',duur:parseInt(document.getElementById('m-duur').value)||90,trainer:1,spelers:[],notities:document.getElementById('m-notities').value});
+    showToast('Training gepland');
+  } else if(mode==='training-log'||mode==='log-add'){
+    const sid=parseInt(document.getElementById('m-speler').value);
+    const titel=document.getElementById('m-titel').value.trim();
+    if(!titel){showToast('Vul een titel in');return;}
+    const user=ROLE_USERS[currentRole];
+    DATA.logs.unshift({id:nextId(DATA.logs),speler:sid,datum:new Date().toISOString().slice(0,10),type:document.getElementById('m-type').value,titel,nota:document.getElementById('m-nota').value,auteur:user.name});
+    showToast('Log entry opgeslagen');
+  } else if(mode==='nieuw-bericht'){
+    const tekst=document.getElementById('m-tekst').value.trim();
+    if(!tekst){showToast('Typ een bericht');return;}
+    showToast('Bericht verstuurd!');
+  }
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.getElementById('modal-submit').onclick=submitModal;
+  const cancelBtn=document.querySelector('.modal-actions button:first-child');
+  if(cancelBtn) cancelBtn.style.display='';
+  renderPage(); renderSidebar();
+}
+
+function openNotifPanel(){
+  showToast('3 ongelezen berichten');
+}
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+setRole('trainer');
+</script>
+</body>
+</html>
