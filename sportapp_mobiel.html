@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>SportApp</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+:root{
+  --bg:#F5F4F0;--su:#fff;--s2:#EEECEA;--bo:rgba(0,0,0,.10);--b2:rgba(0,0,0,.18);
+  --tx:#1A1A18;--t2:#6B6A66;--t3:#A0A09C;
+  --ac:#2D5BE3;--abg:#EAF0FF;--atx:#1A3FA0;
+  --gn:#1E7D4F;--gbg:#E6F5ED;--gtx:#14563A;
+  --am:#B45309;--abg2:#FEF3E2;--atx2:#7C3D0A;
+  --rd:#C0392B;--rbg:#FEE8E6;--rtx:#8B1F15;
+  --pu:#6B3FA0;--pbg:#F0E8FF;--ptx:#4A2575;
+  --tl:#0F766E;--tbg:#E6FAF8;--ttx:#0A5751;
+  --r:12px;--rl:16px;--rx:20px;
+  --fn:'DM Sans',sans-serif;
+  --tab-h:64px;--topb-h:56px;
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;font-family:var(--fn);background:var(--bg);color:var(--tx);font-size:15px;overscroll-behavior:none;}
+/* ── LAYOUT ─────────────────────────── */
+.app{display:flex;flex-direction:column;height:100dvh;overflow:hidden;}
+.topbar{height:var(--topb-h);flex-shrink:0;background:var(--su);border-bottom:1px solid var(--bo);display:flex;align-items:center;padding:0 16px;gap:10px;position:relative;z-index:10;}
+.topbar-title{font-size:16px;font-weight:600;flex:1;letter-spacing:-.2px;}
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px;padding-bottom:calc(var(--tab-h) + var(--safe-b) + 16px);}
+/* ── BOTTOM TAB BAR ──────────────────── */
+.tabs{height:var(--tab-h);flex-shrink:0;background:var(--su);border-top:1px solid var(--bo);display:flex;align-items:stretch;padding-bottom:var(--safe-b);position:relative;z-index:10;}
+.tab-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;color:var(--t3);transition:color .15s;position:relative;padding:6px 4px;}
+.tab-item.on{color:var(--ac);}
+.tab-item i{font-size:22px;}
+.tab-label{font-size:10px;font-weight:500;letter-spacing:.02em;}
+.tab-badge{position:absolute;top:6px;right:calc(50% - 16px);background:var(--rd);color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px;min-width:16px;text-align:center;}
+/* ── HAMBURGER MENU ──────────────────── */
+.ham-btn{width:40px;height:40px;border-radius:var(--r);background:none;border:none;display:flex;align-items:center;justify-content:center;color:var(--t2);font-size:22px;cursor:pointer;padding:0;}
+.menu-overlay{display:none;position:fixed;inset:0;z-index:100;}
+.menu-overlay.open{display:block;}
+.menu-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.35);}
+.menu-drawer{position:absolute;top:0;left:0;bottom:0;width:280px;background:var(--su);display:flex;flex-direction:column;box-shadow:4px 0 24px rgba(0,0,0,.15);transform:translateX(-100%);transition:transform .25s ease;padding-top:var(--safe-b);}
+.menu-overlay.open .menu-drawer{transform:none;}
+.menu-head{padding:20px 16px 12px;border-bottom:1px solid var(--bo);display:flex;align-items:center;gap:12px;}
+.menu-close{margin-left:auto;width:36px;height:36px;border-radius:var(--r);background:var(--s2);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t2);}
+.menu-body{flex:1;overflow-y:auto;padding:8px;}
+.menu-ni{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--r);cursor:pointer;font-size:15px;color:var(--t2);margin:2px 0;}
+.menu-ni:hover,.menu-ni:active{background:var(--s2);color:var(--tx);}
+.menu-ni.on{background:var(--abg);color:var(--atx);font-weight:500;}
+.menu-ni i{font-size:20px;flex-shrink:0;}
+.menu-foot{padding:12px 8px;border-top:1px solid var(--bo);}
+.role-section{background:var(--s2);border-radius:var(--r);padding:12px;}
+.role-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:8px;padding:0 4px;}
+.rb{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:10px;background:none;border:none;cursor:pointer;font-size:14px;color:var(--t2);font-family:var(--fn);margin:2px 0;text-align:left;}
+.rb:active{background:rgba(0,0,0,.06);}
+.rb.on{background:var(--su);color:var(--tx);font-weight:500;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+.rdot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+/* ── PILLS ───────────────────────────── */
+.pl{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500;}
+.pl-bl{background:var(--abg);color:var(--atx);}
+.pl-gn{background:var(--gbg);color:var(--gtx);}
+.pl-am{background:var(--abg2);color:var(--atx2);}
+.pl-rd{background:var(--rbg);color:var(--rtx);}
+.pl-pu{background:var(--pbg);color:var(--ptx);}
+.pl-tl{background:var(--tbg);color:var(--ttx);}
+.pl-gy{background:var(--s2);color:var(--t2);}
+.pl-or{background:#FEF0E0;color:#9A4B0D;}
+.pl-go{background:#FFF8DC;color:#856404;}
+/* ── CARDS ───────────────────────────── */
+.card{background:var(--su);border:1px solid var(--bo);border-radius:var(--rl);padding:14px 16px;margin-bottom:12px;}
+.card-last{margin-bottom:0;}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.ct{font-size:14px;font-weight:600;}
+.ca{font-size:13px;color:var(--ac);font-weight:500;}
+/* ── METRICS ─────────────────────────── */
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.mc{background:var(--su);border:1px solid var(--bo);border-radius:var(--rl);padding:14px 14px;}
+.ml{font-size:11px;color:var(--t2);margin-bottom:6px;font-weight:500;}
+.mv{font-size:24px;font-weight:600;letter-spacing:-.5px;line-height:1;}
+.ms{font-size:11px;color:var(--t3);margin-top:3px;}
+/* ── ROWS ────────────────────────────── */
+.row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--bo);}
+.row:last-child{border-bottom:none;}
+.row-tap{cursor:pointer;}
+.row-tap:active{background:var(--s2);margin:0 -16px;padding:12px 16px;border-radius:var(--r);}
+/* ── AVATAR ──────────────────────────── */
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0;}
+.avsm{width:34px;height:34px;font-size:12px;}
+.avmd{width:40px;height:40px;font-size:14px;}
+.avlg{width:52px;height:52px;font-size:18px;}
+/* ── BUTTONS ─────────────────────────── */
+button{font-family:var(--fn);cursor:pointer;border-radius:var(--r);border:1px solid var(--b2);padding:10px 16px;font-size:14px;color:var(--t2);background:var(--su);transition:background .1s;-webkit-appearance:none;}
+button:active{background:var(--s2);}
+.bp{background:var(--ac);color:#fff;border-color:var(--ac);font-weight:500;}
+.bp:active{background:#2451cc;}
+.bd{background:var(--rbg);color:var(--rtx);border-color:transparent;}
+.bg2{background:var(--gbg);color:var(--gtx);border-color:transparent;}
+.bsm{padding:6px 12px;font-size:13px;}
+.bi{width:40px;height:40px;padding:0;display:flex;align-items:center;justify-content:center;}
+.btn-full{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;font-size:15px;font-weight:500;border-radius:var(--rl);}
+/* ── FORMS ───────────────────────────── */
+input,textarea,select{font-family:var(--fn);font-size:15px;background:var(--su);border:1px solid var(--b2);border-radius:var(--r);padding:12px 14px;color:var(--tx);width:100%;outline:none;-webkit-appearance:none;appearance:none;}
+input:focus,textarea:focus,select:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(45,91,227,.12);}
+textarea{resize:none;min-height:80px;}
+label{font-size:13px;font-weight:500;color:var(--t2);display:block;margin-bottom:6px;margin-top:14px;}
+label:first-child{margin-top:0;}
+.form-group{margin-bottom:2px;}
+/* ── MODAL / SHEET ───────────────────── */
+.sheet-overlay{display:none;position:fixed;inset:0;z-index:200;align-items:flex-end;}
+.sheet-overlay.open{display:flex;}
+.sheet-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.4);}
+.sheet{position:relative;width:100%;max-height:92dvh;background:var(--su);border-radius:20px 20px 0 0;display:flex;flex-direction:column;animation:slideup .25s ease;}
+@keyframes slideup{from{transform:translateY(100%);}to{transform:none;}}
+.sheet-handle{width:36px;height:4px;border-radius:2px;background:var(--b2);margin:10px auto 0;}
+.sheet-head{padding:16px 20px 12px;border-bottom:1px solid var(--bo);display:flex;align-items:center;justify-content:space-between;}
+.sheet-title{font-size:17px;font-weight:600;}
+.sheet-close{width:32px;height:32px;border-radius:50%;background:var(--s2);border:none;display:flex;align-items:center;justify-content:center;color:var(--t2);}
+.sheet-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 20px;padding-bottom:calc(var(--safe-b) + 16px);}
+.sheet-foot{padding:12px 20px;padding-bottom:calc(var(--safe-b) + 12px);border-top:1px solid var(--bo);display:flex;gap:10px;}
+/* ── PROGRESS ────────────────────────── */
+.pt{flex:1;height:7px;background:var(--s2);border-radius:4px;overflow:hidden;}
+.pf{height:100%;border-radius:4px;}
+/* ── CALENDAR ────────────────────────── */
+.wg{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:14px;}
+.dc{background:var(--su);border:1px solid var(--bo);border-radius:10px;overflow:hidden;}
+.dh{padding:6px 4px;border-bottom:1px solid var(--bo);text-align:center;}
+.dna{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;}
+.dnu{font-size:14px;font-weight:600;}
+.dc.tod .dh{background:var(--abg);}
+.dc.tod .dnu{color:var(--ac);}
+.dev{padding:4px;display:flex;flex-direction:column;gap:3px;min-height:44px;}
+.ec{padding:3px 5px;border-radius:6px;font-size:9.5px;font-weight:600;cursor:pointer;line-height:1.3;}
+.ec.rec{border-left:3px solid rgba(0,0,0,.2);}
+/* ── CHAT ────────────────────────────── */
+.chat-page{display:flex;flex-direction:column;height:100%;}
+.chat-list-wrap{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.chat-thread{display:flex;flex-direction:column;height:calc(100dvh - var(--topb-h) - var(--tab-h) - var(--safe-b));}
+.chat-messages{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px;display:flex;flex-direction:column;gap:10px;}
+.msg{max-width:78%;}
+.min{align-self:flex-start;}
+.mout{align-self:flex-end;}
+.mb2{padding:10px 14px;border-radius:16px;font-size:15px;line-height:1.45;}
+.min .mb2{background:var(--s2);color:var(--tx);border-radius:4px 16px 16px 16px;}
+.mout .mb2{background:var(--ac);color:#fff;border-radius:16px 4px 16px 16px;}
+.mm{font-size:11px;color:var(--t3);margin-top:4px;}
+.mout .mm{text-align:right;}
+.chat-input-bar{padding:10px 16px;padding-bottom:calc(var(--safe-b) + 10px);border-top:1px solid var(--bo);background:var(--su);display:flex;gap:8px;align-items:flex-end;}
+.chat-input-bar textarea{flex:1;min-height:42px;max-height:100px;border-radius:20px;padding:10px 14px;font-size:15px;}
+.chat-send{width:42px;height:42px;border-radius:50%;flex-shrink:0;}
+/* ── LOG DOT ─────────────────────────── */
+.ldt{width:10px;height:10px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.le{padding:10px 0;border-bottom:1px solid var(--bo);display:flex;gap:12px;}
+.le:last-child{border-bottom:none;}
+/* ── TAGS ────────────────────────────── */
+.tg{display:inline-flex;align-items:center;padding:5px 12px;border-radius:20px;font-size:13px;background:var(--s2);color:var(--t2);border:1px solid var(--bo);}
+.tg.act{background:var(--abg);color:var(--atx);border-color:var(--ac);}
+.tg.clk{cursor:pointer;}
+/* ── MULTI SELECT ────────────────────── */
+.mswrap{position:relative;}
+.msbox{border:1px solid var(--b2);border-radius:var(--r);padding:8px 10px;display:flex;flex-wrap:wrap;gap:6px;min-height:48px;cursor:pointer;background:var(--su);}
+.msch{display:flex;align-items:center;gap:4px;background:var(--abg);color:var(--atx);border-radius:20px;padding:4px 10px;font-size:13px;font-weight:500;}
+.msch button{width:18px;height:18px;padding:0;border:none;background:none;color:var(--atx);font-size:16px;cursor:pointer;}
+.msdrop{position:absolute;top:100%;left:0;right:0;background:var(--su);border:1px solid var(--b2);border-radius:var(--r);box-shadow:0 8px 32px rgba(0,0,0,.15);z-index:300;max-height:200px;overflow-y:auto;display:none;margin-top:4px;}
+.msdrop.open{display:block;}
+.msopt{padding:12px 14px;cursor:pointer;font-size:14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--bo);}
+.msopt:last-child{border-bottom:none;}
+.msopt.ch{color:var(--ac);font-weight:500;}
+.msopt .chk{width:18px;height:18px;border:2px solid var(--b2);border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.msopt.ch .chk{background:var(--ac);border-color:var(--ac);}
+/* ── NINE GRID ───────────────────────── */
+.ng{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:240px;margin-top:8px;}
+.nc{aspect-ratio:1;border:2px solid var(--b2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;cursor:pointer;color:var(--t3);background:var(--s2);}
+.nc.sel{background:var(--ac);border-color:var(--ac);color:#fff;}
+/* ── SPECIALIST CARD ─────────────────── */
+.spcard{background:var(--su);border:1px solid var(--bo);border-radius:var(--rl);padding:16px;margin-bottom:10px;display:flex;gap:14px;}
+/* ── TRAINER BLOCK ───────────────────── */
+.tbl{background:var(--su);border:1px solid var(--bo);border-radius:var(--rl);margin-bottom:10px;overflow:hidden;}
+.thd{display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer;}
+.thd:active{background:var(--s2);}
+.sit{display:flex;align-items:center;gap:10px;padding:12px 16px;border-top:1px solid var(--bo);}
+/* ── UTILITY ─────────────────────────── */
+.divider{height:1px;background:var(--bo);margin:12px 0;}
+.section-title{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin:20px 0 10px;}
+.empty{text-align:center;padding:48px 16px;color:var(--t3);}
+.empty i{font-size:36px;margin-bottom:10px;display:block;}
+::-webkit-scrollbar{width:0;height:0;}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <button class="ham-btn" onclick="openMenu()" aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+    <div class="topbar-title" id="pgtitle">Dashboard</div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <div style="position:relative;cursor:pointer" onclick="toast('Geen nieuwe meldingen')">
+        <i class="ti ti-bell" style="font-size:22px;color:var(--t2)"></i>
+        <div id="ndt" style="position:absolute;top:0;right:0;width:8px;height:8px;border-radius:50%;background:var(--rd);border:1.5px solid var(--su)"></div>
+      </div>
+      <div class="av avsm" id="usrav" style="margin-left:4px"></div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content" id="con"></div>
+
+  <!-- BOTTOM TABS -->
+  <div class="tabs" id="tabs"></div>
+</div>
+
+<!-- SLIDE-OUT MENU -->
+<div class="menu-overlay" id="menu-overlay" onclick="menuBgClose(event)">
+  <div class="menu-backdrop"></div>
+  <div class="menu-drawer">
+    <div class="menu-head">
+      <i class="ti ti-ball-football" style="font-size:24px;color:var(--ac)"></i>
+      <span style="font-size:17px;font-weight:600">SportApp</span>
+      <button class="menu-close" onclick="closeMenu()"><i class="ti ti-x" style="font-size:16px"></i></button>
+    </div>
+    <div class="menu-body" id="menu-body"></div>
+    <div class="menu-foot">
+      <div class="role-section">
+        <div class="role-lbl">Aangemeld als</div>
+        <button class="rb" onclick="setRole('coordinator')" id="rb-coordinator"><span class="rdot" style="background:#6B3FA0"></span>Coördinator</button>
+        <button class="rb" onclick="setRole('trainer')" id="rb-trainer"><span class="rdot" style="background:#2D5BE3"></span>Trainer</button>
+        <button class="rb" onclick="setRole('begeleider')" id="rb-begeleider"><span class="rdot" style="background:#0F766E"></span>Begeleider</button>
+        <button class="rb" onclick="setRole('specialist')" id="rb-specialist"><span class="rdot" style="background:#B45309"></span>Specialist</button>
+        <button class="rb" onclick="setRole('speler')" id="rb-speler"><span class="rdot" style="background:#1E7D4F"></span>Speler</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM SHEET -->
+<div class="sheet-overlay" id="sheet" onclick="sheetBgClose(event)">
+  <div class="sheet-backdrop"></div>
+  <div class="sheet-inner" style="position:relative;width:100%;max-height:92dvh;background:var(--su);border-radius:20px 20px 0 0;display:flex;flex-direction:column;">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head">
+      <div class="sheet-title" id="sheet-title"></div>
+      <button class="sheet-close" onclick="closeSheet()"><i class="ti ti-x" style="font-size:16px"></i></button>
+    </div>
+    <div class="sheet-body" id="sheet-body"></div>
+    <div class="sheet-foot" id="sheet-foot"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" style="position:fixed;bottom:calc(var(--tab-h) + var(--safe-b) + 12px);left:50%;transform:translateX(-50%);background:#1A1A18;color:#F5F4F0;font-size:13px;font-weight:500;padding:10px 20px;border-radius:30px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:9999;white-space:nowrap;"></div>
+
+<script>
+// ── CONSTANTS ──────────────────────────
+const POSITIES=['Linkerhoek','Linkeropbouw','Midopbouw','Rechteropbouw','Rechterhoek','Cirkel','Keeper'];
+const LIDSOORTEN=['Basis','Kracht','Fysio','Kracht + Fysio','Selectie'];
+const LID_CLR={Basis:'gy',Kracht:'pu',Fysio:'tl','Kracht + Fysio':'or',Selectie:'go'};
+const TRTYPES=['conditie','kracht','tactiek','herstel','positie','wedstrijd'];
+const TCLR={conditie:'bl',kracht:'pu',tactiek:'tl',herstel:'gn',positie:'or',wedstrijd:'am'};
+const AVC=[{bg:'#EAF0FF',tx:'#1A3FA0'},{bg:'#E6FAF8',tx:'#0A5751'},{bg:'#F0E8FF',tx:'#4A2575'},{bg:'#FEE8E6',tx:'#8B1F15'},{bg:'#E6F5ED',tx:'#14563A'},{bg:'#FEF3E2',tx:'#7C3D0A'},{bg:'#F5F4F0',tx:'#5F5E5A'}];
+
+// ── DATA ───────────────────────────────
+const D={
+  trainers:[
+    {id:1,name:'Marc Vos',spec:'Hoofdtrainer',avBg:'#EAF0FF',avTx:'#1A3FA0'},
+    {id:2,name:'Inge de Boer',spec:'Krachtrainer',avBg:'#E6FAF8',avTx:'#0A5751'},
+    {id:3,name:'Remi Smits',spec:'Assistent-trainer',avBg:'#F0E8FF',avTx:'#4A2575'},
+  ],
+  begeleiders:[
+    {id:20,name:'Joost Bakker',rol:'Teammanager'},
+    {id:21,name:'Petra van Dam',rol:'Assistent'},
+  ],
+  specialisten:[
+    {id:10,name:'Dr. P. Silva',rol:'Fysiotherapeut',taak:'Revalidatie en blessurepreventie.',avBg:'#FEE8E6',avTx:'#8B1F15',email:'silva@sportapp.nl',tel:'06-12345678'},
+    {id:11,name:'Anne Mulder',rol:'Voedingsdeskundige',taak:'Voedingsplannen en hydratatieschemas.',avBg:'#E6F5ED',avTx:'#14563A',email:'mulder@sportapp.nl',tel:'06-87654321'},
+    {id:12,name:'Kai Hendriks',rol:'Sportpsycholoog',taak:'Mentale begeleiding en prestatiepsychologie.',avBg:'#FEF3E2',avTx:'#7C3D0A',email:'hendriks@sportapp.nl',tel:'06-11223344'},
+  ],
+  spelers:[
+    {id:101,name:'Tom Jansen',woonplaats:'Amsterdam',geboortedatum:'2001-03-14',lidsoort:'Selectie',posities:['Rechterhoek','Rechteropbouw'],nineGrid:7,trainerIds:[1],begeleiderIds:[20],specialistIds:[10],status:'actief',doelen:88,aanwezig:92,blessure:null},
+    {id:102,name:'Lisa Brouwer',woonplaats:'Haarlem',geboortedatum:'2000-07-22',lidsoort:'Kracht',posities:['Midopbouw'],nineGrid:5,trainerIds:[1],begeleiderIds:[20],specialistIds:[],status:'actief',doelen:72,aanwezig:85,blessure:null},
+    {id:103,name:'Daan Kok',woonplaats:'Utrecht',geboortedatum:'2002-11-05',lidsoort:'Basis',posities:['Linkeropbouw','Linkerhoek'],nineGrid:4,trainerIds:[1],begeleiderIds:[21],specialistIds:[11],status:'aandacht',doelen:45,aanwezig:68,blessure:null},
+    {id:104,name:'Sara Roos',woonplaats:'Rotterdam',geboortedatum:'2001-06-18',lidsoort:'Fysio',posities:['Keeper'],nineGrid:2,trainerIds:[2],begeleiderIds:[20],specialistIds:[10],status:'geblesseerd',doelen:10,aanwezig:30,blessure:'Knieblessure – week 3 van 4'},
+    {id:105,name:'Mees Hoekstra',woonplaats:'Leiden',geboortedatum:'2003-01-30',lidsoort:'Kracht + Fysio',posities:['Rechterhoek'],nineGrid:8,trainerIds:[1,2],begeleiderIds:[21],specialistIds:[],status:'actief',doelen:91,aanwezig:97,blessure:null},
+    {id:106,name:'Fenna Laan',woonplaats:'Delft',geboortedatum:'2000-09-12',lidsoort:'Selectie',posities:['Cirkel','Midopbouw'],nineGrid:6,trainerIds:[3],begeleiderIds:[20],specialistIds:[12],status:'actief',doelen:79,aanwezig:88,blessure:null},
+    {id:107,name:'Bas Vermeer',woonplaats:'Alkmaar',geboortedatum:'2002-04-25',lidsoort:'Basis',posities:['Linkeropbouw'],nineGrid:3,trainerIds:[],begeleiderIds:[],specialistIds:[],status:'actief',doelen:60,aanwezig:75,blessure:null},
+  ],
+  trainingen:[
+    {id:201,naam:'Conditietraining A1',type:'conditie',datum:'2026-06-02',tijd:'19:00',duur:90,trainerIds:[1],spelerIds:[101,102,103],notities:'Focus op interval runs',herhalend:false,herhaling:null},
+    {id:202,naam:'Krachtprogramma benen',type:'kracht',datum:'2026-06-03',tijd:'18:30',duur:75,trainerIds:[2],spelerIds:[104,105],notities:'Squat en deadlift',herhalend:true,herhaling:'wekelijks'},
+    {id:203,naam:'Tactische sessie',type:'tactiek',datum:'2026-06-05',tijd:'10:00',duur:120,trainerIds:[1,3],spelerIds:[101,102,103,105,106],notities:'Pressing-schema',herhalend:false,herhaling:null},
+    {id:204,naam:'Positietraining rechtsbuiten',type:'positie',datum:'2026-06-09',tijd:'18:00',duur:60,trainerIds:[1],spelerIds:[101,105],notities:'1-op-1 situaties',herhalend:true,herhaling:'wekelijks'},
+    {id:205,naam:'Oefenwedstrijd thuis',type:'wedstrijd',datum:'2026-06-12',tijd:'15:00',duur:90,trainerIds:[1,2,3],spelerIds:[101,102,103,105,106],notities:'vs. HC Rood',herhalend:false,herhaling:null},
+    {id:206,naam:'Hersteltraining',type:'herstel',datum:'2026-06-10',tijd:'17:00',duur:60,trainerIds:[3],spelerIds:[101,102,106],notities:'',herhalend:true,herhaling:'tweewekelijks'},
+  ],
+  logs:[
+    {id:301,speler:101,datum:'2026-05-27',type:'training',titel:'Conditietraining voltooid',nota:'Goede prestatie.',auteur:'Marc Vos'},
+    {id:302,speler:103,datum:'2026-05-26',type:'aandacht',titel:'Achterstand weekschema',nota:'3 trainingen gemist.',auteur:'Marc Vos'},
+    {id:303,speler:104,datum:'2026-05-24',type:'blessure',titel:'Knieblessure geconstateerd',nota:'4 weken rust.',auteur:'Dr. P. Silva'},
+    {id:304,speler:105,datum:'2026-05-25',type:'training',titel:'PR squat 120kg',nota:'Persoonlijk record.',auteur:'Inge de Boer'},
+    {id:305,speler:102,datum:'2026-05-23',type:'voeding',titel:'Voedingsplan aangepast',nota:'Koolhydraten verhoogd.',auteur:'Anne Mulder'},
+  ],
+  berichten:[
+    {id:401,van:103,vanNaam:'Daan Kok',aan:1,aanNaam:'Marc Vos',tekst:'Mijn knie doet pijn. Moet ik rust nemen?',tijd:'09:14',gelezen:false},
+    {id:402,van:1,vanNaam:'Marc Vos',aan:103,aanNaam:'Daan Kok',tekst:'Neem vandaag rust, ijs erop.',tijd:'09:22',gelezen:true},
+    {id:403,van:103,vanNaam:'Daan Kok',aan:1,aanNaam:'Marc Vos',tekst:'Ok bedankt! Wanneer kan ik weer meedoen?',tijd:'09:25',gelezen:false},
+    {id:404,van:102,vanNaam:'Lisa Brouwer',aan:1,aanNaam:'Marc Vos',tekst:'Kan ik het schema voor woensdag aanpassen?',tijd:'gisteren',gelezen:false},
+    {id:405,van:10,vanNaam:'Dr. P. Silva',aan:1,aanNaam:'Marc Vos',tekst:'Sara mag volgende week voorzichtig hervatten.',tijd:'ma',gelezen:true},
+  ],
+  expanded:new Set([1,2,3]),
+};
+
+let chatMsgs={
+  103:[{van:'Daan Kok',r:'in',tekst:'Mijn knie doet pijn. Moet ik rust nemen?',tijd:'09:14'},{van:'Marc Vos',r:'uit',tekst:'Neem vandaag rust, ijs erop.',tijd:'09:22'},{van:'Daan Kok',r:'in',tekst:'Ok bedankt!',tijd:'09:25'}],
+  102:[{van:'Lisa Brouwer',r:'in',tekst:'Kan ik het schema aanpassen?',tijd:'gisteren'}],
+  10:[{van:'Dr. P. Silva',r:'in',tekst:'Sara mag volgende week voorzichtig hervatten.',tijd:'ma'}],
+};
+
+// ── STATE ──────────────────────────────
+let role='trainer',page='dashboard',chatId=103,calOffset=0,chatView='list';
+let sheetMode='',sheetMeta={};
+
+// ── HELPERS ────────────────────────────
+const avc=n=>AVC[n.charCodeAt(0)%AVC.length];
+const ini=n=>n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+const av=(name,sz,bg,tx)=>{const c=bg?{bg,tx}:avc(name);return`<div class="av ${sz||'avsm'}" style="background:${c.bg};color:${c.tx}">${ini(name)}</div>`;};
+const pl=(l,t)=>`<span class="pl pl-${t}">${l}</span>`;
+const sPl=s=>({actief:pl('Actief','gn'),aandacht:pl('Aandacht','am'),geblesseerd:pl('Geblesseerd','rd')}[s]||pl('?','gy'));
+const lidPl=l=>pl(l,LID_CLR[l]||'gy');
+const logDot=t=>({training:'#1E7D4F',aandacht:'#B45309',blessure:'#C0392B',voeding:'#0F766E'}[t]||'#888');
+const fmtD=d=>{if(!d)return'';try{return new Date(d).toLocaleDateString('nl-NL',{weekday:'short',day:'numeric',month:'short'});}catch{return d;}};
+const fmtAge=d=>{if(!d)return'';return Math.floor((new Date('2026-06-04')-new Date(d))/31557600000)+' jaar';};
+const byId=(a,id)=>a.find(x=>x.id===id);
+const nid=a=>Math.max(0,...a.map(x=>x.id))+1;
+
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');t.style.opacity='1';t.style.transform='translateX(-50%) translateY(-4px)';setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%)';},2400);}
+
+const RUSERS={
+  coordinator:{name:'Sandra Berg',avBg:'#F0E8FF',avTx:'#4A2575',id:99},
+  trainer:{name:'Marc Vos',avBg:'#EAF0FF',avTx:'#1A3FA0',id:1},
+  begeleider:{name:'Joost Bakker',avBg:'#FEF3E2',avTx:'#7C3D0A',id:20},
+  specialist:{name:'Dr. P. Silva',avBg:'#FEE8E6',avTx:'#8B1F15',id:10},
+  speler:{name:'Tom Jansen',avBg:'#E6F5ED',avTx:'#14563A',spelerId:101},
+};
+
+const visSp=()=>{
+  const u=RUSERS[role];
+  if(role==='coordinator')return D.spelers;
+  if(role==='trainer')return D.spelers.filter(s=>(s.trainerIds||[]).includes(u.id));
+  if(role==='begeleider')return D.spelers.filter(s=>(s.begeleiderIds||[]).includes(u.id));
+  if(role==='specialist')return D.spelers.filter(s=>(s.specialistIds||[]).includes(u.id));
+  if(role==='speler')return D.spelers.filter(s=>s.id===u.spelerId);
+  return D.spelers;
+};
+
+const weekDays=off=>{
+  const now=new Date('2026-06-04');const dow=now.getDay();
+  const mon=new Date(now);mon.setDate(now.getDate()-(dow===0?6:dow-1)+off*7);
+  return Array.from({length:7},(_,i)=>{const d=new Date(mon);d.setDate(mon.getDate()+i);return d;});
+};
+const fmtDS=d=>d.toISOString().slice(0,10);
+
+const weekT=days=>{
+  const res=[];
+  D.trainingen.forEach(t=>{
+    days.forEach(wd=>{
+      const ds=fmtDS(wd);
+      if(t.datum===ds){res.push({...t});}
+      else if(t.herhalend){
+        const diff=Math.round((wd-new Date(t.datum))/86400000);
+        const ok=(t.herhaling==='wekelijks'&&diff>0&&diff%7===0)||(t.herhaling==='tweewekelijks'&&diff>0&&diff%14===0);
+        if(ok)res.push({...t,datum:ds,isInst:true});
+      }
+    });
+  });
+  return res;
+};
+
+// ── NAV ────────────────────────────────
+const NAV={
+  coordinator:[{id:'dashboard',label:'Home',icon:'ti-layout-dashboard'},{id:'spelersbeheer',label:'Beheer',icon:'ti-shield-half'},{id:'trainingen',label:'Training',icon:'ti-calendar'},{id:'berichten',label:'Berichten',icon:'ti-message-2',badge:true},{id:'meer',label:'Meer',icon:'ti-dots'}],
+  trainer:[{id:'dashboard',label:'Home',icon:'ti-layout-dashboard'},{id:'spelers',label:'Spelers',icon:'ti-users'},{id:'trainingen',label:'Training',icon:'ti-calendar'},{id:'berichten',label:'Berichten',icon:'ti-message-2',badge:true},{id:'meer',label:'Meer',icon:'ti-dots'}],
+  begeleider:[{id:'dashboard',label:'Home',icon:'ti-layout-dashboard'},{id:'spelers',label:'Spelers',icon:'ti-users'},{id:'trainingen',label:'Training',icon:'ti-calendar'},{id:'berichten',label:'Berichten',icon:'ti-message-2',badge:true},{id:'meer',label:'Meer',icon:'ti-dots'}],
+  specialist:[{id:'dashboard',label:'Home',icon:'ti-layout-dashboard'},{id:'spelers',label:'Spelers',icon:'ti-users'},{id:'berichten',label:'Berichten',icon:'ti-message-2',badge:true},{id:'team',label:'Team',icon:'ti-users-group'},{id:'meer',label:'Meer',icon:'ti-dots'}],
+  speler:[{id:'dashboard',label:'Schema',icon:'ti-calendar'},{id:'voortgang',label:'Voortgang',icon:'ti-chart-line'},{id:'berichten',label:'Berichten',icon:'ti-message-2'},{id:'specialisten',label:'Staf',icon:'ti-stethoscope'},{id:'meer',label:'Meer',icon:'ti-dots'}],
+};
+
+const MEER={
+  coordinator:['voortgang','logboek','specialisten'],
+  trainer:['voortgang','logboek','specialisten'],
+  begeleider:['voortgang','logboek'],
+  specialist:['logboek'],
+  speler:['logboek'],
+};
+
+const EXTRA_NAV={
+  voortgang:{id:'voortgang',label:'Voortgang',icon:'ti-chart-line'},
+  logboek:{id:'logboek',label:'Logboek',icon:'ti-notebook'},
+  specialisten:{id:'specialisten',label:'Specialisten',icon:'ti-stethoscope'},
+  spelersbeheer:{id:'spelersbeheer',label:'Spelersbeheer',icon:'ti-shield-half'},
+  team:{id:'team',label:'Team & staf',icon:'ti-users-group'},
+};
+
+const TITLES={dashboard:'Dashboard',spelers:'Mijn spelers',spelersbeheer:'Spelersbeheer',trainingen:'Trainingen',voortgang:'Voortgang',berichten:'Berichten',logboek:'Logboek',specialisten:'Specialisten',team:'Team & staf',meer:'Meer',schema:'Mijn schema'};
+
+function renderTabs(){
+  const items=NAV[role]||[];
+  const unread=D.berichten.filter(b=>!b.gelezen).length;
+  document.getElementById('tabs').innerHTML=items.map(item=>`<div class="tab-item${page===item.id?' on':''}" onclick="goTo('${item.id}')">
+    <i class="ti ${item.icon}"></i>
+    <span class="tab-label">${item.label}</span>
+    ${item.badge&&unread?`<span class="tab-badge">${unread}</span>`:''}
+  </div>`).join('');
+}
+
+function renderMenuBody(){
+  const meerItems=(MEER[role]||[]).map(k=>EXTRA_NAV[k]).filter(Boolean);
+  const u=RUSERS[role];
+  document.getElementById('menu-body').innerHTML=`
+    <div style="display:flex;align-items:center;gap:12px;padding:16px 14px;background:var(--s2);border-radius:var(--rl);margin-bottom:16px">
+      ${av(u.name,'avmd',u.avBg,u.avTx)}
+      <div><div style="font-size:15px;font-weight:600">${u.name}</div><div style="font-size:12px;color:var(--t3)">${role.charAt(0).toUpperCase()+role.slice(1)}</div></div>
+    </div>
+    ${meerItems.map(item=>`<div class="menu-ni${page===item.id?' on':''}" onclick="goTo('${item.id}');closeMenu()"><i class="ti ${item.icon}"></i>${item.label}</div>`).join('')}`;
+}
+
+function renderSidebar(){renderTabs();renderMenuBody();const u=RUSERS[role];const el=document.getElementById('usrav');el.style.background=u.avBg;el.style.color=u.avTx;el.textContent=ini(u.name);}
+const goTo=p=>{page=p;chatView='list';document.getElementById('pgtitle').textContent=TITLES[p]||p;renderTabs();renderPage();};
+const setRole=r=>{role=r;page=NAV[r]?.[0]?.id||'dashboard';document.getElementById('pgtitle').textContent=TITLES[page]||page;renderSidebar();renderPage();closeMenu();toast('Aangemeld als '+RUSERS[r].name);};
+
+// ── MENU ───────────────────────────────
+const openMenu=()=>{document.getElementById('menu-overlay').classList.add('open');renderMenuBody();};
+const closeMenu=()=>document.getElementById('menu-overlay').classList.remove('open');
+const menuBgClose=e=>{if(e.target.classList.contains('menu-backdrop')||e.target===document.getElementById('menu-overlay'))closeMenu();};
+
+// ── ROUTER ─────────────────────────────
+function renderPage(){
+  const map={dashboard:pgDB,spelers:pgSpelers,spelersbeheer:pgSpelersbeheer,trainingen:pgTrain,voortgang:pgVoortgang,berichten:pgBerichten,logboek:pgLogboek,specialisten:pgSpec,team:pgTeam,meer:pgMeer};
+  const fn=role==='speler'&&page==='dashboard'?pgSpelerSchema:map[page];
+  document.getElementById('con').innerHTML=(fn||(() =>'<div class="empty"><i class="ti ti-construction"></i><p>In ontwikkeling</p></div>'))();
+  if(page==='berichten'&&chatView==='thread')setTimeout(()=>{const el=document.getElementById('cmsg');if(el)el.scrollTop=el.scrollHeight;},50);
+  document.querySelectorAll('.rb').forEach(b=>b.classList.remove('on'));
+  const rb=document.getElementById('rb-'+role);if(rb)rb.classList.add('on');
+}
+
+// ── PAGES ──────────────────────────────
+function pgDB(){
+  const sp=visSp();
+  const actief=sp.filter(s=>s.status==='actief').length;
+  const unread=D.berichten.filter(b=>!b.gelezen).length;
+  const gem=sp.length?Math.round(sp.reduce((a,s)=>a+s.doelen,0)/sp.length):0;
+  return`<div class="mg">
+    <div class="mc"><div class="ml">Actieve spelers</div><div class="mv">${actief}</div><div class="ms">${sp.filter(s=>s.status==='geblesseerd').length} geblesseerd</div></div>
+    <div class="mc"><div class="ml">Ongelezen</div><div class="mv">${unread}</div><div class="ms">berichten</div></div>
+    <div class="mc"><div class="ml">Aandacht</div><div class="mv">${sp.filter(s=>s.status==='aandacht').length}</div><div class="ms">spelers</div></div>
+    <div class="mc"><div class="ml">Gem. voortgang</div><div class="mv">${gem}%</div></div>
+  </div>
+  <div class="card">
+    <div class="ch"><span class="ct">Spelers</span><span class="ca" onclick="goTo('spelers')">Alle &rarr;</span></div>
+    ${sp.slice(0,5).map(s=>`<div class="row row-tap" onclick="openSpeler(${s.id})">
+      ${av(s.name,'avsm')}
+      <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:500">${s.name}</div><div style="font-size:12px;color:var(--t3)">${(s.posities||[]).join(' · ')}</div></div>
+      ${s.nineGrid?`<div style="width:26px;height:26px;border-radius:7px;background:var(--abg);color:var(--atx);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">${s.nineGrid}</div>`:''}
+      ${sPl(s.status)}
+    </div>`).join('')}
+  </div>
+  <div class="card">
+    <div class="ch"><span class="ct">Komende trainingen</span><span class="ca" onclick="goTo('trainingen')">Alle &rarr;</span></div>
+    ${D.trainingen.filter(t=>t.datum>='2026-06-04').slice(0,4).map(t=>`<div class="row row-tap" onclick="openTraining(${t.id})">
+      <span class="pl pl-${TCLR[t.type]||'gy'}" style="flex-shrink:0">${t.type}</span>
+      <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:500">${t.naam}</div><div style="font-size:12px;color:var(--t3)">${fmtD(t.datum)} · ${t.tijd}</div></div>
+      ${pl(t.spelerIds.length+' sp.','gy')}
+    </div>`).join('')}
+  </div>
+  <div class="card">
+    <div class="ch"><span class="ct">Berichten</span><span class="ca" onclick="goTo('berichten')">Alle &rarr;</span></div>
+    ${D.berichten.slice(0,3).map(b=>`<div class="row row-tap" onclick="goTo('berichten')">
+      ${b.gelezen?'':'<span style="width:8px;height:8px;border-radius:50%;background:var(--ac);flex-shrink:0;display:inline-block"></span>'}
+      ${av(b.vanNaam,'avsm')}
+      <div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:500">${b.vanNaam}</div><div style="font-size:12px;color:var(--t3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.tekst}</div></div>
+      <span style="font-size:11px;color:var(--t3);flex-shrink:0">${b.tijd}</span>
+    </div>`).join('')}
+  </div>`;
+}
+
+function pgSpelerSchema(){
+  const s=D.spelers.find(p=>p.id===101);
+  const days=weekDays(calOffset);const today='2026-06-04';
+  const mijn=weekT(days).filter(t=>t.spelerIds&&t.spelerIds.includes(101));
+  const trainers=(s.trainerIds||[]).map(id=>byId(D.trainers,id)).filter(Boolean);
+  const begeleiders=(s.begeleiderIds||[]).map(id=>byId(D.begeleiders,id)).filter(Boolean);
+  const specs=(s.specialistIds||[]).map(id=>byId(D.specialisten,id)).filter(Boolean);
+  return`<div class="mg">
+    <div class="mc"><div class="ml">Aanwezigheid</div><div class="mv">${s.aanwezig}%</div></div>
+    <div class="mc"><div class="ml">Weekdoel</div><div class="mv">${s.doelen}%</div></div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+    <button class="bi" onclick="calOffset--;renderPage()"><i class="ti ti-chevron-left" style="font-size:20px"></i></button>
+    <span style="font-size:13px;font-weight:500;color:var(--t2)">${days[0].toLocaleDateString('nl-NL',{day:'numeric',month:'short'})} – ${days[6].toLocaleDateString('nl-NL',{day:'numeric',month:'short'})}</span>
+    <button class="bi" onclick="calOffset++;renderPage()"><i class="ti ti-chevron-right" style="font-size:20px"></i></button>
+  </div>
+  <div class="wg" style="margin-bottom:14px">${renderCalWeek(days,today,mijn)}</div>
+  <div class="card">
+    <div class="ch"><span class="ct">Mijn trainingen deze week</span></div>
+    ${mijn.length?mijn.sort((a,b)=>a.datum.localeCompare(b.datum)).map(t=>`<div class="row row-tap" onclick="openTraining(${t.id})">
+      <span class="pl pl-${TCLR[t.type]||'gy'}" style="flex-shrink:0">${t.type}</span>
+      <div style="flex:1"><div style="font-size:14px;font-weight:500">${t.naam}</div><div style="font-size:12px;color:var(--t3)">${fmtD(t.datum)} · ${t.tijd}</div>${t.notities?`<div style="font-size:12px;color:var(--t2);font-style:italic;margin-top:2px">${t.notities}</div>`:''}</div>
+    </div>`).join(''):'<div style="text-align:center;padding:20px;color:var(--t3);font-size:13px">Geen trainingen deze week</div>'}
+  </div>
+  <div class="card">
+    <div class="ch"><span class="ct">Mijn begeleiding</span></div>
+    ${trainers.map(t=>`<div class="row">${av(t.name,'avsm',t.avBg,t.avTx)}<div style="flex:1"><div style="font-size:14px;font-weight:500">${t.name}</div><div style="font-size:12px;color:var(--t3)">${t.spec}</div></div>${pl('Trainer','bl')}</div>`).join('')}
+    ${begeleiders.map(b=>`<div class="row">${av(b.name,'avsm')}<div style="flex:1"><div style="font-size:14px;font-weight:500">${b.name}</div><div style="font-size:12px;color:var(--t3)">${b.rol}</div></div>${pl('Begeleider','tl')}</div>`).join('')}
+    ${specs.map(sp=>`<div class="row">${av(sp.name,'avsm',sp.avBg,sp.avTx)}<div style="flex:1"><div style="font-size:14px;font-weight:500">${sp.name}</div><div style="font-size:12px;color:var(--t3)">${sp.rol}</div></div>${pl('Specialist','am')}</div>`).join('')}
+  </div>
+  <button class="btn-full bp" onclick="openSheet('vraag-stellen',{speler:101})" style="margin-bottom:8px"><i class="ti ti-send" style="font-size:18px"></i>Vraag stellen aan begeleider</button>`;
+}
+
+function renderCalWeek(days,today,trainingen){
+  const dayNames=['Ma','Di','Wo','Do','Vr','Za','Zo'];
+  return days.map((day,i)=>{
+    const ds=fmtDS(day);
+    const evts=trainingen.filter(t=>t.datum===ds);
+    return`<div class="dc${ds===today?' tod':''}">
+      <div class="dh"><div class="dna">${dayNames[i]}</div><div class="dnu">${day.getDate()}</div></div>
+      <div class="dev">${evts.map(e=>`<div class="ec pl-${TCLR[e.type]||'gy'}${e.isInst?' rec':''}" onclick="openTraining(${e.id})">
+        <div>${e.tijd.split(':')[0]}u</div>
+        <div style="font-size:8.5px;margin-top:1px;font-weight:600">${e.naam.split(' ')[0]}</div>
+      </div>`).join('')}</div>
+    </div>`;}).join('');
+}
+
+function pgSpelers(){
+  const sp=visSp();const can=(role==='coordinator'||role==='trainer');
+  return`<div style="margin-bottom:12px;display:flex;gap:8px">
+    <input type="search" placeholder="Zoek speler…" style="flex:1" oninput="fSp(this.value)">
+    ${can?`<button class="bp bi" style="width:44px;height:44px;flex-shrink:0" onclick="openSheet('speler-add')"><i class="ti ti-plus" style="font-size:20px"></i></button>`:''}
+  </div>
+  <div id="sptbl">${spRows(sp,can)}</div>`;
+}
+
+function spRows(sp,can){
+  if(!sp.length)return'<div class="empty"><i class="ti ti-user-off"></i><p>Geen spelers gevonden</p></div>';
+  return`<div class="card">${sp.map(s=>{
+    const tnames=(s.trainerIds||[]).map(id=>{const t=byId(D.trainers,id);return t?t.name:''}).filter(Boolean).join(', ');
+    return`<div class="row row-tap" onclick="openSpeler(${s.id})">
+      ${av(s.name,'avsm')}
+      <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:500">${s.name}</div><div style="font-size:12px;color:var(--t3)">${(s.posities||[]).slice(0,2).join(' · ')}${tnames?' · '+tnames:''}</div></div>
+      ${s.nineGrid?`<div style="width:26px;height:26px;border-radius:7px;background:var(--abg);color:var(--atx);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">${s.nineGrid}</div>`:''}
+      ${sPl(s.status)}<i class="ti ti-chevron-right" style="font-size:16px;color:var(--t3);flex-shrink:0"></i>
+    </div>`;}).join('')}</div>`;
+}
+const fSp=q=>{const sp=visSp().filter(s=>s.name.toLowerCase().includes(q.toLowerCase())||(s.posities||[]).join(' ').toLowerCase().includes(q.toLowerCase()));document.getElementById('sptbl').innerHTML=spRows(sp,(role==='coordinator'||role==='trainer'));};
+const openSpeler=id=>openSheet('speler-detail',{id});
+
+function pgSpelersbeheer(){
+  const ontkoppeld=D.spelers.filter(s=>!(s.trainerIds||[]).length);
+  return`<div class="mg">
+    <div class="mc"><div class="ml">Trainers</div><div class="mv">${D.trainers.length}</div></div>
+    <div class="mc"><div class="ml">Begeleiders</div><div class="mv">${D.begeleiders.length}</div></div>
+    <div class="mc"><div class="ml">Spelers</div><div class="mv">${D.spelers.length}</div></div>
+    <div class="mc"><div class="ml">Niet gekoppeld</div><div class="mv">${ontkoppeld.length}</div></div>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <button class="bp bsm" onclick="openSheet('speler-add')"><i class="ti ti-user-plus" style="margin-right:4px"></i>Speler</button>
+    <button class="bsm" onclick="openSheet('trainer-add')"><i class="ti ti-plus" style="margin-right:4px"></i>Trainer</button>
+    <button class="bsm" onclick="openSheet('begel-add')"><i class="ti ti-plus" style="margin-right:4px"></i>Begeleider</button>
+    <button class="bsm" onclick="openSheet('spec-add')"><i class="ti ti-plus" style="margin-right:4px"></i>Specialist</button>
+  </div>
+  ${D.trainers.map(t=>{
+    const ts=D.spelers.filter(s=>(s.trainerIds||[]).includes(t.id));
+    const open=D.expanded.has(t.id);
+    return`<div class="tbl">
+      <div class="thd" onclick="togB(${t.id})">${av(t.name,'avsm',t.avBg,t.avTx)}
+        <div style="flex:1"><div style="font-size:14px;font-weight:600">${t.name}</div><div style="font-size:12px;color:var(--t3)">${t.spec}</div></div>
+        ${pl(ts.length+' sp.','bl')}
+        <i class="ti ti-chevron-${open?'up':'down'}" style="font-size:16px;color:var(--t3)"></i>
+      </div>
+      ${open?ts.map(s=>`<div class="sit row-tap" onclick="openSpeler(${s.id})">${av(s.name,'avsm')}
+        <div style="flex:1"><div style="font-size:14px;font-weight:500">${s.name}</div><div style="font-size:12px;color:var(--t3)">${(s.posities||[]).join(', ')}</div></div>
+        ${sPl(s.status)}<i class="ti ti-chevron-right" style="font-size:15px;color:var(--t3)"></i>
+      </div>`).join(''):''}
+    </div>`;}).join('')
+  }
+  ${ontkoppeld.length?`<div class="section-title">Niet gekoppeld (${ontkoppeld.length})</div>
+    <div class="card">${ontkoppeld.map(s=>`<div class="row row-tap" onclick="openSpeler(${s.id})">${av(s.name,'avsm')}<div style="flex:1"><div style="font-size:14px;font-weight:500">${s.name}</div></div>${pl('Koppelen','am')}<i class="ti ti-chevron-right" style="font-size:15px;color:var(--t3)"></i></div>`).join('')}</div>`:''}`;
+}
+const togB=id=>{D.expanded.has(id)?D.expanded.delete(id):D.expanded.add(id);renderPage();};
+
+function pgTrain(){
+  const days=weekDays(calOffset);const today='2026-06-04';
+  const wt=weekT(days);
+  const can=(role==='coordinator'||role==='trainer'||role==='begeleider');
+  return`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+    <button class="bi" onclick="calOffset--;renderPage()"><i class="ti ti-chevron-left" style="font-size:20px"></i></button>
+    <div style="text-align:center">
+      <div style="font-size:13.5px;font-weight:600">${days[0].toLocaleDateString('nl-NL',{day:'numeric',month:'short'})} – ${days[6].toLocaleDateString('nl-NL',{day:'numeric',month:'short',year:'numeric'})}</div>
+      <button onclick="calOffset=0;renderPage()" style="font-size:11px;padding:2px 8px;border-radius:20px;margin-top:2px">Vandaag</button>
+    </div>
+    <button class="bi" onclick="calOffset++;renderPage()"><i class="ti ti-chevron-right" style="font-size:20px"></i></button>
+  </div>
+  <div class="wg" style="margin-bottom:14px">${renderCalWeek(days,today,wt)}</div>
+  ${can?`<button class="btn-full bp" onclick="openSheet('training-add')" style="margin-bottom:14px"><i class="ti ti-plus" style="font-size:18px"></i>Training plannen</button>`:''}
+  <div class="section-title">Alle trainingen</div>
+  <div class="card">${D.trainingen.sort((a,b)=>a.datum.localeCompare(b.datum)).map(t=>{
+    const tnames=(t.trainerIds||[]).map(id=>{const tr=byId(D.trainers,id);return tr?tr.name:''}).filter(Boolean).join(', ');
+    return`<div class="row row-tap" onclick="openTraining(${t.id})">
+      <span class="pl pl-${TCLR[t.type]||'gy'}" style="flex-shrink:0">${t.type}</span>
+      <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:500">${t.naam}</div><div style="font-size:12px;color:var(--t3)">${fmtD(t.datum)} · ${t.tijd}${tnames?' · '+tnames:''}</div></div>
+      ${t.herhalend?`<span style="font-size:14px;color:var(--t3)" title="Herhalend">&#x21BB;</span>`:''}
+      ${pl(t.spelerIds.length+'','gy')}<i class="ti ti-chevron-right" style="font-size:15px;color:var(--t3);flex-shrink:0"></i>
+    </div>`;}).join('')}</div>`;
+}
+const openTraining=id=>openSheet('training-detail',{id});
+
+function pgVoortgang(){
+  const sp=visSp();
+  const gem=sp.length?Math.round(sp.reduce((a,s)=>a+s.doelen,0)/sp.length):0;
+  const gemA=sp.length?Math.round(sp.reduce((a,s)=>a+s.aanwezig,0)/sp.length):0;
+  return`<div class="mg">
+    <div class="mc"><div class="ml">Gem. doelen</div><div class="mv">${gem}%</div></div>
+    <div class="mc"><div class="ml">Gem. aanwezigheid</div><div class="mv">${gemA}%</div></div>
+  </div>
+  <div class="section-title">Doelen per speler</div>
+  <div class="card">${[...sp].sort((a,b)=>b.doelen-a.doelen).map(s=>`<div class="row row-tap" onclick="openSpeler(${s.id})">
+    ${av(s.name,'avsm')}
+    <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:500">${s.name}</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:4px"><div class="pt"><div class="pf" style="width:${s.doelen}%;background:${s.doelen>70?'var(--gn)':s.doelen>40?'var(--am)':'var(--rd)'}"></div></div><span style="font-size:12px;font-weight:600;min-width:30px">${s.doelen}%</span></div></div>
+    ${s.nineGrid?`<div style="width:26px;height:26px;border-radius:7px;background:var(--abg);color:var(--atx);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">${s.nineGrid}</div>`:''}
+    ${sPl(s.status)}
+  </div>`).join('')}</div>`;
+}
+
+function pgBerichten(){
+  if(chatView==='thread') return renderChatThread();
+  const gs=[{id:103,naam:'Daan Kok',rol:'Speler',prev:'Wanneer kan ik weer meedoen?',tijd:'09:25',unread:2},{id:102,naam:'Lisa Brouwer',rol:'Speler',prev:'Schema voor woensdag aanpassen?',tijd:'gisteren',unread:1},{id:10,naam:'Dr. P. Silva',rol:'Fysiotherapeut',prev:'Sara mag voorzichtig hervatten',tijd:'ma',unread:0}];
+  return`<div style="margin-bottom:12px;display:flex;gap:8px">
+    <input type="search" placeholder="Zoek gesprekken…" style="flex:1">
+    <button class="bp bi" style="width:44px;height:44px;flex-shrink:0" onclick="openSheet('nieuw-bericht')"><i class="ti ti-edit" style="font-size:18px"></i></button>
+  </div>
+  <div class="card">${gs.map(g=>`<div class="row row-tap" onclick="openChat(${g.id})">
+    ${av(g.naam,'avsm')}
+    <div style="flex:1;min-width:0">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:14px;font-weight:500">${g.naam}</span><span style="font-size:11px;color:var(--t3)">${g.tijd}</span></div>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:2px"><span style="font-size:13px;color:var(--t3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1">${g.prev}</span>${g.unread?`<span style="min-width:18px;height:18px;border-radius:10px;background:var(--ac);color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0">${g.unread}</span>`:''}</div>
+    </div>
+  </div>`).join('')}</div>`;
+}
+
+function openChat(id){chatId=id;chatView='thread';document.getElementById('pgtitle').textContent='Gesprek';document.getElementById('con').innerHTML=renderChatThread();setTimeout(()=>{const el=document.getElementById('cmsg');if(el)el.scrollTop=el.scrollHeight;},50);}
+
+function renderChatThread(){
+  const msgs=chatMsgs[chatId]||[];
+  const names={103:'Daan Kok',102:'Lisa Brouwer',10:'Dr. P. Silva'};
+  return`<div class="chat-thread">
+    <div style="padding:10px 16px;border-bottom:1px solid var(--bo);background:var(--su);display:flex;align-items:center;gap:10px">
+      <button class="bi" onclick="chatView='list';goTo('berichten')"><i class="ti ti-arrow-left" style="font-size:20px"></i></button>
+      ${av(names[chatId]||'?','avsm')}
+      <span style="font-size:15px;font-weight:600">${names[chatId]||'Gesprek'}</span>
+    </div>
+    <div class="chat-messages" id="cmsg">${msgs.map(m=>`<div class="msg ${m.r==='in'?'min':'mout'}"><div class="mb2">${m.tekst}</div><div class="mm">${m.r==='in'?m.van+' · ':''}${m.tijd}</div></div>`).join('')}</div>
+    <div class="chat-input-bar">
+      <textarea id="cinp" placeholder="Bericht…" rows="1" onkeydown="ck(event)"></textarea>
+      <button class="bp chat-send" onclick="sc()"><i class="ti ti-send" style="font-size:17px"></i></button>
+    </div>
+  </div>`;
+}
+const ck=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sc();}};
+function sc(){const inp=document.getElementById('cinp');const txt=inp.value.trim();if(!txt)return;if(!chatMsgs[chatId])chatMsgs[chatId]=[];chatMsgs[chatId].push({van:RUSERS[role].name,r:'uit',tekst:txt,tijd:'nu'});inp.value='';document.getElementById('con').innerHTML=renderChatThread();setTimeout(()=>{const el=document.getElementById('cmsg');if(el)el.scrollTop=el.scrollHeight;},30);}
+
+function pgLogboek(){
+  const sp=visSp();const logs=D.logs.filter(l=>sp.some(s=>s.id===l.speler));
+  const tm={training:'Training',aandacht:'Aandacht',blessure:'Blessure',voeding:'Voeding'};
+  const tp={training:'gn',aandacht:'am',blessure:'rd',voeding:'tl'};
+  return`<button class="btn-full bp" onclick="openSheet('log-add')" style="margin-bottom:14px"><i class="ti ti-plus" style="font-size:18px"></i>Entry toevoegen</button>
+  <div class="card">${logs.length?logs.sort((a,b)=>b.datum.localeCompare(a.datum)).map(l=>{const s=byId(D.spelers,l.speler);
+    return`<div class="le"><div class="ldt" style="background:${logDot(l.type)};margin-top:5px"></div><div style="flex:1">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:14px;font-weight:500">${l.titel}</span>${pl(tm[l.type]||l.type,tp[l.type]||'gy')}${s?`${av(s.name,'avsm')}<span style="font-size:12px">${s.name}</span>`:''}</div>
+      <div style="font-size:12px;color:var(--t3);margin-top:3px">${l.datum} · ${l.auteur}</div>
+      ${l.nota?`<div style="font-size:13px;color:var(--t2);margin-top:4px;font-style:italic">"${l.nota}"</div>`:''}
+    </div></div>`;}).join(''):'<div class="empty"><i class="ti ti-notebook-off"></i><p>Geen logentries</p></div>'}</div>`;
+}
+
+function pgSpec(){
+  return D.specialisten.map(sp=>`<div class="spcard">
+    ${av(sp.name,'avmd',sp.avBg,sp.avTx)}
+    <div style="flex:1"><div style="font-size:15px;font-weight:600">${sp.name}</div>
+    <div style="font-size:13px;color:var(--t3);margin-bottom:6px">${sp.rol}</div>
+    ${sp.taak?`<div style="font-size:13px;color:var(--t2);margin-bottom:8px">${sp.taak}</div>`:''}
+    <div style="font-size:13px;color:var(--t2);margin-bottom:4px"><i class="ti ti-mail" style="vertical-align:-1px;margin-right:4px"></i>${sp.email}</div>
+    <div style="font-size:13px;color:var(--t2);margin-bottom:10px"><i class="ti ti-phone" style="vertical-align:-1px;margin-right:4px"></i>${sp.tel}</div>
+    <button class="btn-full bp" onclick="openSheet('nieuw-bericht',{aan:'${sp.name}'})"><i class="ti ti-message-2" style="font-size:16px"></i>Stuur bericht</button></div>
+  </div>`).join('');
+}
+
+function pgTeam(){
+  const all=[...D.trainers.map(t=>({...t,cat:'Trainer',catPl:'bl'})),...D.begeleiders.map(b=>({...b,cat:'Begeleider',catPl:'tl',spec:b.rol})),...D.specialisten.map(sp=>({...sp,cat:'Specialist',catPl:'am',spec:sp.rol}))];
+  return`<div class="card">${all.map(p=>`<div class="row row-tap" onclick="openSheet('nieuw-bericht',{aan:'${p.name}'})">
+    ${av(p.name,'avsm',p.avBg||undefined,p.avTx||undefined)}
+    <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:500">${p.name}</div><div style="font-size:12px;color:var(--t3)">${p.spec||''}</div></div>
+    ${pl(p.cat,p.catPl)}
+    <i class="ti ti-message-2" style="font-size:18px;color:var(--ac)"></i>
+  </div>`).join('')}</div>`;
+}
+
+function pgMeer(){
+  const items=(MEER[role]||[]).map(k=>EXTRA_NAV[k]).filter(Boolean);
+  return`<div class="card">${items.map(item=>`<div class="row row-tap" onclick="goTo('${item.id}')"><i class="ti ${item.icon}" style="font-size:22px;color:var(--t2);flex-shrink:0"></i><div style="flex:1;font-size:15px;font-weight:500">${item.label}</div><i class="ti ti-chevron-right" style="font-size:16px;color:var(--t3)"></i></div>`).join('')}</div>`;
+}
+
+// ── MULTI-SELECT ────────────────────────
+const MS={};
+function msWidget(id,items,sel,lk){
+  const selected=new Set((sel||[]).map(Number));MS[id]={items,sel:selected,lk};
+  const chips=[...selected].map(sid=>{const it=items.find(x=>x.id===sid);return it?`<span class="msch">${it[lk]}<button type="button" onclick="event.stopPropagation();msRm('${id}',${sid})">&times;</button></span>`:''}).join('');
+  const opts=items.map(it=>`<div class="msopt${selected.has(it.id)?' ch':''}" onclick="msTog('${id}',${it.id})"><span class="chk">${selected.has(it.id)?'<i class="ti ti-check" style="font-size:10px;color:#fff"></i>':''}</span>${it[lk]}</div>`).join('');
+  return`<div class="mswrap"><div class="msbox" onclick="msOpen('${id}')"><span id="ms-chips-${id}" style="display:contents">${chips}</span><span id="ms-ph-${id}" style="font-size:14px;color:var(--t3)"${selected.size?' hidden':''}>Klik om te selecteren…</span></div><div class="msdrop" id="ms-drop-${id}">${opts}</div><input type="hidden" id="ms-hv-${id}" value="${[...selected].join(',')}"></div>`;
+}
+function msTog(id,itemId){const s=MS[id];if(!s)return;s.sel.has(itemId)?s.sel.delete(itemId):s.sel.add(itemId);msRender(id);}
+function msRm(id,itemId){const s=MS[id];if(!s)return;s.sel.delete(itemId);msRender(id);}
+function msOpen(id){document.querySelectorAll('.msdrop.open').forEach(d=>{if(d.id!=='ms-drop-'+id)d.classList.remove('open');});document.getElementById('ms-drop-'+id)?.classList.toggle('open');}
+function msRender(id){const s=MS[id];if(!s)return;const chips=document.getElementById('ms-chips-'+id);if(chips)chips.innerHTML=[...s.sel].map(sid=>{const it=s.items.find(x=>x.id===sid);return it?`<span class="msch">${it[s.lk]}<button type="button" onclick="event.stopPropagation();msRm('${id}',${sid})">&times;</button></span>`:''}).join('');const ph=document.getElementById('ms-ph-'+id);if(ph)ph.style.display=s.sel.size?'none':'inline';const hv=document.getElementById('ms-hv-'+id);if(hv)hv.value=[...s.sel].join(',');const drop=document.getElementById('ms-drop-'+id);if(drop)drop.innerHTML=s.items.map(it=>`<div class="msopt${s.sel.has(it.id)?' ch':''}" onclick="msTog('${id}',${it.id})"><span class="chk">${s.sel.has(it.id)?'<i class="ti ti-check" style="font-size:10px;color:#fff"></i>':''}</span>${it[s.lk]}</div>`).join('');}
+function msGet(id){const hv=document.getElementById('ms-hv-'+id);return hv?hv.value.split(',').map(Number).filter(Boolean):[];}
+document.addEventListener('click',e=>{if(!e.target.closest('.mswrap'))document.querySelectorAll('.msdrop.open').forEach(d=>d.classList.remove('open'));});
+
+// ── NINE GRID & POSITIES ────────────────
+const ngWidget=sel=>`<div class="ng" id="ngw">${['7','8','9','4','5','6','1','2','3'].map(n=>`<div class="nc${String(sel)===n?' sel':''}" onclick="ngSel(${n})">${n}</div>`).join('')}</div><input type="hidden" id="ngv" value="${sel||''}">`;
+const ngSel=n=>{document.querySelectorAll('.nc').forEach(c=>c.classList.toggle('sel',c.textContent==n));document.getElementById('ngv').value=n;};
+const ngGet=()=>parseInt(document.getElementById('ngv')?.value)||null;
+const posWidget=sel=>`<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px" id="posw">${POSITIES.map(p=>`<span class="tg clk${(sel||[]).includes(p)?' act':''}" onclick="posTog('${p}')">${p}</span>`).join('')}</div><input type="hidden" id="posv" value="${(sel||[]).join(',')}">`;
+const posTog=p=>{const inp=document.getElementById('posv');let v=inp.value?inp.value.split(',').filter(Boolean):[];v.includes(p)?v=v.filter(x=>x!==p):v.push(p);inp.value=v.join(',');document.querySelectorAll('#posw .tg').forEach(t=>t.classList.toggle('act',v.includes(t.textContent)));};
+const posGet=()=>{const v=document.getElementById('posv')?.value;return v?v.split(',').filter(Boolean):[];};
+
+// ── BOTTOM SHEET ────────────────────────
+function openSheet(mode,meta){
+  meta=meta||{};sheetMode=mode;sheetMeta=meta;
+  const ov=document.getElementById('sheet');
+  const title=document.getElementById('sheet-title');
+  const body=document.getElementById('sheet-body');
+  const foot=document.getElementById('sheet-foot');
+  title.textContent='';body.innerHTML='';
+  foot.innerHTML=`<button onclick="closeSheet()" style="flex:1">Annuleren</button><button class="bp" onclick="submitSheet()" style="flex:1">Opslaan</button>`;
+
+  if(mode==='speler-detail'){
+    const s=D.spelers.find(p=>p.id===meta.id);
+    const trainers=(s.trainerIds||[]).map(id=>byId(D.trainers,id)).filter(Boolean);
+    const beg=(s.begeleiderIds||[]).map(id=>byId(D.begeleiders,id)).filter(Boolean);
+    const specs=(s.specialistIds||[]).map(id=>byId(D.specialisten,id)).filter(Boolean);
+    const logs=D.logs.filter(l=>l.speler===s.id);
+    const canEdit=(role==='coordinator'||(role==='trainer'&&(s.trainerIds||[]).includes(RUSERS.trainer.id)));
+    const canLog=(role!=='speler');
+    title.textContent=s.name;
+    foot.innerHTML=`${canLog?`<button class="bg2" onclick="closeSheet();openSheet('log-add-speler',{speler:${s.id}})" style="flex:1"><i class="ti ti-notebook" style="font-size:15px;margin-right:4px"></i>Log</button>`:''}
+    ${canEdit?`<button class="bp" onclick="closeSheet();openSheet('speler-edit',{id:${s.id}})" style="flex:1"><i class="ti ti-pencil" style="font-size:15px;margin-right:4px"></i>Bewerken</button>`:`<button onclick="closeSheet()" style="flex:1">Sluiten</button>`}`;
+    body.innerHTML=`
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">${av(s.name,'avlg')}
+        <div><div style="font-size:18px;font-weight:700">${s.name}</div>
+        <div style="font-size:13px;color:var(--t3)">${s.woonplaats||''}${s.geboortedatum?' · '+fmtAge(s.geboortedatum):''}</div>
+        <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">${sPl(s.status)}${lidPl(s.lidsoort||'Basis')}${s.nineGrid?pl('Nine Grid: '+s.nineGrid,'bl'):''}</div></div>
+      </div>
+      ${s.blessure?`<div style="background:var(--rbg);color:var(--rtx);border-radius:var(--r);padding:12px 14px;font-size:14px;margin-bottom:14px"><i class="ti ti-alert-triangle" style="margin-right:6px"></i>${s.blessure}</div>`:''}
+      <div style="margin-bottom:14px"><div style="font-size:12px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Posities</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">${(s.posities||[]).map(p=>`<span class="tg">${p}</span>`).join('')||'<span style="color:var(--t3);font-size:13px">Niet ingesteld</span>'}</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+        <div class="mc"><div class="ml">Doelen</div><div class="mv" style="font-size:22px">${s.doelen}%</div></div>
+        <div class="mc"><div class="ml">Aanwezigheid</div><div class="mv" style="font-size:22px">${s.aanwezig}%</div></div>
+      </div>
+      <div style="font-size:12px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Begeleiding</div>
+      <div class="card" style="margin-bottom:14px">
+        ${trainers.map(t=>`<div class="row">${av(t.name,'avsm',t.avBg,t.avTx)}<div style="flex:1"><div style="font-size:14px;font-weight:500">${t.name}</div><div style="font-size:12px;color:var(--t3)">${t.spec}</div></div>${pl('Trainer','bl')}</div>`).join('')}
+        ${beg.map(b=>`<div class="row">${av(b.name,'avsm')}<div style="flex:1"><div style="font-size:14px;font-weight:500">${b.name}</div><div style="font-size:12px;color:var(--t3)">${b.rol}</div></div>${pl('Begeleider','tl')}</div>`).join('')}
+        ${specs.map(sp=>`<div class="row">${av(sp.name,'avsm',sp.avBg,sp.avTx)}<div style="flex:1"><div style="font-size:14px;font-weight:500">${sp.name}</div><div style="font-size:12px;color:var(--t3)">${sp.rol}</div></div>${pl('Specialist','am')}</div>`).join('')}
+        ${!trainers.length&&!beg.length&&!specs.length?'<div style="font-size:13px;color:var(--t3);text-align:center;padding:12px">Geen begeleiders gekoppeld</div>':''}
+      </div>
+      <div style="font-size:12px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Logboek</div>
+      ${logs.length?logs.map(l=>`<div class="le"><div class="ldt" style="background:${logDot(l.type)}"></div><div><div style="font-size:14px;font-weight:500">${l.titel}</div><div style="font-size:12px;color:var(--t3);margin-top:2px">${l.datum} · ${l.auteur}</div>${l.nota?`<div style="font-size:13px;color:var(--t2);margin-top:4px;font-style:italic">"${l.nota}"</div>`:''}</div></div>`).join(''):'<div style="font-size:13px;color:var(--t3);text-align:center;padding:16px">Nog geen logentries</div>'}`;
+    ov.classList.add('open');return;
+  }
+  else if(mode==='speler-add'){
+    title.textContent='Speler toevoegen';
+    body.innerHTML=`
+      <label>Naam</label><input type="text" id="mn" placeholder="Voornaam Achternaam">
+      <label>Woonplaats</label><input type="text" id="mw" placeholder="Stad">
+      <label>Geboortedatum</label><input type="date" id="md2">
+      <label>Lidsoort</label><select id="mls">${LIDSOORTEN.map(l=>`<option>${l}</option>`).join('')}</select>
+      <label>Posities</label>${posWidget([])}
+      <label>Nine Grid (1–9)</label>${ngWidget(null)}
+      <label>Trainer(s)</label>${msWidget('mtr',D.trainers,[],'name')}
+      <label>Begeleider(s)</label>${msWidget('mbg',D.begeleiders,[],'name')}
+      <label>Specialist(en)</label>${msWidget('msp',D.specialisten,[],'name')}`;
+  }
+  else if(mode==='speler-edit'){
+    const s=D.spelers.find(p=>p.id===meta.id);
+    title.textContent='Bewerk — '+s.name;
+    body.innerHTML=`
+      <label>Naam</label><input type="text" id="mn" value="${s.name}">
+      <label>Woonplaats</label><input type="text" id="mw" value="${s.woonplaats||''}">
+      <label>Geboortedatum</label><input type="date" id="md2" value="${s.geboortedatum||''}">
+      <label>Lidsoort</label><select id="mls">${LIDSOORTEN.map(l=>`<option${l===s.lidsoort?' selected':''}>${l}</option>`).join('')}</select>
+      <label>Posities</label>${posWidget(s.posities||[])}
+      <label>Nine Grid (1–9)</label>${ngWidget(s.nineGrid)}
+      <label>Trainer(s)</label>${msWidget('mtr',D.trainers,s.trainerIds||[],'name')}
+      <label>Begeleider(s)</label>${msWidget('mbg',D.begeleiders,s.begeleiderIds||[],'name')}
+      <label>Specialist(en)</label>${msWidget('msp',D.specialisten,s.specialistIds||[],'name')}
+      <label>Status</label><select id="mst"><option value="actief"${s.status==='actief'?' selected':''}>Actief</option><option value="aandacht"${s.status==='aandacht'?' selected':''}>Aandacht nodig</option><option value="geblesseerd"${s.status==='geblesseerd'?' selected':''}>Geblesseerd</option></select>
+      <label>Blessure</label><input type="text" id="mbl" value="${s.blessure||''}" placeholder="Bijv. Knieblessure week 2 van 4">`;
+  }
+  else if(mode==='training-detail'){
+    const t=D.trainingen.find(x=>x.id===meta.id);if(!t){ov.classList.add('open');return;}
+    const tnames=(t.trainerIds||[]).map(id=>{const tr=byId(D.trainers,id);return tr?tr.name:''}).filter(Boolean);
+    const can=(role==='coordinator'||role==='trainer'||role==='begeleider');
+    title.textContent=t.naam;
+    foot.innerHTML=`<button onclick="closeSheet()" style="flex:1">Sluiten</button>
+      <button class="bg2" onclick="closeSheet();openSheet('training-bericht',{id:${t.id}})" style="flex:1"><i class="ti ti-send" style="font-size:14px;margin-right:4px"></i>Bericht</button>
+      ${can?`<button class="bp" onclick="closeSheet();openSheet('training-edit',{id:${t.id}})" style="flex:1"><i class="ti ti-pencil" style="font-size:14px;margin-right:4px"></i>Bewerk</button>`:''}`;
+    body.innerHTML=`
+      <div style="display:flex;gap:8px;margin-bottom:12px">${pl(t.type,TCLR[t.type]||'gy')}${t.herhalend?pl('&#x21BB; '+t.herhaling,'gy'):''}</div>
+      <div style="font-size:14px;color:var(--t2);margin-bottom:6px">${fmtD(t.datum)} · ${t.tijd} · ${t.duur} min</div>
+      <div style="font-size:14px;color:var(--t2);margin-bottom:12px"><strong>Trainer(s):</strong> ${tnames.join(', ')||'Niet ingesteld'}</div>
+      ${t.notities?`<div style="background:var(--s2);border-radius:var(--r);padding:12px 14px;font-size:14px;color:var(--t2);font-style:italic;margin-bottom:14px">${t.notities}</div>`:''}
+      <div style="font-size:12px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Deelnemers (${t.spelerIds.length})</div>
+      <div class="card">${t.spelerIds.map(sid=>{const s=byId(D.spelers,sid);return s?`<div class="row">${av(s.name,'avsm')}<div style="flex:1"><div style="font-size:14px;font-weight:500">${s.name}</div><div style="font-size:12px;color:var(--t3)">${(s.posities||[]).join(', ')}</div></div>${sPl(s.status)}</div>`:''}).join('')}</div>`;
+    ov.classList.add('open');return;
+  }
+  else if(mode==='training-add'||mode==='training-edit'){
+    const t=mode==='training-edit'?D.trainingen.find(x=>x.id===meta.id):null;
+    title.textContent=t?'Training bewerken':'Training plannen';
+    body.innerHTML=`
+      <label>Naam</label><input type="text" id="mnm" value="${t?t.naam:''}" placeholder="Naam van de training">
+      <label>Type</label><select id="mty">${TRTYPES.map(tp=>`<option value="${tp}"${t&&t.type===tp?' selected':''}>${tp}</option>`).join('')}</select>
+      <label>Datum</label><input type="date" id="mdt" value="${t?t.datum:'2026-06-08'}">
+      <label>Tijd</label><input type="text" id="mtj" value="${t?t.tijd:'19:00'}" placeholder="19:00">
+      <label>Duur (minuten)</label><input type="number" id="mdr" value="${t?t.duur:90}">
+      <label>Notities</label><textarea id="mno">${t?t.notities:''}</textarea>
+      <label style="display:flex;align-items:center;gap:8px;font-weight:400;cursor:pointer"><input type="checkbox" id="mrep"${t&&t.herhalend?' checked':''} onchange="togRep()" style="width:auto;width:18px;height:18px"> Repeterend</label>
+      <div id="reprow" style="display:${t&&t.herhalend?'block':'none'}">
+        <label>Frequentie</label><select id="mfrq"><option value="wekelijks"${t&&t.herhaling==='wekelijks'?' selected':''}>Wekelijks</option><option value="tweewekelijks"${t&&t.herhaling==='tweewekelijks'?' selected':''}>Tweewekelijks</option></select>
+      </div>
+      <label>Trainer(s)</label>${msWidget('mtr2',D.trainers,t?t.trainerIds:[],'name')}
+      <label>Spelers</label>${msWidget('msp2',D.spelers,t?t.spelerIds:[],'name')}`;
+  }
+  else if(mode==='training-bericht'){
+    const t=D.trainingen.find(x=>x.id===meta.id);if(!t){ov.classList.add('open');return;}
+    const trainerRecips=(t.trainerIds||[]).map(id=>byId(D.trainers,id)).filter(Boolean);
+    const spelerRecips=(t.spelerIds||[]).map(id=>byId(D.spelers,id)).filter(Boolean);
+    const all=[...trainerRecips,...spelerRecips];
+    title.textContent='Bericht aan deelnemers';
+    foot.innerHTML=`<button onclick="closeSheet()" style="flex:1">Annuleren</button><button class="bp" onclick="verzendBericht(${t.id})" style="flex:1"><i class="ti ti-send" style="font-size:14px;margin-right:4px"></i>Versturen</button>`;
+    body.innerHTML=`
+      <div style="background:var(--abg);border-radius:var(--r);padding:12px 14px;margin-bottom:16px;font-size:13px;color:var(--atx)">
+        <strong>${t.naam}</strong> · ${fmtD(t.datum)} · ${t.tijd}
+      </div>
+      <div style="font-size:13px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Ontvangers (${all.length})</div>
+      <div style="border:1px solid var(--bo);border-radius:var(--r);overflow:hidden;margin-bottom:14px" id="recip-list">
+        ${trainerRecips.length?`<div style="padding:8px 12px;background:var(--s2);font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em">Trainers</div>${trainerRecips.map(p=>`<div class="recip-row" data-id="${p.id}" data-cat="trainer" onclick="togRecip(this)" style="display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;border-bottom:1px solid var(--bo)"><div style="width:20px;height:20px;border-radius:6px;border:2px solid var(--ac);background:var(--ac);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-check" style="font-size:12px;color:#fff"></i></div>${av(p.name,'avsm',p.avBg,p.avTx)}<div style="flex:1"><div style="font-size:14px;font-weight:500">${p.name}</div><div style="font-size:12px;color:var(--t3)">${p.spec}</div></div>${pl('Trainer','bl')}</div>`).join('')}`:''}
+        ${spelerRecips.length?`<div style="padding:8px 12px;background:var(--s2);font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;border-top:1px solid var(--bo)">Spelers</div>${spelerRecips.map(p=>`<div class="recip-row" data-id="${p.id}" data-cat="speler" onclick="togRecip(this)" style="display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;border-bottom:1px solid var(--bo)"><div style="width:20px;height:20px;border-radius:6px;border:2px solid var(--ac);background:var(--ac);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-check" style="font-size:12px;color:#fff"></i></div>${av(p.name,'avsm')}<div style="flex:1"><div style="font-size:14px;font-weight:500">${p.name}</div><div style="font-size:12px;color:var(--t3)">${(p.posities||[]).join(', ')}</div></div></div>`).join('')}`:''}
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <button class="bsm" onclick="selectAll('all')" style="flex:1">Alles</button>
+        <button class="bsm" onclick="selectAll('none')" style="flex:1">Niets</button>
+        <button class="bsm" onclick="selectAll('trainer')" style="flex:1">Trainers</button>
+        <button class="bsm" onclick="selectAll('speler')" style="flex:1">Spelers</button>
+      </div>
+      <label>Onderwerp</label><input type="text" id="msubject" value="Re: ${t.naam} — ${fmtD(t.datum)}">
+      <label>Bericht</label><textarea id="mtekst2" placeholder="Typ je bericht…"></textarea>`;
+  }
+  else if(mode==='log-add'||mode==='log-add-speler'){
+    const sp=visSp();
+    title.textContent='Log toevoegen'+(mode==='log-add-speler'?' — '+byId(D.spelers,meta.speler)?.name:'');
+    body.innerHTML=`
+      ${mode==='log-add'?`<label>Speler</label><select id="mspl">${sp.map(s=>`<option value="${s.id}">${s.name}</option>`).join('')}</select>`:`<input type="hidden" id="mspl" value="${meta.speler}">`}
+      <label>Titel</label><input type="text" id="mtit" placeholder="Korte omschrijving">
+      <label>Type</label><select id="mtyp"><option value="training">Training</option><option value="blessure">Blessure</option><option value="aandacht">Aandacht</option><option value="voeding">Voeding</option></select>
+      <label>Notitie</label><textarea id="mnot" placeholder="Details, observaties…"></textarea>`;
+  }
+  else if(mode==='trainer-add'){
+    title.textContent='Trainer toevoegen';
+    body.innerHTML=`<label>Naam</label><input type="text" id="mn" placeholder="Voornaam Achternaam"><label>Specialisatie</label><select id="mspec"><option>Hoofdtrainer</option><option>Assistent-trainer</option><option>Krachtrainer</option></select>`;
+  }
+  else if(mode==='begel-add'){
+    title.textContent='Begeleider toevoegen';
+    body.innerHTML=`<label>Naam</label><input type="text" id="mn" placeholder="Voornaam Achternaam"><label>Rol</label><select id="mrol"><option>Teammanager</option><option>Assistent</option><option>Videoanalist</option></select>`;
+  }
+  else if(mode==='spec-add'){
+    title.textContent='Specialist toevoegen';
+    body.innerHTML=`<label>Naam</label><input type="text" id="mn" placeholder="Voornaam Achternaam"><label>Rol / functie</label><input type="text" id="mrol2" placeholder="Bijv. Fysiotherapeut"><label>Taakomschrijving</label><textarea id="mtaak" placeholder="Beschrijf de taken…"></textarea><label>E-mail</label><input type="email" id="memail" placeholder="naam@domein.nl"><label>Telefoon</label><input type="text" id="mtel" placeholder="06-12345678">`;
+  }
+  else if(mode==='nieuw-bericht'){
+    title.textContent='Nieuw bericht';
+    const all=[...D.trainers,...D.begeleiders,...D.specialisten,...D.spelers];
+    body.innerHTML=`<label>Aan</label><select id="maan">${all.map(p=>`<option${meta.aan&&meta.aan===p.name?' selected':''}>${p.name}</option>`).join('')}</select><label>Bericht</label><textarea id="mtekst" placeholder="Typ je bericht…"></textarea>`;
+  }
+  else if(mode==='vraag-stellen'){
+    const s=D.spelers.find(p=>p.id===meta.speler);
+    const trainers=(s?.trainerIds||[]).map(id=>byId(D.trainers,id)).filter(Boolean);
+    const beg=(s?.begeleiderIds||[]).map(id=>byId(D.begeleiders,id)).filter(Boolean);
+    const specs=(s?.specialistIds||[]).map(id=>byId(D.specialisten,id)).filter(Boolean);
+    title.textContent='Vraag stellen';
+    body.innerHTML=`<label>Aan</label><select id="maan">${[...trainers.map(t=>t.name+' (trainer)'),...beg.map(b=>b.name+' (begeleider)'),...specs.map(sp=>sp.name+' (specialist)')].map(x=>`<option>${x}</option>`).join('')}</select><label>Bericht</label><textarea id="mtekst" placeholder="Typ je vraag…"></textarea>`;
+  }
+  ov.classList.add('open');
+}
+
+const togRep=()=>{document.getElementById('reprow').style.display=document.getElementById('mrep').checked?'block':'none';};
+
+function togRecip(row){
+  const chk=row.querySelector('div');
+  const isOn=chk.innerHTML.includes('ti-check');
+  if(isOn){chk.style.background='transparent';chk.style.borderColor='var(--b2)';chk.innerHTML='';row.style.opacity='0.4';}
+  else{chk.style.background='var(--ac)';chk.style.borderColor='var(--ac)';chk.innerHTML='<i class="ti ti-check" style="font-size:12px;color:#fff"></i>';row.style.opacity='1';}
+}
+function selectAll(cat){document.querySelectorAll('.recip-row').forEach(row=>{if(cat==='all'||cat==='none'||row.dataset.cat===cat){const chk=row.querySelector('div');const on=(cat!=='none');chk.style.background=on?'var(--ac)':'transparent';chk.style.borderColor=on?'var(--ac)':'var(--b2)';chk.innerHTML=on?'<i class="ti ti-check" style="font-size:12px;color:#fff"></i>':'';row.style.opacity=on?'1':'0.4';}});}
+function getSelRecips(){const sel=[];document.querySelectorAll('.recip-row').forEach(row=>{if(row.querySelector('div')?.innerHTML.includes('ti-check'))sel.push({id:parseInt(row.dataset.id),cat:row.dataset.cat});});return sel;}
+
+function verzendBericht(trainingId){
+  const tekst=document.getElementById('mtekst2')?.value.trim();if(!tekst){toast('Typ eerst een bericht');return;}
+  const sel=getSelRecips();if(!sel.length){toast('Selecteer minstens één ontvanger');return;}
+  sel.forEach(r=>{const key=r.id;if(!chatMsgs[key])chatMsgs[key]=[];chatMsgs[key].push({van:RUSERS[role].name,r:'uit',tekst:tekst,tijd:'nu'});});
+  toast(`Bericht verstuurd naar ${sel.length} ${sel.length===1?'persoon':'personen'}!`);
+  closeSheet();renderTabs();
+}
+
+const sheetBgClose=e=>{if(e.target.classList.contains('sheet-backdrop')||e.target===document.getElementById('sheet'))closeSheet();};
+const closeSheet=()=>document.getElementById('sheet').classList.remove('open');
+
+function submitSheet(){
+  const mode=sheetMode,meta=sheetMeta;
+  if(mode==='speler-add'){
+    const name=document.getElementById('mn').value.trim();if(!name){toast('Vul een naam in');return;}
+    D.spelers.push({id:nid(D.spelers),name,woonplaats:document.getElementById('mw').value,geboortedatum:document.getElementById('md2').value,lidsoort:document.getElementById('mls').value,posities:posGet(),nineGrid:ngGet(),trainerIds:msGet('mtr'),begeleiderIds:msGet('mbg'),specialistIds:msGet('msp'),status:'actief',doelen:0,aanwezig:100,blessure:null});
+    toast(name+' toegevoegd');
+  }else if(mode==='speler-edit'){
+    const s=D.spelers.find(p=>p.id===meta.id);if(!s)return;
+    s.name=document.getElementById('mn').value.trim()||s.name;s.woonplaats=document.getElementById('mw').value;s.geboortedatum=document.getElementById('md2').value;
+    s.lidsoort=document.getElementById('mls').value;s.posities=posGet();s.nineGrid=ngGet();
+    s.trainerIds=msGet('mtr');s.begeleiderIds=msGet('mbg');s.specialistIds=msGet('msp');
+    s.status=document.getElementById('mst').value;s.blessure=document.getElementById('mbl').value||null;
+    toast(s.name+' opgeslagen');
+  }else if(mode==='training-add'){
+    const naam=document.getElementById('mnm').value.trim();if(!naam){toast('Vul een naam in');return;}
+    const rep=document.getElementById('mrep').checked;
+    D.trainingen.push({id:nid(D.trainingen),naam,type:document.getElementById('mty').value,datum:document.getElementById('mdt').value,tijd:document.getElementById('mtj').value,duur:parseInt(document.getElementById('mdr').value)||90,trainerIds:msGet('mtr2'),spelerIds:msGet('msp2'),notities:document.getElementById('mno').value,herhalend:rep,herhaling:rep?document.getElementById('mfrq').value:null});
+    toast('Training gepland');
+  }else if(mode==='training-edit'){
+    const t=D.trainingen.find(x=>x.id===meta.id);if(!t)return;
+    const rep=document.getElementById('mrep').checked;
+    t.naam=document.getElementById('mnm').value.trim()||t.naam;t.type=document.getElementById('mty').value;t.datum=document.getElementById('mdt').value;t.tijd=document.getElementById('mtj').value;t.duur=parseInt(document.getElementById('mdr').value)||t.duur;t.notities=document.getElementById('mno').value;
+    t.herhalend=rep;t.herhaling=rep?document.getElementById('mfrq').value:null;t.trainerIds=msGet('mtr2');t.spelerIds=msGet('msp2');
+    toast('Training opgeslagen');
+  }else if(mode==='log-add'||mode==='log-add-speler'){
+    const titel=document.getElementById('mtit').value.trim();if(!titel){toast('Vul een titel in');return;}
+    D.logs.unshift({id:nid(D.logs),speler:parseInt(document.getElementById('mspl').value),datum:'2026-06-04',type:document.getElementById('mtyp').value,titel,nota:document.getElementById('mnot').value,auteur:RUSERS[role].name});
+    toast('Log entry opgeslagen');
+  }else if(mode==='trainer-add'){
+    const name=document.getElementById('mn').value.trim();if(!name){toast('Vul naam in');return;}
+    const c=avc(name);D.trainers.push({id:nid(D.trainers),name,spec:document.getElementById('mspec').value,avBg:c.bg,avTx:c.tx});toast(name+' toegevoegd');
+  }else if(mode==='begel-add'){
+    const name=document.getElementById('mn').value.trim();if(!name){toast('Vul naam in');return;}
+    D.begeleiders.push({id:nid(D.begeleiders),name,rol:document.getElementById('mrol').value});toast(name+' toegevoegd');
+  }else if(mode==='spec-add'){
+    const name=document.getElementById('mn').value.trim();if(!name){toast('Vul naam in');return;}
+    const c=avc(name);D.specialisten.push({id:nid(D.specialisten),name,rol:document.getElementById('mrol2').value,taak:document.getElementById('mtaak').value,email:document.getElementById('memail').value,tel:document.getElementById('mtel').value,avBg:c.bg,avTx:c.tx});toast(name+' toegevoegd');
+  }else if(mode==='nieuw-bericht'||mode==='vraag-stellen'){
+    const tekst=document.getElementById('mtekst')?.value.trim();if(!tekst){toast('Typ een bericht');return;}
+    toast('Bericht verstuurd!');
+  }
+  closeSheet();renderPage();renderTabs();
+}
+
+// ── INIT ───────────────────────────────
+setRole('trainer');
+</script>
+</body>
+</html>
