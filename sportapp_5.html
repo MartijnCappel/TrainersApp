@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SportApp</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+:root{--bg:#F5F4F0;--su:#fff;--s2:#EEECEA;--bo:rgba(0,0,0,.10);--b2:rgba(0,0,0,.18);--tx:#1A1A18;--t2:#6B6A66;--t3:#A0A09C;--ac:#2D5BE3;--abg:#EAF0FF;--atx:#1A3FA0;--gn:#1E7D4F;--gbg:#E6F5ED;--gtx:#14563A;--am:#B45309;--abg2:#FEF3E2;--atx2:#7C3D0A;--rd:#C0392B;--rbg:#FEE8E6;--rtx:#8B1F15;--pu:#6B3FA0;--pbg:#F0E8FF;--ptx:#4A2575;--tl:#0F766E;--tbg:#E6FAF8;--ttx:#0A5751;--r:10px;--rl:14px;--rx:20px;--sw:220px;--th:56px;--fn:'DM Sans',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;font-family:var(--fn);background:var(--bg);color:var(--tx);font-size:14px;}
+.app{display:flex;height:100vh;overflow:hidden;}
+.sb{width:var(--sw);flex-shrink:0;background:var(--su);border-right:1px solid var(--bo);display:flex;flex-direction:column;}
+.sbl{padding:0 16px;height:var(--th);display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--bo);font-size:16px;font-weight:600;letter-spacing:-.3px;}
+.sbl i{color:var(--ac);font-size:22px;}
+.sbn{flex:1;overflow-y:auto;padding:10px 8px;}
+.ni{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--r);cursor:pointer;font-size:13.5px;color:var(--t2);transition:background .12s,color .12s;margin:1px 0;}
+.ni:hover{background:var(--s2);color:var(--tx);}
+.ni.on{background:var(--abg);color:var(--atx);font-weight:500;}
+.ni i{font-size:17px;flex-shrink:0;}
+.nbg{margin-left:auto;background:var(--rd);color:#fff;font-size:10px;font-weight:600;padding:1px 6px;border-radius:20px;}
+.sbf{padding:12px 8px;border-top:1px solid var(--bo);}
+.rs{background:var(--s2);border-radius:var(--r);padding:8px;}
+.rsl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;font-weight:600;padding:0 4px;}
+.rb{display:flex;align-items:center;gap:7px;width:100%;padding:6px 8px;border-radius:7px;background:none;border:none;cursor:pointer;font-size:12.5px;color:var(--t2);font-family:var(--fn);transition:background .1s;margin:1px 0;}
+.rb:hover{background:rgba(0,0,0,.05);}
+.rb.on{background:var(--su);color:var(--tx);font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,.08);}
+.rdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.mn{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topb{height:var(--th);flex-shrink:0;background:var(--su);border-bottom:1px solid var(--bo);display:flex;align-items:center;padding:0 24px;gap:12px;}
+.ttl{font-size:15px;font-weight:600;flex:1;letter-spacing:-.2px;}
+.ibt{width:34px;height:34px;border-radius:var(--r);background:var(--s2);border:1px solid var(--bo);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t2);position:relative;}
+.ndt{position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:var(--rd);border:1.5px solid var(--su);}
+.avt{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;}
+.con{flex:1;overflow-y:auto;padding:24px;}
+.pl{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11.5px;font-weight:500;}
+.pl-bl{background:var(--abg);color:var(--atx);}
+.pl-gn{background:var(--gbg);color:var(--gtx);}
+.pl-am{background:var(--abg2);color:var(--atx2);}
+.pl-rd{background:var(--rbg);color:var(--rtx);}
+.pl-pu{background:var(--pbg);color:var(--ptx);}
+.pl-tl{background:var(--tbg);color:var(--ttx);}
+.pl-gy{background:var(--s2);color:var(--t2);}
+.pl-or{background:#FEF0E0;color:#9A4B0D;}
+.pl-go{background:#FFF8DC;color:#856404;}
+.card{background:var(--su);border:1px solid var(--bo);border-radius:var(--rl);padding:18px 20px;}
+.csm{padding:12px 14px;}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.ct{font-size:13.5px;font-weight:600;}
+.ca{font-size:12px;color:var(--ac);cursor:pointer;font-weight:500;}
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:20px;}
+.mc{background:var(--su);border:1px solid var(--bo);border-radius:var(--rl);padding:14px 16px;}
+.ml{font-size:11.5px;color:var(--t2);margin-bottom:6px;font-weight:500;}
+.mv{font-size:26px;font-weight:600;letter-spacing:-.5px;line-height:1;}
+.ms{font-size:11px;color:var(--t3);margin-top:4px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0;}
+.avsm{width:30px;height:30px;font-size:11px;}
+.avmd{width:36px;height:36px;font-size:13px;}
+.avlg{width:44px;height:44px;font-size:16px;}
+.row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bo);}
+.row:last-child{border-bottom:none;}
+.pt{flex:1;height:6px;background:var(--s2);border-radius:3px;overflow:hidden;}
+.pf{height:100%;border-radius:3px;transition:width .4s;}
+button{font-family:var(--fn);cursor:pointer;border-radius:var(--r);border:1px solid var(--b2);padding:7px 14px;font-size:13px;color:var(--t2);background:var(--su);transition:background .1s,color .1s;}
+button:hover{background:var(--s2);color:var(--tx);}
+.bp{background:var(--ac);color:#fff;border-color:var(--ac);font-weight:500;}
+.bp:hover{background:#2451cc;color:#fff;}
+.bd{background:var(--rbg);color:var(--rtx);border-color:transparent;}
+.bd:hover{background:#f9d0cc;}
+.bg{background:var(--gbg);color:var(--gtx);border-color:transparent;}
+.bg:hover{background:#cce8d8;}
+.bsm{padding:4px 10px;font-size:12px;}
+.bi{width:30px;height:30px;padding:0;display:flex;align-items:center;justify-content:center;}
+input,textarea,select{font-family:var(--fn);font-size:13px;background:var(--su);border:1px solid var(--b2);border-radius:var(--r);padding:8px 12px;color:var(--tx);width:100%;outline:none;transition:border .15s;}
+input:focus,textarea:focus,select:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(45,91,227,.12);}
+textarea{resize:vertical;min-height:70px;}
+label{font-size:12px;font-weight:500;color:var(--t2);display:block;margin-bottom:5px;margin-top:12px;}
+label:first-child{margin-top:0;}
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.40);z-index:1000;align-items:center;justify-content:center;}
+.mo.open{display:flex;}
+.md{background:var(--su);border-radius:var(--rx);padding:24px;width:580px;max-width:95vw;max-height:90vh;overflow-y:auto;border:1px solid var(--bo);box-shadow:0 20px 60px rgba(0,0,0,.15);animation:mi .18s ease;}
+@keyframes mi{from{transform:scale(.95) translateY(8px);opacity:0;}to{transform:none;opacity:1;}}
+.mdtl{font-size:16px;font-weight:600;margin-bottom:16px;}
+.mdac{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1A1A18;color:#F5F4F0;font-size:13px;font-weight:500;padding:10px 20px;border-radius:30px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:9999;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-4px);}
+.chl{display:grid;grid-template-columns:260px 1fr;height:calc(100vh - var(--th) - 48px);}
+.csb{background:var(--su);border:1px solid var(--bo);border-radius:var(--rl);overflow:hidden;display:flex;flex-direction:column;}
+.clist{flex:1;overflow-y:auto;}
+.ci{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;border-bottom:1px solid var(--bo);transition:background .1s;}
+.ci:hover{background:var(--s2);}
+.ci.on{background:var(--abg);}
+.cmn{background:var(--su);border:1px solid var(--bo);border-radius:var(--rl);overflow:hidden;display:flex;flex-direction:column;margin-left:12px;}
+.chd{padding:14px 18px;border-bottom:1px solid var(--bo);display:flex;align-items:center;gap:12px;}
+.cmsg{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:12px;}
+.msg{max-width:72%;}
+.min{align-self:flex-start;}
+.mout{align-self:flex-end;}
+.mb2{padding:10px 14px;border-radius:14px;font-size:13.5px;line-height:1.5;}
+.min .mb2{background:var(--s2);color:var(--tx);border-radius:4px 14px 14px 14px;}
+.mout .mb2{background:var(--ac);color:#fff;border-radius:14px 4px 14px 14px;}
+.mm{font-size:10.5px;color:var(--t3);margin-top:4px;}
+.mout .mm{text-align:right;}
+.cinp{padding:14px 16px;border-top:1px solid var(--bo);display:flex;gap:8px;align-items:flex-end;}
+.cinp textarea{min-height:40px;max-height:120px;flex:1;}
+/* Week calendar */
+.wg{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:16px;}
+.dc{background:var(--su);border:1px solid var(--bo);border-radius:var(--r);overflow:hidden;}
+.dh{padding:7px 8px;border-bottom:1px solid var(--bo);text-align:center;}
+.dna{font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;}
+.dnu{font-size:15px;font-weight:600;}
+.dc.tod .dh{background:var(--abg);}
+.dc.tod .dnu{color:var(--ac);}
+.dev{padding:5px;display:flex;flex-direction:column;gap:3px;min-height:55px;}
+.ec{padding:4px 7px;border-radius:6px;font-size:10.5px;font-weight:500;cursor:pointer;}
+.ec.rec{border-left:3px solid rgba(0,0,0,.22);}
+/* nav controls */
+.wnav{display:flex;align-items:center;gap:8px;}
+/* trainer blocks */
+.tbl{background:var(--su);border:1px solid var(--bo);border-radius:var(--rl);margin-bottom:10px;overflow:hidden;}
+.thd{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;}
+.thd:hover{background:var(--s2);}
+.sit{display:flex;align-items:center;gap:8px;padding:7px 14px;border-top:1px solid var(--bo);}
+.sit:hover{background:var(--s2);}
+.sac{margin-left:auto;display:flex;gap:4px;opacity:0;transition:opacity .1s;}
+.sit:hover .sac{opacity:1;}
+.le{padding:10px 0;border-bottom:1px solid var(--bo);display:flex;gap:12px;}
+.le:last-child{border-bottom:none;}
+.ldt{width:10px;height:10px;border-radius:50%;margin-top:4px;flex-shrink:0;}
+.emp{text-align:center;padding:48px 0;color:var(--t3);}
+.emp i{font-size:32px;margin-bottom:10px;display:block;}
+.ng{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:200px;margin-top:6px;}
+.nc{aspect-ratio:1;border:2px solid var(--b2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;cursor:pointer;color:var(--t3);background:var(--s2);transition:all .15s;}
+.nc.sel{background:var(--ac);border-color:var(--ac);color:#fff;}
+.nc:hover:not(.sel){background:var(--abg);border-color:var(--ac);color:var(--ac);}
+.tg{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:12px;background:var(--s2);color:var(--t2);border:1px solid var(--bo);}
+.tg.act{background:var(--abg);color:var(--atx);border-color:var(--ac);}
+.tg.clk{cursor:pointer;}
+.tg.clk:hover{border-color:var(--ac);color:var(--ac);}
+/* multi-select */
+.mswrap{position:relative;}
+.msbox{border:1px solid var(--b2);border-radius:var(--r);padding:6px 8px;display:flex;flex-wrap:wrap;gap:5px;min-height:40px;cursor:pointer;background:var(--su);}
+.msch{display:flex;align-items:center;gap:4px;background:var(--abg);color:var(--atx);border-radius:20px;padding:3px 8px;font-size:12px;font-weight:500;}
+.msch button{width:16px;height:16px;padding:0;border:none;background:none;color:var(--atx);font-size:14px;line-height:1;cursor:pointer;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.msch button:hover{background:rgba(45,91,227,.2);}
+.msdrop{position:absolute;top:100%;left:0;right:0;background:var(--su);border:1px solid var(--b2);border-radius:var(--r);box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:200;max-height:180px;overflow-y:auto;display:none;margin-top:2px;}
+.msdrop.open{display:block;}
+.msopt{padding:9px 12px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px;}
+.msopt:hover{background:var(--s2);}
+.msopt.ch{color:var(--ac);font-weight:500;}
+.msopt .chk{width:16px;height:16px;border:2px solid var(--b2);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.msopt.ch .chk{background:var(--ac);border-color:var(--ac);}
+.spcard{background:var(--su);border:1px solid var(--bo);border-radius:var(--rl);padding:16px 18px;display:flex;gap:14px;align-items:flex-start;}
+.pr{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bo);}
+.pr:last-child{border-bottom:none;}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.tab-bar{display:flex;gap:4px;margin-bottom:16px;border-bottom:1px solid var(--bo);padding-bottom:0;}
+.tab{padding:8px 14px;cursor:pointer;font-size:13px;color:var(--t2);border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s;}
+.tab:hover{color:var(--tx);}
+.tab.on{color:var(--ac);border-bottom-color:var(--ac);font-weight:500;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--b2);border-radius:4px;}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sb">
+  <div class="sbl"><i class="ti ti-ball-football"></i>SportApp</div>
+  <nav class="sbn" id="sbn"></nav>
+  <div class="sbf">
+    <div class="rs">
+      <div class="rsl">Aangemeld als</div>
+      <button class="rb" onclick="setRole('coordinator')" id="rb-coordinator"><span class="rdot" style="background:#6B3FA0"></span>Coördinator</button>
+      <button class="rb" onclick="setRole('trainer')" id="rb-trainer"><span class="rdot" style="background:#2D5BE3"></span>Trainer</button>
+      <button class="rb" onclick="setRole('begeleider')" id="rb-begeleider"><span class="rdot" style="background:#0F766E"></span>Begeleider</button>
+      <button class="rb" onclick="setRole('specialist')" id="rb-specialist"><span class="rdot" style="background:#B45309"></span>Specialist</button>
+      <button class="rb" onclick="setRole('speler')" id="rb-speler"><span class="rdot" style="background:#1E7D4F"></span>Speler</button>
+    </div>
+  </div>
+</aside>
+<div class="mn">
+  <div class="topb">
+    <div class="ttl" id="pgtitle">Dashboard</div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="ibt"><i class="ti ti-bell" style="font-size:17px"></i><div class="ndt"></div></div>
+      <div class="avt avmd" id="usrav"></div>
+    </div>
+  </div>
+  <div class="con" id="con"></div>
+</div>
+</div>
+<div class="mo" id="modal" onclick="mbgclose(event)">
+  <div class="md" onclick="event.stopPropagation()">
+    <div class="mdtl" id="mdtitle"></div>
+    <div id="mdbody"></div>
+    <div class="mdac" id="mdacts"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+// ─── CONSTANTS ───────────────────────────────────────
+const POSITIES=['Linkerhoek','Linkeropbouw','Midopbouw','Rechteropbouw','Rechterhoek','Cirkel','Keeper'];
+const LIDSOORTEN=['Basis','Kracht','Fysio','Kracht + Fysio','Selectie'];
+const LID_CLR={Basis:'gy',Kracht:'pu',Fysio:'tl','Kracht + Fysio':'or',Selectie:'go'};
+const TRTYPES=['conditie','kracht','tactiek','herstel','positie','wedstrijd'];
+const TCLR={conditie:'bl',kracht:'pu',tactiek:'tl',herstel:'gn',positie:'or',wedstrijd:'am'};
+const AVC=[{bg:'#EAF0FF',tx:'#1A3FA0'},{bg:'#E6FAF8',tx:'#0A5751'},{bg:'#F0E8FF',tx:'#4A2575'},{bg:'#FEE8E6',tx:'#8B1F15'},{bg:'#E6F5ED',tx:'#14563A'},{bg:'#FEF3E2',tx:'#7C3D0A'},{bg:'#F5F4F0',tx:'#5F5E5A'}];
+
+// ─── DATA ────────────────────────────────────────────
+const D={
+  trainers:[
+    {id:1,name:'Marc Vos',spec:'Hoofdtrainer',avBg:'#EAF0FF',avTx:'#1A3FA0'},
+    {id:2,name:'Inge de Boer',spec:'Krachtrainer',avBg:'#E6FAF8',avTx:'#0A5751'},
+    {id:3,name:'Remi Smits',spec:'Assistent-trainer',avBg:'#F0E8FF',avTx:'#4A2575'},
+  ],
+  begeleiders:[
+    {id:20,name:'Joost Bakker',rol:'Teammanager'},
+    {id:21,name:'Petra van Dam',rol:'Assistent'},
+  ],
+  specialisten:[
+    {id:10,name:'Dr. P. Silva',rol:'Fysiotherapeut',taak:'Revalidatie en blessurepreventie voor alle spelers. Wekelijkse screening.',avBg:'#FEE8E6',avTx:'#8B1F15',email:'silva@sportapp.nl',tel:'06-12345678'},
+    {id:11,name:'Anne Mulder',rol:'Voedingsdeskundige',taak:'Voedingsplannen, hydratatieschema\'s en gewichtsmanagement.',avBg:'#E6F5ED',avTx:'#14563A',email:'mulder@sportapp.nl',tel:'06-87654321'},
+    {id:12,name:'Kai Hendriks',rol:'Sportpsycholoog',taak:'Mentale begeleiding, prestatiepsychologie en teamcohesie.',avBg:'#FEF3E2',avTx:'#7C3D0A',email:'hendriks@sportapp.nl',tel:'06-11223344'},
+  ],
+  spelers:[
+    {id:101,name:'Tom Jansen',woonplaats:'Amsterdam',geboortedatum:'2001-03-14',lidsoort:'Selectie',posities:['Rechterhoek','Rechteropbouw'],nineGrid:7,trainerIds:[1],begeleiderIds:[20],specialistIds:[10],status:'actief',doelen:88,aanwezig:92,blessure:null},
+    {id:102,name:'Lisa Brouwer',woonplaats:'Haarlem',geboortedatum:'2000-07-22',lidsoort:'Kracht',posities:['Midopbouw'],nineGrid:5,trainerIds:[1],begeleiderIds:[20],specialistIds:[],status:'actief',doelen:72,aanwezig:85,blessure:null},
+    {id:103,name:'Daan Kok',woonplaats:'Utrecht',geboortedatum:'2002-11-05',lidsoort:'Basis',posities:['Linkeropbouw','Linkerhoek'],nineGrid:4,trainerIds:[1],begeleiderIds:[21],specialistIds:[11],status:'aandacht',doelen:45,aanwezig:68,blessure:null},
+    {id:104,name:'Sara Roos',woonplaats:'Rotterdam',geboortedatum:'2001-06-18',lidsoort:'Fysio',posities:['Keeper'],nineGrid:2,trainerIds:[2],begeleiderIds:[20],specialistIds:[10],status:'geblesseerd',doelen:10,aanwezig:30,blessure:'Knieblessure – week 3 van 4'},
+    {id:105,name:'Mees Hoekstra',woonplaats:'Leiden',geboortedatum:'2003-01-30',lidsoort:'Kracht + Fysio',posities:['Rechterhoek'],nineGrid:8,trainerIds:[1,2],begeleiderIds:[21],specialistIds:[],status:'actief',doelen:91,aanwezig:97,blessure:null},
+    {id:106,name:'Fenna Laan',woonplaats:'Delft',geboortedatum:'2000-09-12',lidsoort:'Selectie',posities:['Cirkel','Midopbouw'],nineGrid:6,trainerIds:[3],begeleiderIds:[20],specialistIds:[12],status:'actief',doelen:79,aanwezig:88,blessure:null},
+    {id:107,name:'Bas Vermeer',woonplaats:'Alkmaar',geboortedatum:'2002-04-25',lidsoort:'Basis',posities:['Linkeropbouw'],nineGrid:3,trainerIds:[],begeleiderIds:[],specialistIds:[],status:'actief',doelen:60,aanwezig:75,blessure:null},
+  ],
+  trainingen:[
+    {id:201,naam:'Conditietraining A1',type:'conditie',datum:'2026-06-02',tijd:'19:00',duur:90,trainerIds:[1],spelerIds:[101,102,103],notities:'Focus op interval runs',herhalend:false,herhaling:null},
+    {id:202,naam:'Krachtprogramma benen',type:'kracht',datum:'2026-06-03',tijd:'18:30',duur:75,trainerIds:[2],spelerIds:[104,105],notities:'Squat en deadlift progressie',herhalend:true,herhaling:'wekelijks'},
+    {id:203,naam:'Tactische sessie',type:'tactiek',datum:'2026-06-05',tijd:'10:00',duur:120,trainerIds:[1,3],spelerIds:[101,102,103,105,106],notities:'Pressing-schema bespreken',herhalend:false,herhaling:null},
+    {id:204,naam:'Positietraining rechtsbuiten',type:'positie',datum:'2026-06-09',tijd:'18:00',duur:60,trainerIds:[1],spelerIds:[101,105],notities:'1-op-1 situaties',herhalend:true,herhaling:'wekelijks'},
+    {id:205,naam:'Oefenwedstrijd thuis',type:'wedstrijd',datum:'2026-06-12',tijd:'15:00',duur:90,trainerIds:[1,2,3],spelerIds:[101,102,103,105,106],notities:'vs. HC Rood',herhalend:false,herhaling:null},
+    {id:206,naam:'Hersteltraining',type:'herstel',datum:'2026-06-10',tijd:'17:00',duur:60,trainerIds:[3],spelerIds:[101,102,106],notities:'',herhalend:true,herhaling:'tweewekelijks'},
+  ],
+  logs:[
+    {id:301,speler:101,datum:'2026-05-27',type:'training',titel:'Conditietraining voltooid',nota:'Goede prestatie, snelheid verbeterd.',auteur:'Marc Vos',auteurRol:'trainer'},
+    {id:302,speler:103,datum:'2026-05-26',type:'aandacht',titel:'Achterstand weekschema',nota:'Daan heeft 3 trainingen gemist.',auteur:'Marc Vos',auteurRol:'trainer'},
+    {id:303,speler:104,datum:'2026-05-24',type:'blessure',titel:'Knieblessure geconstateerd',nota:'MRI gehad, 4 weken rust.',auteur:'Dr. P. Silva',auteurRol:'specialist'},
+    {id:304,speler:105,datum:'2026-05-25',type:'training',titel:'PR squat 120kg',nota:'Persoonlijk record.',auteur:'Inge de Boer',auteurRol:'trainer'},
+    {id:305,speler:102,datum:'2026-05-23',type:'voeding',titel:'Voedingsplan aangepast',nota:'Koolhydraten verhoogd.',auteur:'Anne Mulder',auteurRol:'specialist'},
+  ],
+  berichten:[
+    {id:401,van:103,vanNaam:'Daan Kok',aan:1,aanNaam:'Marc Vos',tekst:'Mijn knie doet pijn na de training. Moet ik rust nemen?',tijd:'09:14',gelezen:false},
+    {id:402,van:1,vanNaam:'Marc Vos',aan:103,aanNaam:'Daan Kok',tekst:'Neem vandaag rust, ijs erop.',tijd:'09:22',gelezen:true},
+    {id:403,van:103,vanNaam:'Daan Kok',aan:1,aanNaam:'Marc Vos',tekst:'Ok bedankt! Wanneer kan ik weer meedoen?',tijd:'09:25',gelezen:false},
+    {id:404,van:102,vanNaam:'Lisa Brouwer',aan:1,aanNaam:'Marc Vos',tekst:'Kan ik het schema voor woensdag aanpassen?',tijd:'gisteren',gelezen:false},
+    {id:405,van:10,vanNaam:'Dr. P. Silva',aan:1,aanNaam:'Marc Vos',tekst:'Sara Roos mag volgende week voorzichtig hervatten.',tijd:'ma',gelezen:true},
+  ],
+  expanded:new Set([1,2,3]),
+};
+
+let chatMsgs={
+  103:[{van:'Daan Kok',r:'in',tekst:'Mijn knie doet pijn. Moet ik rust nemen?',tijd:'09:14'},{van:'Marc Vos',r:'uit',tekst:'Neem vandaag rust, ijs erop.',tijd:'09:22'},{van:'Daan Kok',r:'in',tekst:'Ok bedankt!',tijd:'09:25'}],
+  102:[{van:'Lisa Brouwer',r:'in',tekst:'Kan ik het schema voor woensdag aanpassen?',tijd:'gisteren'}],
+  10:[{van:'Dr. P. Silva',r:'in',tekst:'Sara Roos mag volgende week voorzichtig hervatten.',tijd:'ma'}],
+};
+
+// ─── STATE ───────────────────────────────────────────
+let role='trainer',page='dashboard',mMode='',mMeta={},chatId=103;
+let calWeekOffset=0; // weeks from today
+
+// ─── HELPERS ─────────────────────────────────────────
+const avc=n=>AVC[n.charCodeAt(0)%AVC.length];
+const ini=n=>n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+const av=(name,sz,bg,tx)=>{const c=bg?{bg,tx}:avc(name);return`<div class="av ${sz||'avsm'}" style="background:${c.bg};color:${c.tx}">${ini(name)}</div>`;};
+const pl=(l,t)=>`<span class="pl pl-${t}">${l}</span>`;
+const sPl=s=>({actief:pl('Actief','gn'),aandacht:pl('Aandacht','am'),geblesseerd:pl('Geblesseerd','rd')}[s]||pl('?','gy'));
+const lidPl=l=>pl(l,LID_CLR[l]||'gy');
+const logDot=t=>({training:'#1E7D4F',aandacht:'#B45309',blessure:'#C0392B',voeding:'#0F766E'}[t]||'#888');
+
+function getWeekDates(offsetWeeks){
+  // Start from Monday of current week + offset
+  const now=new Date('2026-06-04'); // simulated "today" = Thursday Jun 4
+  const dayOfWeek=now.getDay();
+  const diff=now.getDate()-(dayOfWeek===0?6:dayOfWeek-1);
+  const monday=new Date(now);monday.setDate(diff+offsetWeeks*7);
+  const days=[];
+  for(let i=0;i<7;i++){const d=new Date(monday);d.setDate(monday.getDate()+i);days.push(d);}
+  return days;
+}
+const fmtDateObj=d=>d.toISOString().slice(0,10);
+const fmtD=d=>{if(!d)return'';try{return new Date(d).toLocaleDateString('nl-NL',{weekday:'short',day:'numeric',month:'short'});}catch{return d;}};
+const fmtAge=d=>{if(!d)return'';return Math.floor((new Date('2026-06-04')-new Date(d))/31557600000)+' jaar';};
+const byId=(a,id)=>a.find(x=>x.id===id);
+const nid=a=>Math.max(0,...a.map(x=>x.id))+1;
+const toast=msg=>{const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);};
+
+const RUSERS={
+  coordinator:{name:'Sandra Berg',avBg:'#F0E8FF',avTx:'#4A2575',id:99},
+  trainer:{name:'Marc Vos',avBg:'#EAF0FF',avTx:'#1A3FA0',id:1},
+  begeleider:{name:'Joost Bakker',avBg:'#FEF3E2',avTx:'#7C3D0A',id:20},
+  specialist:{name:'Dr. P. Silva',avBg:'#FEE8E6',avTx:'#8B1F15',id:10},
+  speler:{name:'Tom Jansen',avBg:'#E6F5ED',avTx:'#14563A',spelerId:101},
+};
+
+const visSp=()=>{
+  const u=RUSERS[role];
+  if(role==='coordinator')return D.spelers;
+  if(role==='trainer')return D.spelers.filter(s=>(s.trainerIds||[]).includes(u.id));
+  if(role==='begeleider')return D.spelers.filter(s=>(s.begeleiderIds||[]).includes(u.id));
+  if(role==='specialist')return D.spelers.filter(s=>(s.specialistIds||[]).includes(u.id));
+  if(role==='speler')return D.spelers.filter(s=>s.id===u.spelerId);
+  return D.spelers;
+};
+
+const weekT=(weekDays)=>{
+  const res=[];
+  D.trainingen.forEach(t=>{
+    weekDays.forEach(wd=>{
+      const wds=fmtDateObj(wd);
+      if(t.datum===wds){res.push({...t});}
+      else if(t.herhalend){
+        const diff=Math.round((wd-new Date(t.datum))/86400000);
+        const ok=(t.herhaling==='wekelijks'&&diff>0&&diff%7===0)||(t.herhaling==='tweewekelijks'&&diff>0&&diff%14===0);
+        if(ok)res.push({...t,datum:wds,isInst:true});
+      }
+    });
+  });
+  return res;
+};
+
+// ─── MULTI-SELECT ────────────────────────────────────
+const MS={};
+function msRender(id){
+  const s=MS[id];if(!s)return;
+  const chips=document.getElementById('ms-chips-'+id);
+  if(chips)chips.innerHTML=[...s.sel].map(sid=>{const it=s.items.find(x=>x.id===sid);return it?`<span class="msch">${it[s.lk]}<button type="button" onclick="event.stopPropagation();msRm('${id}',${sid})">&times;</button></span>`:''}).join('');
+  const ph=document.getElementById('ms-ph-'+id);if(ph)ph.style.display=s.sel.size?'none':'inline';
+  const hv=document.getElementById('ms-hv-'+id);if(hv)hv.value=[...s.sel].join(',');
+  const drop=document.getElementById('ms-drop-'+id);
+  if(drop)drop.innerHTML=s.items.map(it=>`<div class="msopt${s.sel.has(it.id)?' ch':''}" onclick="msTog('${id}',${it.id})"><span class="chk">${s.sel.has(it.id)?'<i class="ti ti-check" style="font-size:10px;color:#fff"></i>':''}</span>${it[s.lk]}</div>`).join('');
+}
+function msTog(id,itemId){const s=MS[id];if(!s)return;s.sel.has(itemId)?s.sel.delete(itemId):s.sel.add(itemId);msRender(id);}
+function msRm(id,itemId){const s=MS[id];if(!s)return;s.sel.delete(itemId);msRender(id);}
+function msOpen(id){document.querySelectorAll('.msdrop.open').forEach(d=>{if(d.id!=='ms-drop-'+id)d.classList.remove('open');});document.getElementById('ms-drop-'+id)?.classList.toggle('open');}
+function msGet(id){const hv=document.getElementById('ms-hv-'+id);return hv?hv.value.split(',').map(Number).filter(Boolean):[];}
+function msWidget(id,items,sel,lk){
+  const selected=new Set((sel||[]).map(Number));MS[id]={items,sel:selected,lk};
+  const chips=[...selected].map(sid=>{const it=items.find(x=>x.id===sid);return it?`<span class="msch">${it[lk]}<button type="button" onclick="event.stopPropagation();msRm('${id}',${sid})">&times;</button></span>`:''}).join('');
+  const opts=items.map(it=>`<div class="msopt${selected.has(it.id)?' ch':''}" onclick="msTog('${id}',${it.id})"><span class="chk">${selected.has(it.id)?'<i class="ti ti-check" style="font-size:10px;color:#fff"></i>':''}</span>${it[lk]}</div>`).join('');
+  return`<div class="mswrap"><div class="msbox" onclick="msOpen('${id}')"><span id="ms-chips-${id}" style="display:contents">${chips}</span><span id="ms-ph-${id}" style="font-size:13px;color:var(--t3)"${selected.size?' hidden':''}>Klik om te selecteren…</span></div><div class="msdrop" id="ms-drop-${id}">${opts}</div><input type="hidden" id="ms-hv-${id}" value="${[...selected].join(',')}"></div>`;
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.mswrap'))document.querySelectorAll('.msdrop.open').forEach(d=>d.classList.remove('open'));});
+
+// ─── NINE GRID & POSITIES ─────────────────────────────
+const ngWidget=sel=>`<div class="ng" id="ngw">${['7','8','9','4','5','6','1','2','3'].map(n=>`<div class="nc${String(sel)===n?' sel':''}" onclick="ngSel(${n})">${n}</div>`).join('')}</div><input type="hidden" id="ngv" value="${sel||''}">`;
+const ngSel=n=>{document.querySelectorAll('.nc').forEach(c=>c.classList.toggle('sel',c.textContent==n));document.getElementById('ngv').value=n;};
+const ngGet=()=>parseInt(document.getElementById('ngv')?.value)||null;
+const posWidget=sel=>`<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px" id="posw">${POSITIES.map(p=>`<span class="tg clk${(sel||[]).includes(p)?' act':''}" onclick="posTog('${p}')">${p}</span>`).join('')}</div><input type="hidden" id="posv" value="${(sel||[]).join(',')}">`;
+const posTog=p=>{const inp=document.getElementById('posv');let v=inp.value?inp.value.split(',').filter(Boolean):[];v.includes(p)?v=v.filter(x=>x!==p):v.push(p);inp.value=v.join(',');document.querySelectorAll('#posw .tg').forEach(t=>t.classList.toggle('act',v.includes(t.textContent)));};
+const posGet=()=>{const v=document.getElementById('posv')?.value;return v?v.split(',').filter(Boolean):[];};
+
+// ─── NAV ─────────────────────────────────────────────
+const NAV={
+  coordinator:[{id:'dashboard',label:'Dashboard',icon:'ti-layout-dashboard'},{id:'coordinator',label:'Spelersbeheer',icon:'ti-shield-half'},{id:'trainingen',label:'Trainingen',icon:'ti-calendar'},{id:'berichten',label:'Berichten',icon:'ti-message-2',badge:true},{id:'specialisten',label:'Specialisten',icon:'ti-stethoscope'}],
+  trainer:[{id:'dashboard',label:'Dashboard',icon:'ti-layout-dashboard'},{id:'spelers',label:'Mijn spelers',icon:'ti-users'},{id:'trainingen',label:'Trainingen',icon:'ti-calendar'},{id:'voortgang',label:'Voortgang',icon:'ti-chart-line'},{id:'berichten',label:'Berichten',icon:'ti-message-2',badge:true},{id:'logboek',label:'Logboek',icon:'ti-notebook'},{id:'specialisten',label:'Specialisten',icon:'ti-stethoscope'}],
+  begeleider:[{id:'dashboard',label:'Dashboard',icon:'ti-layout-dashboard'},{id:'spelers',label:'Mijn spelers',icon:'ti-users'},{id:'trainingen',label:'Trainingen',icon:'ti-calendar'},{id:'voortgang',label:'Voortgang',icon:'ti-chart-line'},{id:'berichten',label:'Berichten',icon:'ti-message-2',badge:true},{id:'logboek',label:'Logboek',icon:'ti-notebook'}],
+  specialist:[{id:'dashboard',label:'Dashboard',icon:'ti-layout-dashboard'},{id:'spelers',label:'Mijn spelers',icon:'ti-users'},{id:'berichten',label:'Berichten',icon:'ti-message-2',badge:true},{id:'logboek',label:'Logboek',icon:'ti-notebook'},{id:'team',label:'Team & staf',icon:'ti-users-group'}],
+  speler:[{id:'mijnschema',label:'Mijn schema',icon:'ti-calendar'},{id:'mijnvoortgang',label:'Mijn voortgang',icon:'ti-chart-line'},{id:'berichten',label:'Berichten',icon:'ti-message-2'},{id:'specialisten',label:'Specialisten',icon:'ti-stethoscope'}],
+};
+const TITLES={dashboard:'Dashboard',coordinator:'Spelersbeheer',spelers:'Mijn spelers',trainingen:'Trainingen & planning',voortgang:'Voortgang',berichten:'Berichten',logboek:'Logboek',specialisten:'Specialisten',mijnschema:'Mijn schema',mijnvoortgang:'Mijn voortgang',team:'Team & staf'};
+
+function renderSB(){
+  const unread=D.berichten.filter(b=>!b.gelezen).length;
+  document.getElementById('sbn').innerHTML=(NAV[role]||[]).map(item=>`<div class="ni${page===item.id?' on':''}" onclick="goTo('${item.id}')"><i class="ti ${item.icon}"></i>${item.label}${item.badge&&unread?`<span class="nbg">${unread}</span>`:''}</div>`).join('');
+  document.querySelectorAll('.rb').forEach(b=>b.classList.remove('on'));
+  const rb=document.getElementById('rb-'+role);if(rb)rb.classList.add('on');
+  const u=RUSERS[role];const el=document.getElementById('usrav');
+  el.style.background=u.avBg;el.style.color=u.avTx;el.textContent=ini(u.name);
+}
+const goTo=p=>{page=p;document.getElementById('pgtitle').textContent=TITLES[p]||p;renderSB();renderPage();};
+const setRole=r=>{role=r;page=NAV[r]?.[0]?.id||'dashboard';document.getElementById('pgtitle').textContent=TITLES[page]||page;renderSB();renderPage();toast('Aangemeld als '+RUSERS[r].name);};
+
+// ─── ROUTER ──────────────────────────────────────────
+function renderPage(){
+  const c=document.getElementById('con');
+  const map={dashboard:pgDB,coordinator:pgCoord,spelers:pgSpelers,trainingen:pgTrain,voortgang:pgVoortgang,berichten:pgBerichten,logboek:pgLogboek,specialisten:pgSpec,mijnschema:pgMijnSchema,mijnvoortgang:pgMijnVoortgang,team:pgTeam};
+  c.innerHTML=(map[page]||(() =>'<div class="emp"><i class="ti ti-construction"></i><p>In ontwikkeling</p></div>'))();
+  if(page==='berichten')setTimeout(()=>{const el=document.getElementById('cmsg');if(el)el.scrollTop=el.scrollHeight;},50);
+}
+
+// ─── WEEK CALENDAR COMPONENT ─────────────────────────
+function calendarHTML(weekDays,todayStr,wt,canManage){
+  const dayNames=['Ma','Di','Wo','Do','Vr','Za','Zo'];
+  const weekStart=fmtDateObj(weekDays[0]);const weekEnd=fmtDateObj(weekDays[6]);
+  const monthLabel=weekDays[0].toLocaleDateString('nl-NL',{month:'long',year:'numeric'});
+  return`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <div class="wnav">
+      <button class="bsm" onclick="calPrev()"><i class="ti ti-chevron-left"></i></button>
+      <span style="font-size:14px;font-weight:600;min-width:200px;text-align:center">${weekDays[0].toLocaleDateString('nl-NL',{day:'numeric',month:'short'})} – ${weekDays[6].toLocaleDateString('nl-NL',{day:'numeric',month:'short',year:'numeric'})}</span>
+      <button class="bsm" onclick="calNext()"><i class="ti ti-chevron-right"></i></button>
+      <button class="bsm" onclick="calToday()">Vandaag</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span style="font-size:11px;color:var(--t3);border-left:3px solid rgba(0,0,0,.25);padding-left:6px">&#x21BB; Herhalend</span>
+      ${canManage?`<button class="bp" onclick="openM('training-add')"><i class="ti ti-plus" style="margin-right:5px"></i>Training plannen</button>`:''}
+    </div>
+  </div>
+  <div class="wg" style="margin-bottom:20px">
+    ${weekDays.map((day,i)=>{
+      const ds=fmtDateObj(day);
+      const evts=wt.filter(t=>t.datum===ds);
+      return`<div class="dc${ds===todayStr?' tod':''}">
+        <div class="dh"><div class="dna">${dayNames[i]}</div><div class="dnu">${day.getDate()}</div></div>
+        <div class="dev">
+          ${evts.map(e=>`<div class="ec pl-${TCLR[e.type]||'gy'}${e.isInst?' rec':''}" onclick="openM('training-detail',{id:${e.id}})">
+            <div style="font-size:9.5px">${e.tijd}${e.isInst?' &#x21BB;':''}</div>
+            <div style="font-size:10.5px;font-weight:600;line-height:1.2">${e.naam}</div>
+          </div>`).join('')}
+        </div>
+      </div>`;}).join('')}
+  </div>`;
+}
+function calPrev(){calWeekOffset--;renderPage();}
+function calNext(){calWeekOffset++;renderPage();}
+function calToday(){calWeekOffset=0;renderPage();}
+
+// ─── PAGES ───────────────────────────────────────────
+function pgDB(){
+  const sp=visSp();const actief=sp.filter(s=>s.status==='actief').length;
+  const gem=sp.length?Math.round(sp.reduce((a,s)=>a+s.doelen,0)/sp.length):0;
+  const unread=D.berichten.filter(b=>!b.gelezen).length;
+  return`<div class="mg">
+    <div class="mc"><div class="ml">Actieve spelers</div><div class="mv">${actief}</div><div class="ms">${sp.filter(s=>s.status==='geblesseerd').length} geblesseerd</div></div>
+    <div class="mc"><div class="ml">Aandacht nodig</div><div class="mv">${sp.filter(s=>s.status==='aandacht').length}</div></div>
+    <div class="mc"><div class="ml">Ongelezen berichten</div><div class="mv">${unread}</div></div>
+    <div class="mc"><div class="ml">Gem. voortgang</div><div class="mv">${gem}%</div></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><span class="ct">Spelers</span><span class="ca" onclick="goTo('spelers')">Alle &rarr;</span></div>
+      ${sp.slice(0,6).map(s=>`<div class="row">${av(s.name,'avsm')}
+        <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500">${s.name}</div>
+        <div style="font-size:11px;color:var(--t3)">${(s.posities||[]).join(' · ')}</div></div>
+        ${s.nineGrid?`<div style="width:24px;height:24px;border-radius:6px;background:var(--abg);color:var(--atx);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">${s.nineGrid}</div>`:''}
+        ${lidPl(s.lidsoort||'Basis')}${sPl(s.status)}</div>`).join('')}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card csm">
+        <div class="ch"><span class="ct">Komende trainingen</span><span class="ca" onclick="goTo('trainingen')">Planning &rarr;</span></div>
+        ${D.trainingen.filter(t=>t.datum>='2026-06-04').slice(0,4).map(t=>`<div class="row">
+          <span class="pl pl-${TCLR[t.type]||'gy'}">${t.type}</span>
+          <div style="flex:1"><div style="font-size:13px;font-weight:500">${t.naam}</div>
+          <div style="font-size:11px;color:var(--t3)">${fmtD(t.datum)} · ${t.tijd}</div></div>
+          ${t.herhalend?'<span style="font-size:14px;color:var(--t3)">&#x21BB;</span>':''}
+          ${pl(t.spelerIds.length+' sp.','gy')}</div>`).join('')}
+      </div>
+      <div class="card csm">
+        <div class="ch"><span class="ct">Recente berichten</span><span class="ca" onclick="goTo('berichten')">Alles &rarr;</span></div>
+        ${D.berichten.slice(0,4).map(b=>`<div class="row" style="cursor:pointer" onclick="goTo('berichten')">
+          ${b.gelezen?'<span style="width:7px;flex-shrink:0"></span>':'<span style="width:7px;height:7px;border-radius:50%;background:var(--ac);flex-shrink:0;display:inline-block"></span>'}
+          ${av(b.vanNaam,'avsm')}
+          <div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:500">${b.vanNaam}</div>
+          <div style="font-size:11px;color:var(--t3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px">${b.tekst}</div></div>
+          <span style="font-size:11px;color:var(--t3);flex-shrink:0">${b.tijd}</span></div>`).join('')}
+      </div>
+    </div>
+  </div>
+  ${sp.some(s=>s.status!=='actief')?`<div class="card"><div class="ch"><span class="ct">Aandachtspunten</span></div>
+    ${sp.filter(s=>s.status!=='actief').map(s=>`<div class="row">${av(s.name,'avsm')}<div style="flex:1">${s.name} <span style="font-size:11px;color:var(--t3)">· ${(s.posities||[]).join(', ')}</span></div>${sPl(s.status)}${s.blessure?`<span style="font-size:11.5px;color:var(--t3)">${s.blessure}</span>`:''}</div>`).join('')}</div>`:''}`;
+}
+
+function pgCoord(){
+  const ontkoppeld=D.spelers.filter(s=>!(s.trainerIds||[]).length);
+  return`<div class="mg">
+    <div class="mc"><div class="ml">Trainers</div><div class="mv">${D.trainers.length}</div></div>
+    <div class="mc"><div class="ml">Begeleiders</div><div class="mv">${D.begeleiders.length}</div></div>
+    <div class="mc"><div class="ml">Specialisten</div><div class="mv">${D.specialisten.length}</div></div>
+    <div class="mc"><div class="ml">Spelers totaal</div><div class="mv">${D.spelers.length}</div></div>
+    <div class="mc"><div class="ml">Niet gekoppeld</div><div class="mv">${ontkoppeld.length}</div>${ontkoppeld.length?'<div class="ms" style="color:var(--am)">Actie vereist</div>':'<div class="ms" style="color:var(--gn)">Alles ok</div>'}</div>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:16px">
+    <button class="bp" onclick="openM('speler-add')"><i class="ti ti-user-plus" style="margin-right:5px"></i>Speler toevoegen</button>
+    <button onclick="openM('trainer-add')"><i class="ti ti-plus" style="margin-right:5px"></i>Trainer</button>
+    <button onclick="openM('begel-add')"><i class="ti ti-plus" style="margin-right:5px"></i>Begeleider</button>
+    <button onclick="openM('spec-add')"><i class="ti ti-plus" style="margin-right:5px"></i>Specialist</button>
+  </div>
+  <div class="tab-bar">
+    <div class="tab on" onclick="coordTab(this,'coord-trainers')">Trainers & spelers</div>
+    <div class="tab" onclick="coordTab(this,'coord-begel')">Begeleiders</div>
+    <div class="tab" onclick="coordTab(this,'coord-spec')">Specialisten</div>
+    <div class="tab" onclick="coordTab(this,'coord-ontkoppeld')">Niet gekoppeld (${ontkoppeld.length})</div>
+  </div>
+  <div id="coord-trainers">
+    ${D.trainers.map(t=>{
+      const ts=D.spelers.filter(s=>(s.trainerIds||[]).includes(t.id));
+      const open=D.expanded.has(t.id);
+      return`<div class="tbl">
+        <div class="thd" onclick="togB(${t.id})">${av(t.name,'avsm',t.avBg,t.avTx)}
+          <div style="flex:1"><div style="font-size:13px;font-weight:600">${t.name}</div><div style="font-size:11px;color:var(--t3)">${t.spec}</div></div>
+          ${pl(ts.length+' spelers','bl')}
+          <i class="ti ti-chevron-down" style="font-size:13px;color:var(--t3);transform:${open?'rotate(180deg)':'none'};transition:transform .15s"></i>
+        </div>
+        ${open?ts.map(s=>`<div class="sit">${av(s.name,'avsm')}
+          <div style="flex:1"><span style="font-size:13px;font-weight:500">${s.name}</span> <span style="font-size:11px;color:var(--t3)">· ${(s.posities||[]).join(', ')}</span></div>
+          ${s.nineGrid?`<div style="width:22px;height:22px;border-radius:6px;background:var(--abg);color:var(--atx);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">${s.nineGrid}</div>`:''}
+          ${lidPl(s.lidsoort||'Basis')}${sPl(s.status)}
+          <div class="sac">
+            <button class="bi bsm" onclick="openM('speler-edit',{id:${s.id}})"><i class="ti ti-pencil" style="font-size:13px"></i></button>
+            <button class="bi bsm bd" onclick="delSp(${s.id})"><i class="ti ti-trash" style="font-size:13px"></i></button>
+          </div></div>`).join('')+`<div style="padding:8px 14px;border-top:1px solid var(--bo)"><button class="bsm" style="width:100%;border-style:dashed" onclick="openM('speler-add')"><i class="ti ti-plus" style="font-size:12px;margin-right:4px"></i>Speler toevoegen</button></div>`:''}
+      </div>`;}).join('')}
+  </div>
+  <div id="coord-begel" style="display:none">
+    ${D.begeleiders.map(b=>{const bs=D.spelers.filter(s=>(s.begeleiderIds||[]).includes(b.id));const bid=b.id+1000;const op=D.expanded.has(bid);return`<div class="tbl">
+      <div class="thd" onclick="togB(${bid})">${av(b.name,'avsm')}
+        <div style="flex:1"><div style="font-size:13px;font-weight:600">${b.name}</div><div style="font-size:11px;color:var(--t3)">${b.rol}</div></div>
+        ${pl(bs.length+' spelers','tl')}
+        <i class="ti ti-chevron-down" style="font-size:13px;color:var(--t3);transform:${op?'rotate(180deg)':'none'}"></i>
+      </div>
+      ${op?bs.map(s=>`<div class="sit">${av(s.name,'avsm')}<div style="flex:1"><span style="font-size:13px;font-weight:500">${s.name}</span></div>${sPl(s.status)}</div>`).join(''):''}
+    </div>`;}).join('')}
+  </div>
+  <div id="coord-spec" style="display:none">
+    ${D.specialisten.map(sp=>`<div class="card" style="margin-bottom:10px">
+      <div style="display:flex;align-items:flex-start;gap:14px">
+        ${av(sp.name,'avmd',sp.avBg,sp.avTx)}
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span style="font-size:14px;font-weight:600">${sp.name}</span>${pl(sp.rol,'tl')}
+          </div>
+          <div style="font-size:12.5px;color:var(--t2);margin-bottom:6px"><i class="ti ti-mail" style="font-size:12px;margin-right:4px;vertical-align:-1px"></i>${sp.email} &nbsp;<i class="ti ti-phone" style="font-size:12px;margin-right:4px;vertical-align:-1px"></i>${sp.tel}</div>
+          ${sp.taak?`<div style="font-size:12.5px;color:var(--t2);background:var(--s2);padding:8px 12px;border-radius:var(--r);margin-bottom:8px"><i class="ti ti-file-description" style="font-size:12px;margin-right:4px;vertical-align:-1px"></i>${sp.taak}</div>`:''}
+          <div style="display:flex;gap:6px">
+            <button class="bsm bp" onclick="openM('spec-edit',{id:${sp.id}})"><i class="ti ti-pencil" style="font-size:12px;margin-right:3px"></i>Bewerk</button>
+            <button class="bsm" onclick="openM('nieuw-bericht',{aan:'${sp.name}'})"><i class="ti ti-message-2" style="font-size:12px;margin-right:3px"></i>Bericht</button>
+          </div>
+        </div>
+      </div>
+    </div>`).join('')}
+  </div>
+  <div id="coord-ontkoppeld" style="display:none">
+    ${ontkoppeld.length===0?'<div class="emp"><i class="ti ti-check-circle" style="color:var(--gn)"></i><p>Alle spelers zijn gekoppeld</p></div>':
+    ontkoppeld.map(s=>`<div class="card csm" style="margin-bottom:8px;display:flex;align-items:center;gap:10px;padding:12px 14px">
+      ${av(s.name,'avsm')}<div style="flex:1"><div style="font-size:13px;font-weight:500">${s.name}</div><div style="font-size:11px;color:var(--t3)">${(s.posities||[]).join(', ')}</div></div>
+      <button class="bsm bp" onclick="openM('speler-edit',{id:${s.id}})">Koppelen</button>
+      <button class="bi bsm bd" onclick="delSp(${s.id})"><i class="ti ti-trash" style="font-size:13px"></i></button>
+    </div>`).join('')}
+  </div>`;
+}
+
+function coordTab(el,showId){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));el.classList.add('on');
+  ['coord-trainers','coord-begel','coord-spec','coord-ontkoppeld'].forEach(id=>{const d=document.getElementById(id);if(d)d.style.display=id===showId?'block':'none';});
+}
+
+const togB=id=>{D.expanded.has(id)?D.expanded.delete(id):D.expanded.add(id);renderPage();};
+const delSp=id=>{const s=D.spelers.find(p=>p.id===id);if(!s||!confirm('Verwijder '+s.name+'?'))return;D.spelers=D.spelers.filter(p=>p.id!==id);toast(s.name+' verwijderd');renderPage();};
+const delT=id=>{const t=D.trainingen.find(x=>x.id===id);if(!t||!confirm('Verwijder "'+t.naam+'"?'))return;D.trainingen=D.trainingen.filter(x=>x.id!==id);toast('"'+t.naam+'" verwijderd');renderPage();};
+
+function pgSpelers(){
+  const sp=visSp();const can=(role==='coordinator'||role==='trainer');
+  return`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px">
+    <input type="search" placeholder="Zoek op naam of positie…" style="width:280px" oninput="fSp(this.value)">
+    ${can?`<button class="bp" onclick="openM('speler-add')"><i class="ti ti-user-plus" style="margin-right:5px"></i>Toevoegen</button>`:''}
+  </div>
+  <div class="card" id="sptbl">${spRows(sp,can)}</div>`;
+}
+function spRows(sp,can){
+  if(!sp.length)return'<div class="emp"><i class="ti ti-user-off"></i><p>Geen spelers gevonden</p></div>';
+  return sp.map(s=>{
+    const tnames=(s.trainerIds||[]).map(id=>{const t=byId(D.trainers,id);return t?t.name:''}).filter(Boolean).join(', ');
+    return`<div class="row" style="cursor:pointer" onclick="openM('speler-detail',{id:${s.id}})">
+      ${av(s.name,'avmd')}
+      <div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:600">${s.name}</div>
+      <div style="font-size:11px;color:var(--t3)">${(s.posities||[]).join(' · ')}${tnames?' · '+tnames:''}</div></div>
+      ${s.nineGrid?`<div style="width:26px;height:26px;border-radius:7px;background:var(--abg);color:var(--atx);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0" title="Nine Grid: ${s.nineGrid}">${s.nineGrid}</div>`:''}
+      ${lidPl(s.lidsoort||'Basis')}${sPl(s.status)}
+      <div style="text-align:right;min-width:80px">
+        <div class="pt" style="height:5px"><div class="pf" style="width:${s.doelen}%;background:${s.doelen>70?'var(--gn)':s.doelen>40?'var(--am)':'var(--rd)'}"></div></div>
+        <div style="font-size:11px;color:var(--t3);margin-top:2px">${s.doelen}% doelen</div>
+      </div>
+      ${can?`<button class="bsm" onclick="event.stopPropagation();openM('speler-edit',{id:${s.id}})"><i class="ti ti-pencil" style="font-size:12px"></i></button>`:''}
+    </div>`;}).join('');
+}
+const fSp=q=>{const sp=visSp().filter(s=>s.name.toLowerCase().includes(q.toLowerCase())||(s.posities||[]).join(' ').toLowerCase().includes(q.toLowerCase()));document.getElementById('sptbl').innerHTML=spRows(sp,(role==='coordinator'||role==='trainer'));};
+
+function pgTrain(){
+  const canManage=(role==='coordinator'||role==='trainer'||role==='begeleider');
+  const weekDays=getWeekDates(calWeekOffset);
+  const todayStr='2026-06-04';
+  const wt=weekT(weekDays);
+  return calendarHTML(weekDays,todayStr,wt,canManage)+`
+  <div class="card"><div class="ch"><span class="ct">Alle trainingen</span></div>
+    ${D.trainingen.sort((a,b)=>a.datum.localeCompare(b.datum)).map(t=>{
+      const tnames=(t.trainerIds||[]).map(id=>{const tr=byId(D.trainers,id);return tr?tr.name:''}).filter(Boolean).join(', ');
+      return`<div class="row">
+        <span class="pl pl-${TCLR[t.type]||'gy'}">${t.type}</span>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:6px"><span style="font-size:13.5px;font-weight:600">${t.naam}</span>${t.herhalend?pl('&#x21BB; '+t.herhaling,'gy'):''}</div>
+          <div style="font-size:11.5px;color:var(--t3)">${fmtD(t.datum)} · ${t.tijd} · ${t.duur} min${tnames?' · '+tnames:''}</div>
+        </div>
+        ${pl(t.spelerIds.length+' sp.','gy')}
+        ${canManage?`<button class="bsm" onclick="openM('training-edit',{id:${t.id}})"><i class="ti ti-pencil" style="font-size:12px;margin-right:3px"></i>Bewerk</button>`:''}
+        ${canManage?`<button class="bsm bd" onclick="delT(${t.id})"><i class="ti ti-trash" style="font-size:12px"></i></button>`:''}
+      </div>`;}).join('')}
+  </div>`;
+}
+
+function pgVoortgang(){
+  const sp=visSp();const gem=sp.length?Math.round(sp.reduce((a,s)=>a+s.doelen,0)/sp.length):0;const gemA=sp.length?Math.round(sp.reduce((a,s)=>a+s.aanwezig,0)/sp.length):0;
+  return`<div class="mg">
+    <div class="mc"><div class="ml">Gem. doelen</div><div class="mv">${gem}%</div></div>
+    <div class="mc"><div class="ml">Gem. aanwezigheid</div><div class="mv">${gemA}%</div></div>
+    <div class="mc"><div class="ml">Trainingen seizoen</div><div class="mv">34</div></div>
+    <div class="mc"><div class="ml">Spelers in beeld</div><div class="mv">${sp.length}</div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="ch"><span class="ct">Doelen per speler</span></div>
+      ${[...sp].sort((a,b)=>b.doelen-a.doelen).map(s=>`<div class="pr">
+        ${av(s.name,'avsm')}<div style="min-width:100px"><div style="font-size:13px;font-weight:500">${s.name}</div><div style="font-size:10px;color:var(--t3)">${(s.posities||[]).join(' · ')}</div></div>
+        <div class="pt"><div class="pf" style="width:${s.doelen}%;background:${s.doelen>70?'var(--gn)':s.doelen>40?'var(--am)':'var(--rd)'}"></div></div>
+        <span style="font-size:12px;font-weight:600;min-width:32px;text-align:right">${s.doelen}%</span>
+        ${s.nineGrid?`<div style="width:22px;height:22px;border-radius:6px;background:var(--abg);color:var(--atx);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700">${s.nineGrid}</div>`:''}
+        ${sPl(s.status)}</div>`).join('')}
+    </div>
+    <div class="card"><div class="ch"><span class="ct">Aanwezigheid per speler</span></div>
+      ${[...sp].sort((a,b)=>b.aanwezig-a.aanwezig).map(s=>`<div class="pr">
+        ${av(s.name,'avsm')}<div style="min-width:100px"><div style="font-size:13px;font-weight:500">${s.name}</div></div>
+        <div class="pt"><div class="pf" style="width:${s.aanwezig}%;background:${s.aanwezig>80?'var(--gn)':s.aanwezig>60?'var(--am)':'var(--rd)'}"></div></div>
+        <span style="font-size:12px;font-weight:600;min-width:32px;text-align:right">${s.aanwezig}%</span>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function pgBerichten(){
+  const gs=[{id:103,naam:'Daan Kok',rol:'Speler',prev:'Wanneer kan ik weer meedoen?',tijd:'09:25',unread:2},{id:102,naam:'Lisa Brouwer',rol:'Speler',prev:'Schema voor woensdag aanpassen?',tijd:'gisteren',unread:1},{id:10,naam:'Dr. P. Silva',rol:'Fysiotherapeut',prev:'Sara Roos mag voorzichtig hervatten',tijd:'ma',unread:0}];
+  const msgs=chatMsgs[chatId]||[];const ac=gs.find(g=>g.id===chatId)||gs[0];
+  return`<div class="chl">
+    <div class="csb">
+      <div style="padding:10px;border-bottom:1px solid var(--bo)"><input type="search" placeholder="Zoek…" style="width:100%"></div>
+      <div class="clist">${gs.map(g=>`<div class="ci${g.id===chatId?' on':''}" onclick="setChat(${g.id})">
+        ${av(g.naam,'avsm')}<div style="flex:1;min-width:0">
+          <div style="display:flex;justify-content:space-between"><span style="font-size:13px;font-weight:500">${g.naam}</span><span style="font-size:11px;color:var(--t3)">${g.tijd}</span></div>
+          <div style="display:flex;align-items:center;gap:4px"><span style="font-size:11.5px;color:var(--t3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:140px">${g.prev}</span>${g.unread?`<span style="min-width:16px;height:16px;border-radius:10px;background:var(--ac);color:#fff;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0">${g.unread}</span>`:''}</div>
+        </div></div>`).join('')}</div>
+      <div style="padding:10px;border-top:1px solid var(--bo)"><button style="width:100%;display:flex;align-items:center;justify-content:center;gap:6px" onclick="openM('nieuw-bericht')"><i class="ti ti-edit" style="font-size:14px"></i>Nieuw bericht</button></div>
+    </div>
+    <div class="cmn">
+      <div class="chd">${av(ac.naam,'avmd')}<div style="flex:1"><div style="font-size:14px;font-weight:600">${ac.naam}</div><div style="font-size:12px;color:var(--t3)">${ac.rol}</div></div></div>
+      <div class="cmsg" id="cmsg">${msgs.map(m=>`<div class="msg ${m.r==='in'?'min':'mout'}"><div class="mb2">${m.tekst}</div><div class="mm">${m.r==='in'?m.van+' · ':''}${m.tijd}</div></div>`).join('')}</div>
+      <div class="cinp"><textarea id="cinp" placeholder="Typ een bericht…" rows="1" onkeydown="ck(event)"></textarea>
+        <button class="bp bi" onclick="sc()" style="width:38px;height:38px"><i class="ti ti-send" style="font-size:16px"></i></button></div>
+    </div>
+  </div>`;
+}
+const setChat=id=>{chatId=id;renderPage();};
+const ck=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sc();}};
+function sc(){const inp=document.getElementById('cinp');const txt=inp.value.trim();if(!txt)return;if(!chatMsgs[chatId])chatMsgs[chatId]=[];chatMsgs[chatId].push({van:RUSERS[role].name,r:'uit',tekst:txt,tijd:'nu'});inp.value='';renderPage();setTimeout(()=>{const el=document.getElementById('cmsg');if(el)el.scrollTop=el.scrollHeight;},30);}
+
+function pgLogboek(){
+  const sp=visSp();const logs=D.logs.filter(l=>sp.some(s=>s.id===l.speler));
+  const tm={training:'Training',aandacht:'Aandacht',blessure:'Blessure',voeding:'Voeding'};
+  const tp={training:'gn',aandacht:'am',blessure:'rd',voeding:'tl'};
+  return`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <div style="display:flex;gap:6px">
+      <select style="width:auto"><option>Alle types</option>${Object.values(tm).map(v=>`<option>${v}</option>`).join('')}</select>
+      <select style="width:auto"><option>Alle spelers</option>${sp.map(s=>`<option>${s.name}</option>`).join('')}</select>
+    </div>
+    <button class="bp" onclick="openM('log-add')"><i class="ti ti-plus" style="margin-right:5px"></i>Entry toevoegen</button>
+  </div>
+  <div class="card">${logs.length?logs.sort((a,b)=>b.datum.localeCompare(a.datum)).map(l=>{
+    const s=byId(D.spelers,l.speler);
+    return`<div class="le"><div class="ldt" style="background:${logDot(l.type)};margin-top:5px"></div><div style="flex:1">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:13px;font-weight:500">${l.titel}</span>${pl(tm[l.type]||l.type,tp[l.type]||'gy')}${s?`<div style="display:flex;align-items:center;gap:5px">${av(s.name,'avsm')}<span style="font-size:12px">${s.name}</span></div>`:''}</div>
+      <div style="font-size:11.5px;color:var(--t3);margin-top:2px">${l.datum} · ${l.auteur}</div>
+      ${l.nota?`<div style="font-size:12.5px;color:var(--t2);margin-top:4px;font-style:italic">"${l.nota}"</div>`:''}
+    </div></div>`;}).join(''):'<div class="emp"><i class="ti ti-notebook-off"></i><p>Geen logentries</p></div>'}</div>`;
+}
+
+function pgSpec(){
+  return`<div class="g3">${D.specialisten.map(sp=>`<div class="spcard">
+    ${av(sp.name,'avlg',sp.avBg,sp.avTx)}
+    <div style="flex:1"><div style="font-size:14px;font-weight:600;margin-bottom:2px">${sp.name}</div>
+    <div style="font-size:12px;color:var(--t3);margin-bottom:6px">${sp.rol}</div>
+    ${sp.taak?`<div style="font-size:12px;color:var(--t2);background:var(--s2);padding:7px 10px;border-radius:8px;margin-bottom:8px">${sp.taak}</div>`:''}
+    <div style="font-size:12px;color:var(--t2);margin-bottom:2px"><i class="ti ti-mail" style="font-size:12px;vertical-align:-1px;margin-right:4px"></i>${sp.email}</div>
+    <div style="font-size:12px;color:var(--t2);margin-bottom:10px"><i class="ti ti-phone" style="font-size:12px;vertical-align:-1px;margin-right:4px"></i>${sp.tel}</div>
+    <button class="bsm bp" onclick="openM('nieuw-bericht',{aan:'${sp.name}'})"><i class="ti ti-message-2" style="font-size:12px;margin-right:4px"></i>Stuur bericht</button></div>
+  </div>`).join('')}</div>`;
+}
+
+// Specialist team overzicht
+function pgTeam(){
+  const allStaf=[
+    ...D.trainers.map(t=>({...t,cat:'Trainer',catPl:'bl'})),
+    ...D.begeleiders.map(b=>({...b,cat:'Begeleider',catPl:'tl',spec:b.rol})),
+    ...D.specialisten.map(sp=>({...sp,cat:'Specialist',catPl:'am',spec:sp.rol})),
+  ];
+  return`<div style="margin-bottom:16px">
+    <div style="font-size:13px;color:var(--t2);margin-bottom:16px">Overzicht van alle stafleden. Klik op een persoon om direct een bericht te sturen.</div>
+  </div>
+  <div class="g3">${allStaf.map(p=>`<div class="spcard" style="cursor:pointer" onclick="openM('nieuw-bericht',{aan:'${p.name}'})">
+    ${av(p.name,'avmd',p.avBg||undefined,p.avTx||undefined)}
+    <div style="flex:1">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+        <span style="font-size:13.5px;font-weight:600">${p.name}</span>${pl(p.cat,p.catPl)}
+      </div>
+      <div style="font-size:12px;color:var(--t3);margin-bottom:8px">${p.spec||''}</div>
+      ${p.email?`<div style="font-size:12px;color:var(--t2);margin-bottom:2px"><i class="ti ti-mail" style="font-size:11px;vertical-align:-1px;margin-right:3px"></i>${p.email}</div>`:''}
+      <button class="bsm bp" style="margin-top:8px"><i class="ti ti-message-2" style="font-size:12px;margin-right:3px"></i>Bericht sturen</button>
+    </div>
+  </div>`).join('')}</div>`;
+}
+
+// Speler: mijn schema (geen nine grid score zichtbaar)
+function pgMijnSchema(){
+  const s=D.spelers.find(p=>p.id===101);
+  const weekDays=getWeekDates(calWeekOffset);
+  const todayStr='2026-06-04';
+  const mijn=D.trainingen.filter(t=>t.spelerIds.includes(101));
+  const wt=weekT(weekDays).filter(t=>t.spelerIds&&t.spelerIds.includes(101));
+  const trainers=(s.trainerIds||[]).map(id=>byId(D.trainers,id)).filter(Boolean);
+  const begeleiders=(s.begeleiderIds||[]).map(id=>byId(D.begeleiders,id)).filter(Boolean);
+  const specs=(s.specialistIds||[]).map(id=>byId(D.specialisten,id)).filter(Boolean);
+  return`<div class="mg">
+    <div class="mc"><div class="ml">Aanwezigheid</div><div class="mv">${s.aanwezig}%</div></div>
+    <div class="mc"><div class="ml">Weekdoel</div><div class="mv">${s.doelen}%</div></div>
+    <div class="mc"><div class="ml">Lidsoort</div><div class="mv" style="font-size:16px;margin-top:2px">${lidPl(s.lidsoort||'Basis')}</div></div>
+    <div class="mc"><div class="ml">Status</div><div class="mv" style="font-size:16px;margin-top:2px">${sPl(s.status)}</div></div>
+  </div>
+  ${calendarHTML(weekDays,todayStr,wt,false)}
+  <div class="g2" style="margin-bottom:0">
+    <div class="card" style="margin-bottom:0"><div class="ch"><span class="ct">Mijn begeleiding</span></div>
+      ${trainers.map(t=>`<div class="row">${av(t.name,'avsm',t.avBg,t.avTx)}<div style="flex:1"><div style="font-size:13px;font-weight:500">${t.name}</div><div style="font-size:11px;color:var(--t3)">${t.spec}</div></div>${pl('Trainer','bl')}</div>`).join('')}
+      ${begeleiders.map(b=>`<div class="row">${av(b.name,'avsm')}<div style="flex:1"><div style="font-size:13px;font-weight:500">${b.name}</div><div style="font-size:11px;color:var(--t3)">${b.rol}</div></div>${pl('Begeleider','tl')}</div>`).join('')}
+      ${specs.map(sp=>`<div class="row">${av(sp.name,'avsm',sp.avBg,sp.avTx)}<div style="flex:1"><div style="font-size:13px;font-weight:500">${sp.name}</div><div style="font-size:11px;color:var(--t3)">${sp.rol}</div></div>${pl('Specialist','am')}</div>`).join('')}
+    </div>
+    <div class="card" style="margin-bottom:0"><div class="ch"><span class="ct">Vraag stellen</span></div>
+      <label>Aan</label>
+      <select>${[...trainers.map(t=>t.name+' (trainer)'),...begeleiders.map(b=>b.name+' (begeleider)'),...specs.map(sp=>sp.name+' (specialist)')].map(x=>`<option>${x}</option>`).join('')}</select>
+      <label style="margin-top:8px">Bericht</label><textarea placeholder="Typ je vraag…"></textarea>
+      <div style="margin-top:10px"><button class="bp" onclick="toast('Bericht verstuurd!')"><i class="ti ti-send" style="margin-right:5px;font-size:13px"></i>Versturen</button></div>
+    </div>
+  </div>`;
+}
+
+// Speler: mijn voortgang (GEEN nine grid score)
+function pgMijnVoortgang(){
+  const s=D.spelers.find(p=>p.id===101);const logs=D.logs.filter(l=>l.speler===101);
+  return`<div class="mg">
+    <div class="mc"><div class="ml">Weekdoel</div><div class="mv">${s.doelen}%</div></div>
+    <div class="mc"><div class="ml">Aanwezigheid</div><div class="mv">${s.aanwezig}%</div></div>
+    <div class="mc"><div class="ml">Trainingen seizoen</div><div class="mv">34</div></div>
+    <div class="mc"><div class="ml">Lidsoort</div><div class="mv" style="font-size:16px;margin-top:4px">${lidPl(s.lidsoort||'Basis')}</div></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><span class="ct">Mijn voortgang</span></div>
+      <div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Weekdoelen</span><span>${s.doelen}%</span></div><div class="pt" style="height:9px"><div class="pf" style="width:${s.doelen}%;background:var(--gn)"></div></div></div>
+      <div style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Aanwezigheid</span><span>${s.aanwezig}%</span></div><div class="pt" style="height:9px"><div class="pf" style="width:${s.aanwezig}%;background:var(--ac)"></div></div></div>
+      <div style="margin-top:14px">
+        <div style="font-size:12px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Mijn posities</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">${(s.posities||[]).map(p=>`<span class="tg">${p}</span>`).join('')}</div>
+      </div>
+    </div>
+    <div class="card"><div class="ch"><span class="ct">Mijn logboek</span></div>
+      ${logs.length?logs.map(l=>`<div class="le"><div class="ldt" style="background:${logDot(l.type)}"></div><div><div style="font-size:13px;font-weight:500">${l.titel}</div><div style="font-size:11.5px;color:var(--t3);margin-top:2px">${l.datum} · ${l.auteur}</div>${l.nota?`<div style="font-size:12.5px;color:var(--t2);margin-top:4px;font-style:italic">"${l.nota}"</div>`:''}</div></div>`).join(''):'<div class="emp" style="padding:24px 0"><i class="ti ti-notebook" style="font-size:24px"></i><p>Geen entries</p></div>'}
+    </div>
+  </div>`;
+}
+
+// ─── MODAL ───────────────────────────────────────────
+function openM(mode,meta){
+  meta=meta||{};mMode=mode;mMeta=meta;
+  const ov=document.getElementById('modal');
+  document.getElementById('mdtitle').textContent='';
+  document.getElementById('mdbody').innerHTML='';
+  document.getElementById('mdacts').innerHTML='<button onclick="closeM()">Annuleren</button><button class="bp" onclick="submitM()">Opslaan</button>';
+
+  if(mode==='speler-add'){
+    document.getElementById('mdtitle').textContent='Speler toevoegen';
+    document.getElementById('mdbody').innerHTML=`
+      <div class="fg"><div><label>Naam</label><input type="text" id="mn" placeholder="Voornaam Achternaam"></div><div><label>Woonplaats</label><input type="text" id="mw" placeholder="Stad"></div></div>
+      <label>Geboortedatum</label><input type="date" id="md2">
+      <label>Lidsoort</label><select id="mls">${LIDSOORTEN.map(l=>`<option>${l}</option>`).join('')}</select>
+      <label>Posities / soort speler</label>${posWidget([])}
+      <label>Nine Grid (1–9)</label>${ngWidget(null)}
+      <label>Trainer(s)</label>${msWidget('mtr',D.trainers,[],'name')}
+      <label>Begeleider(s)</label>${msWidget('mbg',D.begeleiders,[],'name')}
+      <label>Specialist(en)</label>${msWidget('msp',D.specialisten,[],'name')}`;
+  }
+  else if(mode==='speler-edit'){
+    const s=D.spelers.find(p=>p.id===meta.id);
+    document.getElementById('mdtitle').textContent='Bewerk — '+s.name;
+    document.getElementById('mdbody').innerHTML=`
+      <div class="fg"><div><label>Naam</label><input type="text" id="mn" value="${s.name}"></div><div><label>Woonplaats</label><input type="text" id="mw" value="${s.woonplaats||''}"></div></div>
+      <label>Geboortedatum</label><input type="date" id="md2" value="${s.geboortedatum||''}">
+      <label>Lidsoort</label><select id="mls">${LIDSOORTEN.map(l=>`<option${l===s.lidsoort?' selected':''}>${l}</option>`).join('')}</select>
+      <label>Posities / soort speler</label>${posWidget(s.posities||[])}
+      <label>Nine Grid (1–9)</label>${ngWidget(s.nineGrid)}
+      <label>Trainer(s)</label>${msWidget('mtr',D.trainers,s.trainerIds||[],'name')}
+      <label>Begeleider(s)</label>${msWidget('mbg',D.begeleiders,s.begeleiderIds||[],'name')}
+      <label>Specialist(en)</label>${msWidget('msp',D.specialisten,s.specialistIds||[],'name')}
+      <label>Status</label><select id="mst"><option value="actief"${s.status==='actief'?' selected':''}>Actief</option><option value="aandacht"${s.status==='aandacht'?' selected':''}>Aandacht nodig</option><option value="geblesseerd"${s.status==='geblesseerd'?' selected':''}>Geblesseerd</option></select>
+      <label>Blessure-omschrijving</label><input type="text" id="mbl" value="${s.blessure||''}" placeholder="Bijv. Knieblessure week 2 van 4">`;
+  }
+  else if(mode==='speler-detail'){
+    const s=D.spelers.find(p=>p.id===meta.id);
+    const trainers=(s.trainerIds||[]).map(id=>byId(D.trainers,id)).filter(Boolean);
+    const begeleiders=(s.begeleiderIds||[]).map(id=>byId(D.begeleiders,id)).filter(Boolean);
+    const specs=(s.specialistIds||[]).map(id=>byId(D.specialisten,id)).filter(Boolean);
+    const logs=D.logs.filter(l=>l.speler===s.id);
+    const canEdit=(role==='coordinator'||(role==='trainer'&&(s.trainerIds||[]).includes(RUSERS.trainer.id)));
+    const canLog=(role==='trainer'||role==='begeleider'||role==='specialist'||role==='coordinator');
+    // Specialist can see schema
+    const canSeeSchema=(role==='specialist'||(role==='trainer'&&(s.trainerIds||[]).includes(RUSERS.trainer.id))||role==='coordinator'||role==='begeleider');
+    const mijnTrainingen=D.trainingen.filter(t=>t.spelerIds.includes(s.id)).slice(0,3);
+    document.getElementById('mdtitle').textContent=s.name;
+    document.getElementById('mdacts').innerHTML=`<button onclick="closeM()">Sluiten</button>${canLog?`<button class="bg bsm" onclick="closeM();openM('log-add-speler',{speler:${s.id}})"><i class="ti ti-notebook" style="font-size:12px;margin-right:4px"></i>Log toevoegen</button>`:''}${canEdit?`<button class="bp" onclick="closeM();openM('speler-edit',{id:${s.id}})"><i class="ti ti-pencil" style="font-size:13px;margin-right:4px"></i>Bewerken</button>`:''}`;
+    document.getElementById('mdbody').innerHTML=`
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">${av(s.name,'avlg')}
+        <div><div style="font-size:17px;font-weight:700">${s.name}</div>
+        <div style="font-size:13px;color:var(--t3)">${s.woonplaats||''}${s.geboortedatum?' · '+fmtAge(s.geboortedatum):''}</div>
+        <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">${sPl(s.status)}${lidPl(s.lidsoort||'Basis')}${s.nineGrid?pl('Nine Grid: '+s.nineGrid,'bl'):''}</div></div>
+      </div>
+      ${s.blessure?`<div style="background:var(--rbg);color:var(--rtx);border-radius:var(--r);padding:10px 14px;font-size:13px;margin-bottom:12px"><i class="ti ti-alert-triangle" style="margin-right:5px"></i>${s.blessure}</div>`:''}
+      <div style="margin-bottom:12px"><div style="font-size:12px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Posities</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">${(s.posities||[]).map(p=>`<span class="tg">${p}</span>`).join('')||'<span style="font-size:13px;color:var(--t3)">Niet ingesteld</span>'}</div></div>
+      <div class="fg" style="margin-bottom:12px">
+        <div class="mc" style="padding:10px 14px"><div class="ml">Doelen</div><div class="mv" style="font-size:20px">${s.doelen}%</div></div>
+        <div class="mc" style="padding:10px 14px"><div class="ml">Aanwezigheid</div><div class="mv" style="font-size:20px">${s.aanwezig}%</div></div>
+      </div>
+      <div style="font-size:12px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Begeleiding</div>
+      ${trainers.map(t=>`<div class="row">${av(t.name,'avsm',t.avBg,t.avTx)}<div style="flex:1"><span style="font-size:13px;font-weight:500">${t.name}</span><div style="font-size:11px;color:var(--t3)">${t.spec}</div></div>${pl('Trainer','bl')}</div>`).join('')}
+      ${begeleiders.map(b=>`<div class="row">${av(b.name,'avsm')}<div style="flex:1"><span style="font-size:13px;font-weight:500">${b.name}</span><div style="font-size:11px;color:var(--t3)">${b.rol}</div></div>${pl('Begeleider','tl')}</div>`).join('')}
+      ${specs.map(sp=>`<div class="row">${av(sp.name,'avsm',sp.avBg,sp.avTx)}<div style="flex:1"><span style="font-size:13px;font-weight:500">${sp.name}</span><div style="font-size:11px;color:var(--t3)">${sp.rol}</div></div>${pl('Specialist','am')}</div>`).join('')}
+      ${canSeeSchema&&mijnTrainingen.length?`<div style="font-size:12px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin:12px 0 8px">Schema (komende trainingen)</div>
+        ${mijnTrainingen.map(t=>`<div class="row"><span class="pl pl-${TCLR[t.type]||'gy'}">${t.type}</span><div style="flex:1"><span style="font-size:13px;font-weight:500">${t.naam}</span><div style="font-size:11px;color:var(--t3)">${fmtD(t.datum)} · ${t.tijd}</div></div></div>`).join('')}`:''}
+      <div style="font-size:12px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin:12px 0 8px">Logboek</div>
+      ${logs.length?logs.map(l=>`<div class="le"><div class="ldt" style="background:${logDot(l.type)}"></div><div><div style="font-size:13px;font-weight:500">${l.titel}</div><div style="font-size:11.5px;color:var(--t3);margin-top:2px">${l.datum} · ${l.auteur}</div>${l.nota?`<div style="font-size:12.5px;color:var(--t2);margin-top:4px;font-style:italic">"${l.nota}"</div>`:''}</div></div>`).join(''):'<div style="font-size:13px;color:var(--t3);text-align:center;padding:12px">Nog geen logentries</div>'}`;
+    ov.classList.add('open');return;
+  }
+  else if(mode==='log-add-speler'){
+    // Quick log voor een specifieke speler vanuit speler-detail
+    document.getElementById('mdtitle').textContent='Log toevoegen — '+byId(D.spelers,meta.speler)?.name;
+    document.getElementById('mdbody').innerHTML=`
+      <input type="hidden" id="mspl" value="${meta.speler}">
+      <label>Titel</label><input type="text" id="mtit" placeholder="Korte omschrijving">
+      <label>Type</label><select id="mtyp"><option value="training">Training</option><option value="blessure">Blessure</option><option value="aandacht">Aandacht</option><option value="voeding">Voeding</option></select>
+      <label>Notitie</label><textarea id="mnot" placeholder="Details, observaties…"></textarea>`;
+    mMode='log-add-speler';
+  }
+  else if(mode==='trainer-add'){
+    document.getElementById('mdtitle').textContent='Trainer toevoegen';
+    document.getElementById('mdbody').innerHTML=`<label>Naam</label><input type="text" id="mn" placeholder="Voornaam Achternaam"><label>Specialisatie</label><select id="mspec"><option>Hoofdtrainer</option><option>Assistent-trainer</option><option>Krachtrainer</option></select>`;
+  }
+  else if(mode==='begel-add'){
+    document.getElementById('mdtitle').textContent='Begeleider toevoegen';
+    document.getElementById('mdbody').innerHTML=`<label>Naam</label><input type="text" id="mn" placeholder="Voornaam Achternaam"><label>Rol</label><select id="mrol"><option>Teammanager</option><option>Assistent</option><option>Videoanalist</option><option>Materiaalman</option></select>`;
+  }
+  else if(mode==='spec-add'||mode==='spec-edit'){
+    const sp=mode==='spec-edit'?byId(D.specialisten,meta.id):null;
+    document.getElementById('mdtitle').textContent=sp?'Specialist bewerken':'Specialist toevoegen';
+    document.getElementById('mdbody').innerHTML=`
+      <div class="fg"><div><label>Naam</label><input type="text" id="mn" value="${sp?sp.name:''}" placeholder="Voornaam Achternaam"></div><div><label>Rol / functie</label><input type="text" id="mrol2" value="${sp?sp.rol:''}" placeholder="Bijv. Fysiotherapeut"></div></div>
+      <label>Taakomschrijving</label><textarea id="mtaak" placeholder="Beschrijf de taken en verantwoordelijkheden…">${sp?sp.taak||'':''}</textarea>
+      <div class="fg"><div><label>E-mail</label><input type="email" id="memail" value="${sp?sp.email:''}" placeholder="naam@domein.nl"></div><div><label>Telefoonnummer</label><input type="text" id="mtel" value="${sp?sp.tel:''}" placeholder="06-12345678"></div></div>`;
+  }
+  else if(mode==='training-add'||mode==='training-edit'){
+    const t=mode==='training-edit'?D.trainingen.find(x=>x.id===meta.id):null;
+    document.getElementById('mdtitle').textContent=t?'Training bewerken':'Training plannen';
+    document.getElementById('mdbody').innerHTML=`
+      <label>Naam</label><input type="text" id="mnm" value="${t?t.naam:''}" placeholder="Naam van de training">
+      <label>Type</label><select id="mty">${TRTYPES.map(tp=>`<option value="${tp}"${t&&t.type===tp?' selected':''}>${tp}</option>`).join('')}</select>
+      <div class="fg"><div><label>Datum</label><input type="date" id="mdt" value="${t?t.datum:'2026-06-08'}"></div><div><label>Tijd</label><input type="text" id="mtj" value="${t?t.tijd:'19:00'}" placeholder="19:00"></div></div>
+      <label>Duur (minuten)</label><input type="number" id="mdr" value="${t?t.duur:90}">
+      <label>Notities</label><textarea id="mno">${t?t.notities:''}</textarea>
+      <label style="display:flex;align-items:center;gap:8px;font-weight:400;cursor:pointer;margin-top:10px"><input type="checkbox" id="mrep"${t&&t.herhalend?' checked':''} onchange="togRep()" style="width:auto"> Repeterend</label>
+      <div id="reprow" style="display:${t&&t.herhalend?'block':'none'};margin-top:8px">
+        <label>Frequentie</label><select id="mfrq"><option value="wekelijks"${t&&t.herhaling==='wekelijks'?' selected':''}>Wekelijks</option><option value="tweewekelijks"${t&&t.herhaling==='tweewekelijks'?' selected':''}>Tweewekelijks</option></select>
+      </div>
+      <label>Trainer(s)</label>${msWidget('mtr2',D.trainers,t?t.trainerIds:[],'name')}
+      <label>Spelers</label>${msWidget('msp2',D.spelers,t?t.spelerIds:[],'name')}`;
+  }
+  else if(mode==='training-detail'){
+    const t=D.trainingen.find(x=>x.id===meta.id);if(!t){ov.classList.add('open');return;}
+    const tnames=(t.trainerIds||[]).map(id=>{const tr=byId(D.trainers,id);return tr?tr.name:''}).filter(Boolean);
+    const can=(role==='coordinator'||role==='trainer'||role==='begeleider');
+    document.getElementById('mdtitle').textContent=t.naam;
+    document.getElementById('mdacts').innerHTML=`<button onclick="closeM()">Sluiten</button>
+      <button class="bg bsm" onclick="closeM();berichtTraining(${t.id})" title="Stuur een bericht naar alle deelnemers en trainers van deze training"><i class="ti ti-send" style="font-size:12px;margin-right:4px"></i>Bericht aan deelnemers</button>
+      ${can?`<button class="bp" onclick="closeM();openM('training-edit',{id:${t.id}})"><i class="ti ti-pencil" style="font-size:13px;margin-right:4px"></i>Bewerken</button>`:''}`;
+    document.getElementById('mdbody').innerHTML=`
+      <div style="display:flex;gap:8px;margin-bottom:12px">${pl(t.type,TCLR[t.type]||'gy')}${t.herhalend?pl('&#x21BB; '+t.herhaling,'gy'):''}</div>
+      <div style="font-size:13px;color:var(--t2);margin-bottom:6px">${fmtD(t.datum)} · ${t.tijd} · ${t.duur} min</div>
+      <div style="font-size:13px;color:var(--t2);margin-bottom:10px"><strong>Trainer(s):</strong> ${tnames.join(', ')||'Niet ingesteld'}</div>
+      ${t.notities?`<div style="background:var(--s2);border-radius:var(--r);padding:10px 14px;font-size:13px;color:var(--t2);font-style:italic;margin-bottom:12px">${t.notities}</div>`:''}
+      <div style="font-size:12px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Deelnemers (${t.spelerIds.length})</div>
+      ${t.spelerIds.map(sid=>{const s=byId(D.spelers,sid);return s?`<div class="row">${av(s.name,'avsm')}<span style="font-size:13px;font-weight:500">${s.name}</span><span style="font-size:12px;color:var(--t3)">${(s.posities||[]).join(', ')}</span></div>`:''}).join('')}`;
+    ov.classList.add('open');return;
+  }
+  else if(mode==='training-bericht'){
+    const t=meta.training;
+    // Build full recipient list: trainers + spelers
+    const trainerRecips=(t.trainerIds||[]).map(id=>byId(D.trainers,id)).filter(Boolean).map(p=>({...p,cat:'trainer'}));
+    const spelerRecips=(t.spelerIds||[]).map(id=>byId(D.spelers,id)).filter(Boolean).map(p=>({...p,cat:'speler'}));
+    const allRecips=[...trainerRecips,...spelerRecips];
+    document.getElementById('mdtitle').textContent='Bericht aan deelnemers';
+    document.getElementById('mdacts').innerHTML=`<button onclick="closeM()">Annuleren</button><button class="bp" onclick="verzendTrainingBericht(${t.id})"><i class="ti ti-send" style="font-size:13px;margin-right:5px"></i>Versturen naar geselecteerden</button>`;
+    document.getElementById('mdbody').innerHTML=`
+      <div style="background:var(--abg);border-radius:var(--r);padding:10px 14px;margin-bottom:16px">
+        <div style="font-size:12px;font-weight:600;color:var(--atx);margin-bottom:4px"><i class="ti ti-calendar" style="font-size:13px;margin-right:4px;vertical-align:-1px"></i>${t.naam}</div>
+        <div style="font-size:12px;color:var(--atx)">${fmtD(t.datum)} · ${t.tijd} · ${t.duur} min · ${pl(t.type,TCLR[t.type]||'gy')}</div>
+      </div>
+      <label>Ontvangers <span style="color:var(--t3);font-weight:400">(${allRecips.length} totaal — klik om aan/uit te zetten)</span></label>
+      <div style="border:1px solid var(--b2);border-radius:var(--r);overflow:hidden;margin-top:4px" id="recip-list">
+        <div style="padding:6px 10px;background:var(--s2);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bo)">
+          <span style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.05em">Trainers</span>
+          <button class="bsm" style="font-size:11px;padding:2px 8px" onclick="selectAllRecips('trainer')">Alle trainers</button>
+        </div>
+        ${trainerRecips.map(p=>`<div class="recip-row" data-id="${p.id}" data-cat="trainer" onclick="togRecip(this)" style="display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--bo);background:var(--su);transition:background .1s">
+          <div style="width:18px;height:18px;border-radius:5px;border:2px solid var(--ac);background:var(--ac);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-check" style="font-size:11px;color:#fff"></i></div>
+          ${av(p.name,'avsm',p.avBg,p.avTx)}
+          <div style="flex:1"><div style="font-size:13px;font-weight:500">${p.name}</div><div style="font-size:11px;color:var(--t3)">${p.spec||''}</div></div>
+          ${pl('Trainer','bl')}
+        </div>`).join('')}
+        <div style="padding:6px 10px;background:var(--s2);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bo);border-top:1px solid var(--bo)">
+          <span style="font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.05em">Spelers</span>
+          <button class="bsm" style="font-size:11px;padding:2px 8px" onclick="selectAllRecips('speler')">Alle spelers</button>
+        </div>
+        ${spelerRecips.map(p=>`<div class="recip-row" data-id="${p.id}" data-cat="speler" onclick="togRecip(this)" style="display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--bo);last-child:border-none;background:var(--su);transition:background .1s">
+          <div style="width:18px;height:18px;border-radius:5px;border:2px solid var(--ac);background:var(--ac);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ti ti-check" style="font-size:11px;color:#fff"></i></div>
+          ${av(p.name,'avsm')}
+          <div style="flex:1"><div style="font-size:13px;font-weight:500">${p.name}</div><div style="font-size:11px;color:var(--t3)">${(p.posities||[]).join(', ')}</div></div>
+          ${p.status?sPl(p.status):''}
+        </div>`).join('')}
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;margin-bottom:4px">
+        <span id="recip-count" style="font-size:12px;color:var(--t2)">${allRecips.length} van ${allRecips.length} geselecteerd</span>
+        <div style="display:flex;gap:6px">
+          <button class="bsm" onclick="selectAllRecips('all')" style="font-size:11px">Alles selecteren</button>
+          <button class="bsm" onclick="selectAllRecips('none')" style="font-size:11px">Niets selecteren</button>
+        </div>
+      </div>
+      <label style="margin-top:12px">Onderwerp</label>
+      <input type="text" id="msubject" value="Re: ${t.naam} — ${fmtD(t.datum)}" placeholder="Onderwerp van het bericht">
+      <label>Bericht</label>
+      <textarea id="mtekst2" rows="4" placeholder="Typ je bericht aan de geselecteerde deelnemers…"></textarea>
+      <div id="send-preview" style="margin-top:10px;font-size:12px;color:var(--t3)"></div>`;
+    // update preview on textarea input
+    setTimeout(()=>{
+      document.getElementById('mtekst2')?.addEventListener('input',updateSendPreview);
+      updateSendPreview();
+    },50);
+  }
+  else if(mode==='log-add'){
+    const sp=visSp();
+    document.getElementById('mdtitle').textContent='Log entry toevoegen';
+    document.getElementById('mdbody').innerHTML=`
+      <label>Speler</label><select id="mspl">${sp.map(s=>`<option value="${s.id}">${s.name}</option>`).join('')}</select>
+      <label>Titel</label><input type="text" id="mtit" placeholder="Korte omschrijving">
+      <label>Type</label><select id="mtyp"><option value="training">Training</option><option value="blessure">Blessure</option><option value="aandacht">Aandacht</option><option value="voeding">Voeding</option></select>
+      <label>Notitie</label><textarea id="mnot" placeholder="Details, observaties…"></textarea>`;
+  }
+  else if(mode==='nieuw-bericht'){
+    document.getElementById('mdtitle').textContent='Nieuw bericht';
+    const all=[...D.trainers,...D.begeleiders,...D.specialisten,...D.spelers];
+    document.getElementById('mdbody').innerHTML=`<label>Aan</label><select id="maan">${all.map(p=>`<option${meta.aan&&meta.aan===p.name?' selected':''}>${p.name}</option>`).join('')}</select><label>Bericht</label><textarea id="mtekst" placeholder="Typ je bericht…"></textarea>`;
+  }
+  ov.classList.add('open');
+}
+
+function berichtTraining(id){
+  const t=D.trainingen.find(x=>x.id===id);if(!t)return;
+  openM('training-bericht',{training:t});
+}
+
+// Toggle a recipient row on/off
+function togRecip(row){
+  const isOn=row.querySelector('div').style.background!=='transparent'&&row.querySelector('div').style.background!=='';
+  const chk=row.querySelector('div');
+  if(isOn){
+    chk.style.background='transparent';chk.style.borderColor='var(--b2)';
+    chk.innerHTML='';row.style.opacity='0.45';
+  } else {
+    chk.style.background='var(--ac)';chk.style.borderColor='var(--ac)';
+    chk.innerHTML='<i class="ti ti-check" style="font-size:11px;color:#fff"></i>';row.style.opacity='1';
+  }
+  updateRecipCount();updateSendPreview();
+}
+
+function selectAllRecips(cat){
+  document.querySelectorAll('.recip-row').forEach(row=>{
+    if(cat==='all'||cat==='none'||row.dataset.cat===cat){
+      const chk=row.querySelector('div');
+      const on=(cat!=='none');
+      chk.style.background=on?'var(--ac)':'transparent';
+      chk.style.borderColor=on?'var(--ac)':'var(--b2)';
+      chk.innerHTML=on?'<i class="ti ti-check" style="font-size:11px;color:#fff"></i>':'';
+      row.style.opacity=on?'1':'0.45';
+    }
+  });
+  updateRecipCount();updateSendPreview();
+}
+
+function getSelectedRecips(){
+  const sel=[];
+  document.querySelectorAll('.recip-row').forEach(row=>{
+    const chk=row.querySelector('div');
+    if(chk.style.background==='var(--ac)'||chk.style.background.includes('91,227')||chk.innerHTML.includes('ti-check')){
+      sel.push({id:parseInt(row.dataset.id),cat:row.dataset.cat});
+    }
+  });
+  return sel;
+}
+
+function updateRecipCount(){
+  const sel=getSelectedRecips();
+  const total=document.querySelectorAll('.recip-row').length;
+  const el=document.getElementById('recip-count');
+  if(el)el.textContent=sel.length+' van '+total+' geselecteerd';
+}
+
+function updateSendPreview(){
+  const sel=getSelectedRecips();
+  const tekst=document.getElementById('mtekst2')?.value.trim();
+  const prev=document.getElementById('send-preview');
+  if(!prev)return;
+  if(sel.length===0){prev.innerHTML='<span style="color:var(--rd)"><i class="ti ti-alert-circle" style="vertical-align:-2px;margin-right:4px"></i>Selecteer minstens één ontvanger.</span>';return;}
+  if(!tekst){prev.innerHTML='';return;}
+  const names=sel.map(r=>{
+    if(r.cat==='trainer'){const t=byId(D.trainers,r.id);return t?t.name:'';}
+    const s=byId(D.spelers,r.id);return s?s.name:'';
+  }).filter(Boolean);
+  prev.innerHTML=`<i class="ti ti-check-circle" style="color:var(--gn);vertical-align:-2px;margin-right:4px"></i>Bericht wordt verstuurd naar: <strong>${names.slice(0,4).join(', ')}${names.length>4?' en '+(names.length-4)+' anderen':''}</strong>`;
+}
+
+function verzendTrainingBericht(trainingId){
+  const tekst=document.getElementById('mtekst2')?.value.trim();
+  if(!tekst){toast('Typ eerst een bericht');return;}
+  const sel=getSelectedRecips();
+  if(!sel.length){toast('Selecteer minstens één ontvanger');return;}
+  const subject=document.getElementById('msubject')?.value.trim();
+  const sender=RUSERS[role].name;
+  // Add to chatMsgs for each recipient (simulate sending)
+  sel.forEach(r=>{
+    const key=r.id;
+    if(!chatMsgs[key])chatMsgs[key]=[];
+    chatMsgs[key].push({van:sender,r:'uit',tekst:subject?`[${subject}] ${tekst}`:tekst,tijd:'nu'});
+  });
+  // Also add to D.berichten for unread counter
+  sel.forEach(r=>{
+    const recipName=r.cat==='trainer'?byId(D.trainers,r.id)?.name:byId(D.spelers,r.id)?.name;
+    if(recipName){
+      D.berichten.unshift({id:nid(D.berichten),van:RUSERS[role].id||99,vanNaam:sender,aan:r.id,aanNaam:recipName,tekst:tekst,tijd:'nu',gelezen:false});
+    }
+  });
+  toast(`Bericht verstuurd naar ${sel.length} ${sel.length===1?'persoon':'personen'}!`);
+  closeM();renderSB();
+}
+
+const togRep=()=>{document.getElementById('reprow').style.display=document.getElementById('mrep').checked?'block':'none';};
+const mbgclose=e=>{if(e.target===document.getElementById('modal'))closeM();};
+const closeM=()=>document.getElementById('modal').classList.remove('open');
+
+function submitM(){
+  const mode=mMode,meta=mMeta;
+  if(mode==='speler-add'){
+    const name=document.getElementById('mn').value.trim();if(!name){toast('Vul een naam in');return;}
+    D.spelers.push({id:nid(D.spelers),name,woonplaats:document.getElementById('mw').value,geboortedatum:document.getElementById('md2').value,lidsoort:document.getElementById('mls').value,posities:posGet(),nineGrid:ngGet(),trainerIds:msGet('mtr'),begeleiderIds:msGet('mbg'),specialistIds:msGet('msp'),status:'actief',doelen:0,aanwezig:100,blessure:null});
+    toast(name+' toegevoegd');
+  }else if(mode==='speler-edit'){
+    const s=D.spelers.find(p=>p.id===meta.id);if(!s)return;
+    s.name=document.getElementById('mn').value.trim()||s.name;s.woonplaats=document.getElementById('mw').value;s.geboortedatum=document.getElementById('md2').value;
+    s.lidsoort=document.getElementById('mls').value;s.posities=posGet();s.nineGrid=ngGet();
+    s.trainerIds=msGet('mtr');s.begeleiderIds=msGet('mbg');s.specialistIds=msGet('msp');
+    s.status=document.getElementById('mst').value;s.blessure=document.getElementById('mbl').value||null;
+    toast(s.name+' opgeslagen');
+  }else if(mode==='trainer-add'){
+    const name=document.getElementById('mn').value.trim();if(!name){toast('Vul naam in');return;}
+    const c=avc(name);D.trainers.push({id:nid(D.trainers),name,spec:document.getElementById('mspec').value,avBg:c.bg,avTx:c.tx});toast(name+' toegevoegd');
+  }else if(mode==='begel-add'){
+    const name=document.getElementById('mn').value.trim();if(!name){toast('Vul naam in');return;}
+    D.begeleiders.push({id:nid(D.begeleiders),name,rol:document.getElementById('mrol').value});toast(name+' toegevoegd als begeleider');
+  }else if(mode==='spec-add'){
+    const name=document.getElementById('mn').value.trim();if(!name){toast('Vul naam in');return;}
+    const c=avc(name);D.specialisten.push({id:nid(D.specialisten),name,rol:document.getElementById('mrol2').value,taak:document.getElementById('mtaak').value,email:document.getElementById('memail').value,tel:document.getElementById('mtel').value,avBg:c.bg,avTx:c.tx});toast(name+' toegevoegd als specialist');
+  }else if(mode==='spec-edit'){
+    const sp=byId(D.specialisten,meta.id);if(!sp)return;
+    sp.name=document.getElementById('mn').value.trim()||sp.name;sp.rol=document.getElementById('mrol2').value;sp.taak=document.getElementById('mtaak').value;sp.email=document.getElementById('memail').value;sp.tel=document.getElementById('mtel').value;toast(sp.name+' opgeslagen');
+  }else if(mode==='training-add'){
+    const naam=document.getElementById('mnm').value.trim();if(!naam){toast('Vul een naam in');return;}
+    const rep=document.getElementById('mrep').checked;
+    D.trainingen.push({id:nid(D.trainingen),naam,type:document.getElementById('mty').value,datum:document.getElementById('mdt').value,tijd:document.getElementById('mtj').value,duur:parseInt(document.getElementById('mdr').value)||90,trainerIds:msGet('mtr2'),spelerIds:msGet('msp2'),notities:document.getElementById('mno').value,herhalend:rep,herhaling:rep?document.getElementById('mfrq').value:null});
+    toast('Training gepland');
+  }else if(mode==='training-edit'){
+    const t=D.trainingen.find(x=>x.id===meta.id);if(!t)return;
+    const rep=document.getElementById('mrep').checked;
+    t.naam=document.getElementById('mnm').value.trim()||t.naam;t.type=document.getElementById('mty').value;t.datum=document.getElementById('mdt').value;t.tijd=document.getElementById('mtj').value;t.duur=parseInt(document.getElementById('mdr').value)||t.duur;t.notities=document.getElementById('mno').value;
+    t.herhalend=rep;t.herhaling=rep?document.getElementById('mfrq').value:null;t.trainerIds=msGet('mtr2');t.spelerIds=msGet('msp2');
+    toast('Training opgeslagen');
+  }else if(mode==='training-bericht'){
+    // handled by verzendTrainingBericht directly
+    closeM();return;
+  }else if(mode==='log-add'||mode==='log-add-speler'){
+    const spId=mode==='log-add-speler'?parseInt(document.getElementById('mspl').value):parseInt(document.getElementById('mspl').value);
+    const titel=document.getElementById('mtit').value.trim();if(!titel){toast('Vul een titel in');return;}
+    D.logs.unshift({id:nid(D.logs),speler:spId,datum:new Date('2026-06-04').toISOString().slice(0,10),type:document.getElementById('mtyp').value,titel,nota:document.getElementById('mnot').value,auteur:RUSERS[role].name,auteurRol:role});
+    toast('Log entry opgeslagen');
+  }else if(mode==='nieuw-bericht'){
+    const tekst=document.getElementById('mtekst')?.value.trim();if(!tekst){toast('Typ een bericht');return;}
+    toast('Bericht verstuurd!');
+  }
+  closeM();renderPage();renderSB();
+}
+
+// ─── INIT ────────────────────────────────────────────
+setRole('trainer');
+</script>
+</body>
+</html>
